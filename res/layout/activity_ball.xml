@@ -4,7 +4,7 @@
       android:layout_width="fill_parent"
       android:layout_height="fill_parent" >
        
-       <Veyhunk.Batter_of_Balls.Activity.MySurfaceView android:id="@+id/gameView"
+       <com.Veyhunk.Batter_of_Balls.SurfaceView.MySurfaceView android:id="@+id/gameView"
 	       android:layout_width="fill_parent"
 	       android:layout_height="fill_parent"/>
     

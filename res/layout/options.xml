@@ -7,76 +7,62 @@
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:paddingTop="25pt" >
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:paddingTop="100dp" >
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="8pt"
-            android:paddingRight="6pt" >
-
-            <CheckBox
-                android:id="@+id/checkBox1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:shadowColor="#FFFFFFFF"
-                android:text="2222222"
-                android:textColor="@color/white" />
-
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:shadowColor="#FFFFFFFF"
-                android:text="@string/bgmusic"
-                android:textColor="@color/white" />
-
-            <CheckBox
-                android:id="@+id/checkBox3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4pt"
-                android:shadowColor="#FFFFFFFF"
-                android:text="@string/tip"
-                android:textColor="@color/white" />
+            android:layout_height="310dp"
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/tvDifficult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="#FFFFFFFF"
-                android:text="@string/changgeli"
-                android:textColor="@color/white"
-                android:textSize="7pt" />
+                android:text="@string/changgeDifficult"
+                android:textColor="@color/ui_font"
+                android:textSize="@dimen/fonesize" />
 
             <SeekBar
-                android:id="@+id/SeekBar1"
+                android:id="@+id/sbrDifficult"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4pt"
-                android:max="100"
-                android:progress="0" />
+                android:max="50"
+                android:progress="1" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/niconame"
-                android:textColor="@color/white" />
+                android:shadowColor="#FFFFFFFF"
+                android:text="@string/changgeSpeed"
+                android:textColor="@color/ui_font"
+                android:textSize="@dimen/fonesize" />
 
-            <EditText
-                android:id="@+id/editText1"
+            <SeekBar
+                android:id="@+id/sbrSpeed"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4pt" />
+                android:max="200"
+                android:progress="1" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tvGrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/score"
-                android:textColor="@color/white" />
+                android:shadowColor="#FFFFFFFF"
+                android:text="@string/changgeGrow"
+                android:textColor="@color/ui_font"
+                android:textSize="@dimen/fonesize" />
+
+            <SeekBar
+                android:id="@+id/sbrGrow"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="1000"
+                android:progress="1" />
 
             <TableRow
                 android:id="@+id/tableRow1"
@@ -84,25 +70,30 @@
                 android:layout_height="wrap_content" >
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btnYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ok"
-                    android:textColor="@color/white" />
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/ui_btn_bg"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="好的就是这样"
+                    android:textColor="@color/ui_font"
+                    android:textSize="@dimen/fonesize" 
+	       android:onClick="btnYes"/>
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hand_score"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bt_tip"
-                    android:textColor="@color/white" />
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/ui_btn_bg"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="感觉不对 下次再改"
+                    android:textColor="@color/ui_font"
+                    android:textSize="@dimen/fonesize"
+	       android:onClick="btnNo"/>
             </TableRow>
         </LinearLayout>
     </ScrollView>

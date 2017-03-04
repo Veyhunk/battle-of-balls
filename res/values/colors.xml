@@ -10,6 +10,7 @@
     <color name="color6">#FFe03c5e</color>
     <color name="rocker">#ddffffff</color>
     <color name="rockerRudder">#88000000</color>
+    
     <color name="font">#88ffffff</color>
     <color name="Background">#FF383838</color>
     <color name="BackgroundStripe">#FF3F3F3F</color>
@@ -21,4 +22,7 @@
     
     <color name="white">#ffffff</color>
     <color name="url">#9f60</color>
+    <color name="ui_font">#ff677d55</color>
+    <color name="ui_bg">#fff8ffe0</color>
+    <color name="ui_btn_bg">#fff3fed4</color>
 </resources>

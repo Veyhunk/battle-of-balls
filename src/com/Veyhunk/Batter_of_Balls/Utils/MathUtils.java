@@ -1,4 +1,4 @@
-package Veyhunk.Batter_of_Balls.Activity;
+package com.Veyhunk.Batter_of_Balls.Utils;
 
 import android.graphics.Point;
 
@@ -30,6 +30,10 @@ public class MathUtils {
 	public static float getRadian(Point a, Point b) {
 		float lenA = b.x - a.x;
 		float lenB = b.y - a.y;
+		if (lenA==0&&lenB==0) {
+			return 404;
+			//
+		}
 		float lenC = (float) Math.sqrt(lenA * lenA + lenB * lenB);
 		float ang = (float) Math.acos(lenA / lenC);
 		ang = ang * (b.y < a.y ? -1 : 1);
