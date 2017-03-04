@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="color0">#ffdad049</color>
+    <color name="color1">#FF63c33c</color>
+    <color name="color2">#FFe4af3c</color>
+    <color name="color3">#FF30d28b</color>
+    <color name="color4">#FFa061ee</color>
+    <color name="color5">#FF59a0d8</color>
+    <color name="color6">#FFe03c5e</color>
+    <color name="rocker">#ddffffff</color>
+    <color name="rockerRudder">#88000000</color>
+    <color name="font">#88ffffff</color>
+    <color name="Background">#FF383838</color>
+    <color name="BackgroundStripe">#FF3F3F3F</color>
+    <color name="safeLight">#aacccc88</color>
+
+</resources>
