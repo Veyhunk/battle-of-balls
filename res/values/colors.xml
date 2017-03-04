@@ -14,5 +14,11 @@
     <color name="Background">#FF383838</color>
     <color name="BackgroundStripe">#FF3F3F3F</color>
     <color name="safeLight">#aacccc88</color>
-
+    <color name="title">#ff0</color>
+    <color name="introduce">#7e8</color>
+    <color name="company">#f70</color>
+    <color name="verdigris">#446</color>
+    
+    <color name="white">#ffffff</color>
+    <color name="url">#9f60</color>
 </resources>
