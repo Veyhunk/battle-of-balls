@@ -2,7 +2,7 @@
 
 ## Project profile
 ----------
-battle of balls is a popular game in whole world,So for my study and interest, I decided to imitate one.
+Battle of Balls is a popular game in whole world,So for my study and interest, I decided to imitate one.
 This is a standalone version of the Battle of Balls hope you like them!
 
 ## Project structure description
