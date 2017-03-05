@@ -3,21 +3,21 @@ package com.Veyhunk.Batter_of_Balls.Utils;
 import android.graphics.Point;
 
 public class MathUtils {
-	// »ñÈ¡Á½µã¼äÖ±Ïß¾àÀë
+	// è·å–ä¸¤ç‚¹é—´ç›´çº¿è·ç¦»
 	public static int getLength(float x1, float y1, float x2, float y2) {
 		return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 	}
 
 	/**
-	 * »ñÈ¡Ïß¶ÎÉÏÄ³¸öµãµÄ×ø±ê£¬³¤¶ÈÎªa.x - cutRadius
+	 * è·å–çº¿æ®µä¸ŠæŸä¸ªç‚¹çš„åæ ‡ï¼Œé•¿åº¦ä¸ºa.x - cutRadius
 	 * 
 	 * @param a
-	 *            µãA
+	 *            ç‚¹A
 	 * @param b
-	 *            µãB
+	 *            ç‚¹B
 	 * @param cutRadius
-	 *            ½Ø¶Ï¾àÀë
-	 * @return ½Ø¶Ïµã
+	 *            æˆªæ–­è·ç¦»
+	 * @return æˆªæ–­ç‚¹
 	 */
 	public static Point getBorderPoint(Point a, Point b, int cutRadius) {
 		float radian = getRadian(a, b);
@@ -26,7 +26,7 @@ public class MathUtils {
 				+ (int) (cutRadius * Math.sin(radian)));
 	}
 
-	// »ñÈ¡Ë®Æ½Ïß¼Ğ½Ç»¡¶È
+	// è·å–æ°´å¹³çº¿å¤¹è§’å¼§åº¦
 	public static float getRadian(Point a, Point b) {
 		float lenA = b.x - a.x;
 		float lenB = b.y - a.y;

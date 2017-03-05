@@ -1,3 +1,4 @@
+
 package com.Veyhunk.Batter_of_Balls.SurfaceView;
 
 import com.Veyhunk.Batter_of_Balls.R;
@@ -18,36 +19,36 @@ public class BallActivity extends Activity implements OnEndOfGameInterface  {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// ÉèÖÃÈ¥³ı±êÌâÀ¸
+		// è®¾ç½®å»é™¤æ ‡é¢˜æ 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// ÉèÖÃÈ«ÆÁ
+		// è®¾ç½®å…¨å±
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// ÉèÖÃµ±Ç°ÆÁÄ»³£ÁÁ
+		// è®¾ç½®å½“å‰å±å¹•å¸¸äº®
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //		mGameSurfaceView = (MySurfaceView) findViewById(R.id.gameView);  
-//		mGameSurfaceView.setOnEndOfGame(this);  //´«Èëthis£¬Éè¶¨×Ô¼ºÎª»Øµ÷Ä¿±ê  
+//		mGameSurfaceView.setOnEndOfGame(this);  //ä¼ å…¥thisï¼Œè®¾å®šè‡ªå·±ä¸ºå›è°ƒç›®æ ‡  
 		setContentView(R.layout.activity_ball);
 	}
 
 	/**
-	 * ÏÂÒ»ÕÅ°´Å¥ÊÂ¼ş
+	 * ä¸‹ä¸€å¼ æŒ‰é’®äº‹ä»¶
 	 * 
 	 * @param view
 	 */
 	public void nextBt(View view) {
-		Toast.makeText(getApplicationContext(), "ÏÖÔÚ»¹²»ÄÜ·ÖÉí£¬µãÒ»µã¾ÍºÃÁË",
+		Toast.makeText(getApplicationContext(), "ç°åœ¨è¿˜ä¸èƒ½åˆ†èº«ï¼Œç‚¹ä¸€ç‚¹å°±å¥½äº†",
 				Toast.LENGTH_SHORT).show();
 	}
 
 	/**
-	 * ÉÏÒ»ÕÅ°´Å¥ÊÂ¼ş
+	 * ä¸Šä¸€å¼ æŒ‰é’®äº‹ä»¶
 	 * 
 	 * @param view
 	 */
 	public void preBt(View view) {
-		Toast.makeText(getApplicationContext(), "À´À´À´£¬¿ìÍÂ¸ö¶¹¶¹³öÀ´",
+		Toast.makeText(getApplicationContext(), "æ¥æ¥æ¥ï¼Œå¿«åä¸ªè±†è±†å‡ºæ¥",
 				Toast.LENGTH_SHORT).show();
 	}
 

@@ -24,7 +24,7 @@ public class optionActivity extends Activity {
 	SeekBar sbrSpeed;
 	SeekBar sbrGrow;
 
-	// ¡¾Name: "goodnight ¶º¶º"¡¿ ¡¾ grow =20f¡¿¡¾speed = * 4F¡¿ ¡¾color = 8¡¿
+	// ã€Name: "goodnight é€—é€—"ã€‘ ã€ grow =20fã€‘ã€speed = * 4Fã€‘ ã€color = 8ã€‘
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// Button btnSure= (Button) findViewById(R.id.button1);;
@@ -32,12 +32,12 @@ public class optionActivity extends Activity {
 		// btnSure = (Button) findViewById(R.id.button1);
 		// btnCenter = (Button) findViewById(R.id.button3);
 		super.onCreate(savedInstanceState);
-		// ÉèÖÃÈ¥³ı±êÌâÀ¸
+		// è®¾ç½®å»é™¤æ ‡é¢˜æ 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// ÉèÖÃÈ«ÆÁ
+		// è®¾ç½®å…¨å±
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// ÉèÖÃµ±Ç°ÆÁÄ»³£ÁÁ
+		// è®¾ç½®å½“å‰å±å¹•å¸¸äº®
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.options);

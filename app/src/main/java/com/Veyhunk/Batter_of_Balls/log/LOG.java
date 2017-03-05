@@ -2,10 +2,10 @@ package com.Veyhunk.Batter_of_Balls.log;
 /**
  * 
  * @author Veyhank
- *@category 更新日志
+ *@category 鏇存柊鏃ュ織
  *@version 3.2
- *新增了AI互吃；横屏锁定；
-新增游戏本地文件存储
+ *鏂板浜咥I浜掑悆锛涙í灞忛攣瀹氾紱
+鏂板娓告垙鏈湴鏂囦欢瀛樺偍
  *
  */
 public class LOG {

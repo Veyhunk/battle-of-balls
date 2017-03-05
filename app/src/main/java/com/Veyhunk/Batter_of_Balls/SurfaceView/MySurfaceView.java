@@ -24,64 +24,64 @@ import android.view.SurfaceHolder.Callback;
  */
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	// user customer
-	public static String ballName = "goodnight ¶º¶º";// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
+	public static String ballName = "goodnight é€—é€—";// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
 	public static int ballColorIndex = 8;// playerColo
 	public static int score = 0;// score
 	public static float ballGrowSpeed = 20f;// ballGrowSpeed
 	public static float ballMoveSpeed = 4F;// ballMoveSpeed
 	public static float aiDifficult = 6;// AiDifficult
 	// constant
-	// private static final String strPalyerName = "goodnight ¶º¶º";// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
-	// ç÷ºìĞ¡Éµ¹Ï
+	// private static final String strPalyerName = "goodnight é€—é€—";// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
+	// çªçº¢å°å‚»ç“œ
 	// private static final float ballGrowSpeed = 20f;// ballGrowSpeed
 	// private static final float ballMoveSpeed = 4F;// ballMoveSpeed
-	private static final int frameRate = 50;// Ö¡ÂÊ£¨µ¥Î»£ºHz/s£©
+	private static final int frameRate = 50;// å¸§ç‡ï¼ˆå•ä½ï¼šHz/sï¼‰
 	private static final float ballDefaultSize = 2000;// ballDefaultSize
-	private static final float actionDamping = 10;// »î¶¯×èÄá
+	private static final float actionDamping = 10;// æ´»åŠ¨é˜»å°¼
 	private static final int mapW = 2500, mapH = 2000; // Map_size
 	// private static final int ballColorIndex = 8;// playerColor
 	private static final int[] ballColor = new int[] { R.color.color0,
 			R.color.color1, R.color.color2, R.color.color3, R.color.color4,
-			R.color.color5, R.color.color6 };// ÑÕÉ«±í
-	private static final String[] strArrayName = new String[] { "´¥ÊÖTV´ó°×",
-			"¶­´óÅô", "¹Ø×¢ÎÒ´øÍÅ", "ËïºìÀ×", "±±Çğ", "´¥ÊÖTV°¢Ä¾", "÷¼÷Ã¾ÑÊÖ", "±»°×²Ëí¡¹ıµÄÖí", "ÀäÍ« Õ¨µ¯",
-			"³¬ÃÈµÄÒ»Ìì" };
+			R.color.color5, R.color.color6 };// é¢œè‰²è¡¨
+	private static final String[] strArrayName = new String[] { "è§¦æ‰‹TVå¤§ç™½",
+			"è‘£å¤§é¹", "å…³æ³¨æˆ‘å¸¦å›¢", "å­™çº¢é›·", "åŒ—ä¸˜", "è§¦æ‰‹TVé˜¿æœ¨", "éª·é«…ç‹™æ‰‹", "è¢«ç™½èœæ€¼è¿‡çš„çŒª", "å†·ç³ ç‚¸å¼¹",
+			"è¶…èŒçš„ä¸€å¤©" };
 	// flag
-	private boolean flagThread;// Ïß³ÌÏûÍöµÄ±êÊ¶Î»
-	private boolean flagGameOver_Win;// Ïß³ÌÏûÍöµÄ±êÊ¶Î»
-	private boolean flagIsTouchLongMove;// ÊÇ·ñ³¤°´µÄ±êÊ¶Î»
-	private boolean flagRockerDisplay = false;// ÊÇ·ñÏÔÊ¾Ò£¸ĞµÄ±êÊ¶Î»
+	private boolean flagThread;// çº¿ç¨‹æ¶ˆäº¡çš„æ ‡è¯†ä½
+	private boolean flagGameOver_Win;// çº¿ç¨‹æ¶ˆäº¡çš„æ ‡è¯†ä½
+	private boolean flagIsTouchLongMove;// æ˜¯å¦é•¿æŒ‰çš„æ ‡è¯†ä½
+	private boolean flagRockerDisplay = false;// æ˜¯å¦æ˜¾ç¤ºé¥æ„Ÿçš„æ ‡è¯†ä½
 	// time
 	// private static Long CLOCK = (long) 0;
 	private static Long timeBegin;
 	// private static int timeBallSafeBegin = 0;
-	private static int timeBallSafeRangeConstants = 5000;// ¿ªÊ¼ÓÎÏ·Ç°µÄÎŞµĞÊ±¼ä£¨µ¥Î»£ºms£©
+	private static int timeBallSafeRangeConstants = 5000;// å¼€å§‹æ¸¸æˆå‰çš„æ— æ•Œæ—¶é—´ï¼ˆå•ä½ï¼šmsï¼‰
 	private static int timeNewRaceBegin = 0;
-	private static int timeNewRaceRange = 3000;// ¿ªÊ¼ÓÎÏ·Ç°µÄÎŞµĞÊ±¼ä£¨µ¥Î»£ºms£©
+	private static int timeNewRaceRange = 3000;// å¼€å§‹æ¸¸æˆå‰çš„æ— æ•Œæ—¶é—´ï¼ˆå•ä½ï¼šmsï¼‰
 	// variable
 	// private static float AiDifficult = 6;// AiDifficult
-	private float textLength; // ÎÄ±¾³¤¶È
+	private float textLength; // æ–‡æœ¬é•¿åº¦
 	private int screenW, screenH; // Screen_size
 	private int rank, index, index2;
 	private int[] rankList = new int[10];
-	private int rockerRudderRadius = 30;// Ò¡¸Ë°ë¾¶
-	private int rockerWheelRadius = 65;// Ò¡¸Ë»î¶¯·¶Î§°ë¾¶
-	private Point ptRockerPosition;// Ò¡¸ËÎ»ÖÃ
-	private Point ptRockerCtrlPoint = new Point(0, 0);// Ò¡¸ËÆğÊ¼Î»ÖÃ
-	private SurfaceHolder sfh; // ÓÃÓÚ¿ØÖÆSurfaceView
-	private Paint paint;// ÉùÃ÷Ò»¸ö»­±Ê
-	private Thread th;// ÉùÃ÷Ò»ÌõÏß³Ì
-	private Canvas canvas;// ÉùÃ÷Ò»¸ö»­²¼
-	// ÉùÃ÷Ball
+	private int rockerRudderRadius = 30;// æ‘‡æ†åŠå¾„
+	private int rockerWheelRadius = 65;// æ‘‡æ†æ´»åŠ¨èŒƒå›´åŠå¾„
+	private Point ptRockerPosition;// æ‘‡æ†ä½ç½®
+	private Point ptRockerCtrlPoint = new Point(0, 0);// æ‘‡æ†èµ·å§‹ä½ç½®
+	private SurfaceHolder sfh; // ç”¨äºæ§åˆ¶SurfaceView
+	private Paint paint;// å£°æ˜ä¸€ä¸ªç”»ç¬”
+	private Thread th;// å£°æ˜ä¸€æ¡çº¿ç¨‹
+	private Canvas canvas;// å£°æ˜ä¸€ä¸ªç”»å¸ƒ
+	// å£°æ˜Ball
 	private ActionBall myBall;
 	private FoodBall[] FoodBallList = new FoodBall[500];
 	private ActionBall[] AiBallList = new ActionBall[10];
-	// Î»Í¼ÎÄ¼ş bitmap
+	// ä½å›¾æ–‡ä»¶ bitmap
 	private Bitmap bmpRank = BitmapFactory.decodeResource(this.getResources(),
-			R.drawable.rank);// ÅÅĞĞ°ñËØ²Ä
+			R.drawable.rank);// æ’è¡Œæ¦œç´ æ
 	private Bitmap bmpDir = BitmapFactory.decodeResource(this.getResources(),
-			R.drawable.dir);// Ğ¡ÇòÖ¸ÕëËØ²Ä
-	// »Øµ÷
+			R.drawable.dir);// å°çƒæŒ‡é’ˆç´ æ
+	// å›è°ƒ
 	protected OnEndOfGameInterface mOnEndOfGame; // callback interface
 
 	public void setOnEndOfGame(OnEndOfGameInterface xOnEndOfGame) {
@@ -93,26 +93,26 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * SurfaceView³õÊ¼»¯º¯Êı
+	 * SurfaceViewåˆå§‹åŒ–å‡½æ•°
 	 */
 	public MySurfaceView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// ÊµÀıSurfaceHolder
+		// å®ä¾‹SurfaceHolder
 		sfh = this.getHolder();
-		// ÎªSurfaceViewÌí¼Ó×´Ì¬¼àÌı
+		// ä¸ºSurfaceViewæ·»åŠ çŠ¶æ€ç›‘å¬
 		sfh.addCallback(this);
-		// ÊµÀıÒ»¸ö»­±Ê
+		// å®ä¾‹ä¸€ä¸ªç”»ç¬”
 		paint = new Paint();
 		ptRockerPosition = new Point(ptRockerCtrlPoint);
-		// ÉèÖÃÏû³ı¾â³İ
+		// è®¾ç½®æ¶ˆé™¤é”¯é½¿
 		paint.setAntiAlias(true);
-		// ÉèÖÃ½¹µã
+		// è®¾ç½®ç„¦ç‚¹
 		setFocusable(true);
 	}
 
 	/**
-	 * ¡¾Name: "goodnight ¶º¶º"¡¿ ¡¾ grow =20f¡¿¡¾speed = * 4F¡¿ ¡¾color =
-	 * 8¡¿[¡¾AiDifficult = 6¡¿
+	 * ã€Name: "goodnight é€—é€—"ã€‘ ã€ grow =20fã€‘ã€speed = * 4Fã€‘ ã€color =
+	 * 8ã€‘[ã€AiDifficult = 6ã€‘
 	 * 
 	 * @param color2
 	 * @return
@@ -121,12 +121,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 			float Difficule, int color) {
 		// user customer
 		if (Name.length() == 0) {
-			Name = "Äã¸öÉµ¹ÏÃ»Ğ´Ãû×Ö";
+			Name = "ä½ ä¸ªå‚»ç“œæ²¡å†™åå­—";
 		}
 		if (color > 6 || color < 0) {
 			color = 10;
 		}
-		ballName = Name;// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
+		ballName = Name;// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
 		ballMoveSpeed = speed / 10F;// ballGrowSpeed
 		ballGrowSpeed = grow / 10F;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -134,7 +134,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * SurfaceViewÊÓÍ¼´´½¨£¬ÏìÓ¦´Ëº¯Êı
+	 * SurfaceViewè§†å›¾åˆ›å»ºï¼Œå“åº”æ­¤å‡½æ•°
 	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
@@ -161,26 +161,26 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					(float) (ballDefaultSize * Math.random() + ballDefaultSize),
 					strArrayName[index], 3);
 		}
-		// Æô¶¯Ïß³Ìflag
+		// å¯åŠ¨çº¿ç¨‹flag
 		flagThread = true;
-		// ÊµÀıÏß³Ì
+		// å®ä¾‹çº¿ç¨‹
 		th = new Thread(this);
-		// Æô¶¯Ïß³Ì
+		// å¯åŠ¨çº¿ç¨‹
 		th.start();
 	}
 
 	/**
-	 * °´¼üÊÂ¼ş¼àÌı
+	 * æŒ‰é”®äº‹ä»¶ç›‘å¬
 	 */
 	// @Override
 	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {// »­Ãæ×ª»»Î»ÖÃÒÆ¶¯¶¯»­Ğ§¹û
+	// if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {// ç”»é¢è½¬æ¢ä½ç½®ç§»åŠ¨åŠ¨ç”»æ•ˆæœ
 	// myBall.targetY -= myBall.moveSpeed * 20;
-	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {// »­Ãæ×ªÒÆĞı×ª¶¯»­Ğ§¹û
+	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {// ç”»é¢è½¬ç§»æ—‹è½¬åŠ¨ç”»æ•ˆæœ
 	// myBall.targetY += myBall.moveSpeed * 20;
-	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {// »­Ãæ×ªÒÆĞı×ª¶¯»­Ğ§¹û
+	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {// ç”»é¢è½¬ç§»æ—‹è½¬åŠ¨ç”»æ•ˆæœ
 	// myBall.targetX -= myBall.moveSpeed * 20;
-	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {// »­Ãæ×ªÒÆĞı×ª¶¯»­Ğ§¹û
+	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {// ç”»é¢è½¬ç§»æ—‹è½¬åŠ¨ç”»æ•ˆæœ
 	// myBall.targetX += myBall.moveSpeed * 20;
 	// }
 	// return super.onKeyDown(keyCode, event);
@@ -188,7 +188,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	// }
 
 	/**
-	 * SurfaceViewÊÓÍ¼×´Ì¬·¢Éú¸Ä±ä£¬ÏìÓ¦´Ëº¯Êı
+	 * SurfaceViewè§†å›¾çŠ¶æ€å‘ç”Ÿæ”¹å˜ï¼Œå“åº”æ­¤å‡½æ•°
 	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -196,7 +196,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * SurfaceViewÊÓÍ¼ÏûÍöÊ±£¬ÏìÓ¦´Ëº¯Êı
+	 * SurfaceViewè§†å›¾æ¶ˆäº¡æ—¶ï¼Œå“åº”æ­¤å‡½æ•°
 	 */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -204,39 +204,39 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * ´¥ÆÁÊÂ¼ş¼àÌı
+	 * è§¦å±äº‹ä»¶ç›‘å¬
 	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			// System.out.println("---°´ÏÂ----");
+			// System.out.println("---æŒ‰ä¸‹----");
 			ptRockerCtrlPoint.set((int) event.getRawX(), (int) event.getRawY());
 			ptRockerPosition.set((int) event.getX(), (int) event.getY());
 			break;
 		case MotionEvent.ACTION_UP:
-			// System.out.println("----·Å¿ª----");
+			// System.out.println("----æ”¾å¼€----");
 			flagIsTouchLongMove = true;
 			break;
 		case MotionEvent.ACTION_MOVE:
 			flagRockerDisplay = true;
-			// System.out.println("----ÒÆ¶¯----");
+			// System.out.println("----ç§»åŠ¨----");
 			if (event.getPointerCount() == 1
 					&& !getClockIsInRange(myBall.timeBallSafeBegin, 15)) {
 				int len = MathUtils.getLength(ptRockerCtrlPoint.x,
 						ptRockerCtrlPoint.y, event.getX(), event.getY());
 				if (len < 20 && flagIsTouchLongMove) {
-					// Èç¹ûÆÁÄ»½Ó´¥µã²»ÔÚÒ¡¸Ë»Ó¶¯·¶Î§ÄÚ,Ôò²»´¦Àí
+					// å¦‚æœå±å¹•æ¥è§¦ç‚¹ä¸åœ¨æ‘‡æ†æŒ¥åŠ¨èŒƒå›´å†…,åˆ™ä¸å¤„ç†
 					break;
 				}
 				if (len <= rockerWheelRadius) {
-					// Èç¹ûÊÖÖ¸ÔÚÒ¡¸Ë»î¶¯·¶Î§ÄÚ£¬ÔòÒ¡¸Ë´¦ÓÚÊÖÖ¸´¥ÃşÎ»ÖÃ
+					// å¦‚æœæ‰‹æŒ‡åœ¨æ‘‡æ†æ´»åŠ¨èŒƒå›´å†…ï¼Œåˆ™æ‘‡æ†å¤„äºæ‰‹æŒ‡è§¦æ‘¸ä½ç½®
 					flagIsTouchLongMove = false;
 					ptRockerPosition
 							.set((int) event.getX(), (int) event.getY());
 
 				} else {
-					// ÉèÖÃÒ¡¸ËÎ»ÖÃ£¬Ê¹Æä´¦ÓÚÊÖÖ¸´¥Ãş·½ÏòµÄ Ò¡¸Ë»î¶¯·¶Î§±ßÔµ
+					// è®¾ç½®æ‘‡æ†ä½ç½®ï¼Œä½¿å…¶å¤„äºæ‰‹æŒ‡è§¦æ‘¸æ–¹å‘çš„ æ‘‡æ†æ´»åŠ¨èŒƒå›´è¾¹ç¼˜
 					flagIsTouchLongMove = false;
 					ptRockerPosition = MathUtils.getBorderPoint(
 							ptRockerCtrlPoint, new Point((int) event.getX(),
@@ -257,7 +257,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * ½ø³Ì¿ØÖÆ
+	 * è¿›ç¨‹æ§åˆ¶
 	 */
 	@Override
 	public void run() {
@@ -295,17 +295,17 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * °´¼üÊÂ¼ş¼àÌı
+	 * æŒ‰é”®äº‹ä»¶ç›‘å¬
 	 */
 	// @Override
 	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {// »­Ãæ×ª»»Î»ÖÃÒÆ¶¯¶¯»­Ğ§¹û
+	// if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {// ç”»é¢è½¬æ¢ä½ç½®ç§»åŠ¨åŠ¨ç”»æ•ˆæœ
 	// myBall.targetY -= myBall.moveSpeed * 20;
-	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {// »­Ãæ×ªÒÆĞı×ª¶¯»­Ğ§¹û
+	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {// ç”»é¢è½¬ç§»æ—‹è½¬åŠ¨ç”»æ•ˆæœ
 	// myBall.targetY += myBall.moveSpeed * 20;
-	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {// »­Ãæ×ªÒÆĞı×ª¶¯»­Ğ§¹û
+	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {// ç”»é¢è½¬ç§»æ—‹è½¬åŠ¨ç”»æ•ˆæœ
 	// myBall.targetX -= myBall.moveSpeed * 20;
-	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {// »­Ãæ×ªÒÆĞı×ª¶¯»­Ğ§¹û
+	// } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {// ç”»é¢è½¬ç§»æ—‹è½¬åŠ¨ç”»æ•ˆæœ
 	// myBall.targetX += myBall.moveSpeed * 20;
 	// }
 	// return super.onKeyDown(keyCode, event);
@@ -313,7 +313,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	// }
 
 	/**
-	 * ÓÎÏ·»æÍ¼
+	 * æ¸¸æˆç»˜å›¾
 	 */
 	private void myDraw() {
 		try {
@@ -321,30 +321,30 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 			canvas = sfh.lockCanvas();
 			if (canvas != null) {
 				canvas.save();
-				// ÊÓÒ°µ÷Õû
+				// è§†é‡è°ƒæ•´
 				canvas.translate((float) (0 - myBall.positionX + screenW / 2),
 						(float) (0 - myBall.positionY + screenH / 2));
-				// ÒÔÍæ¼ÒÎªÖĞĞÄ
+				// ä»¥ç©å®¶ä¸ºä¸­å¿ƒ
 				canvas.scale((3 / (myBall.radius / 15) + 0.3F),
 						(3 / (myBall.radius / 15) + 0.3F),
 						(float) myBall.positionX, (float) myBall.positionY);
-				// ÊÊÓ¦ĞÔµÄËõ·Å
+				// é€‚åº”æ€§çš„ç¼©æ”¾
 				DrawBackground();
-				// »æÖÆ±³¾°
+				// ç»˜åˆ¶èƒŒæ™¯
 
 				for (FoodBall foodBall : FoodBallList) {
-					// »æÖÆÊ³ÎïĞ¡Çò
+					// ç»˜åˆ¶é£Ÿç‰©å°çƒ
 					if ((foodBall.positionX - myBall.positionX)
 							* (foodBall.positionX - myBall.positionX)
 							+ (foodBall.positionY - myBall.positionY)
 							* (foodBall.positionY - myBall.positionY) < (myBall.radius)
 							* (myBall.radius)) {
-						// ÅĞ¶ÏÊÇ·ñ±»³Ô
+						// åˆ¤æ–­æ˜¯å¦è¢«åƒ
 						foodBall.state = 0;
 						myBall.weight += ballGrowSpeed;
 					}
 					for (ActionBall aiBall2 : AiBallList) {
-						// ÅĞ¶ÏÊÇ·ñ±»³Ô
+						// åˆ¤æ–­æ˜¯å¦è¢«åƒ
 						if ((foodBall.positionX - aiBall2.positionX)
 								* (foodBall.positionX - aiBall2.positionX)
 								+ (foodBall.positionY - aiBall2.positionY)
@@ -357,20 +357,20 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					}
 					paint.setColor(getResources().getColor(foodBall.colorBall));
 					if (foodBall.state == 1) {
-						// »æÖÆ
+						// ç»˜åˆ¶
 						canvas.drawCircle((float) foodBall.positionX,
 								(float) foodBall.positionY, foodBall.radius,
 								paint);
 					} else {
-						// ÖØÖÃ
+						// é‡ç½®
 						foodBall.reSetBall((int) (mapW * Math.random()),
 								(int) (mapH * Math.random()), randomColor());
 					}
 				}
 				for (ActionBall aiBall : AiBallList) {
-					// »æÖÆAI´óÇò
+					// ç»˜åˆ¶AIå¤§çƒ
 					if (aiBall.life < 1 || aiBall.state == 0) {
-						// ÊÇ·ñ»¹ÓĞÉúÃüÖµ
+						// æ˜¯å¦è¿˜æœ‰ç”Ÿå‘½å€¼
 						continue;
 					}
 					if ((aiBall.positionX - myBall.positionX)
@@ -383,29 +383,29 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 									+ (aiBall.positionY - myBall.positionY)
 									* (aiBall.positionY - myBall.positionY) < (aiBall.radius)
 									* (aiBall.radius)) {
-						// ÅĞ¶ÏÊÇ·ñ±»³Ô
+						// åˆ¤æ–­æ˜¯å¦è¢«åƒ
 						if (aiBall.radius > (myBall.radius + myBall.radius / 10)
 								&& !getClockIsInRange(myBall)
 								&& !getClockIsInRange(timeNewRaceBegin,
 										timeNewRaceRange)) {
-							// ÅĞ¶ÏÊÇ·ñ±»AI³Ô
-							// ÅĞ¶ÏÊÇ·ñÎŞµĞÊ±¼ä
-							// Ö÷½ÇËÀÍö±ê¼Ç
+							// åˆ¤æ–­æ˜¯å¦è¢«AIåƒ
+							// åˆ¤æ–­æ˜¯å¦æ— æ•Œæ—¶é—´
+							// ä¸»è§’æ­»äº¡æ ‡è®°
 							myBall.state = 0;
 							timeNewRaceBegin = getClock();
 							myBall.timeBallSafeBegin = getClock()
 									+ timeNewRaceRange;
-							// Æô¶¯±£»¤ÕÖ
+							// å¯åŠ¨ä¿æŠ¤ç½©
 							aiBall.life++;
 							aiBall.weight += myBall.weight;
 							aiBall.eatCount++;
 
 						} else if (myBall.radius > (aiBall.radius + aiBall.radius / 10)
 								&& !getClockIsInRange(aiBall)) {
-							// ³ÔµôAI
+							// åƒæ‰AI
 							aiBall.state = 0;
 							aiBall.timeBallSafeBegin = getClock();
-							// Æô¶¯±£»¤ÕÖ
+							// å¯åŠ¨ä¿æŠ¤ç½©
 							myBall.eatCount++;
 							myBall.life++;
 							myBall.weight += aiBall.weight;
@@ -413,13 +413,13 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
 					}
 					if (aiBall.state == 1) {
-						// AIÊÇ·ñ»¹»î×Å
+						// AIæ˜¯å¦è¿˜æ´»ç€
 						for (ActionBall aiBall2 : AiBallList) {
 							if (aiBall2.equals(aiBall)) {
-								// ÊÇ·ñÍ¬Ò»¸öAI
+								// æ˜¯å¦åŒä¸€ä¸ªAI
 								continue;
 							}
-							// ÅĞ¶ÏÊÇ·ñ±»³Ô
+							// åˆ¤æ–­æ˜¯å¦è¢«åƒ
 							if ((aiBall.positionX - aiBall2.positionX)
 									* (aiBall.positionX - aiBall2.positionX)
 									+ (aiBall.positionY - aiBall2.positionY)
@@ -430,23 +430,23 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 											+ (aiBall.positionY - aiBall2.positionY)
 											* (aiBall.positionY - aiBall2.positionY) < (aiBall2.radius)
 											* (aiBall2.radius)) {
-								// ÊÇ·ñÂú×ã³ÔÇòµÄ¾àÀë
+								// æ˜¯å¦æ»¡è¶³åƒçƒçš„è·ç¦»
 								if (aiBall.radius > (aiBall2.radius + aiBall.radius / 10)
 										&& !getClockIsInRange(aiBall2)) {
-									// ÅĞ¶ÏÊÇ·ñ±»³Ô
+									// åˆ¤æ–­æ˜¯å¦è¢«åƒ
 									aiBall2.state = 0;
 									aiBall2.timeBallSafeBegin = getClock();
-									// Æô¶¯±£»¤ÕÖ
+									// å¯åŠ¨ä¿æŠ¤ç½©
 									aiBall.life++;
 									aiBall.weight += aiBall2.weight;
 									aiBall.eatCount++;
 
 								} else if ((aiBall.radius + aiBall.radius / 10) < aiBall2.radius
 										&& !getClockIsInRange(aiBall)) {
-									// ÅĞ¶ÏÊÇ·ñ±»³Ô
+									// åˆ¤æ–­æ˜¯å¦è¢«åƒ
 									aiBall.state = 0;
 									aiBall.timeBallSafeBegin = getClock();
-									// Æô¶¯±£»¤ÕÖ
+									// å¯åŠ¨ä¿æŠ¤ç½©
 									aiBall2.eatCount++;
 									aiBall2.life++;
 									aiBall2.weight += aiBall.weight;
@@ -467,12 +467,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 								.getColor(aiBall.colorBall));
 						canvas.drawCircle((float) aiBall.positionX,
 								(float) aiBall.positionY, aiBall.radius, paint);
-						// »æÖÆAI´óÇò
+						// ç»˜åˆ¶AIå¤§çƒ
 						paint.setColor(Color.WHITE);
 						paint.setTextSize(aiBall.radius > 40 ? (20 + ((int) aiBall.radius > 90 ? 15
 								: aiBall.radius / 6))
 								: 23);
-						// »æÖÆÃû³Æ
+						// ç»˜åˆ¶åç§°
 						textLength = paint.measureText(aiBall.name);
 						canvas.drawText(
 								aiBall.name,
@@ -483,10 +483,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 												: 23) / 4, paint);
 					}
 				}
-				// »æÖÆ½ÇÉ«Çò
+				// ç»˜åˆ¶è§’è‰²çƒ
 				if (myBall.state != 0) {
 					if (getClockIsInRange(myBall)) {
-						// ±£»¤ÕÖ
+						// ä¿æŠ¤ç½©
 						if (getClock() % (frameRate * 12) > frameRate * 6) {
 							// Shader mShader = new RadialGradient(
 							// (float) myBall.positionX,
@@ -504,10 +504,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					}
 					paint.setColor(getResources().getColor(myBall.colorBall));
 					canvas.drawCircle((float) myBall.positionX,
-							(float) myBall.positionY, myBall.radius, paint);// »æÖÆ½ÇÉ«Çò
+							(float) myBall.positionY, myBall.radius, paint);// ç»˜åˆ¶è§’è‰²çƒ
 					// dir
 					Matrix matrix = new Matrix();
-					// ÉèÖÃĞı×ª½Ç¶È
+					// è®¾ç½®æ—‹è½¬è§’åº¦
 					matrix.postScale(myBall.radius / 230, myBall.radius / 230,
 							bmpDir.getWidth() / 2, bmpDir.getHeight() / 2);
 					matrix.postRotate(
@@ -524,9 +524,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 									/ 2
 									+ (int) (myBall.radius * 1.25 * Math
 											.sin(myBall.dection)));
-					// »æÖÆĞı×ªÍ¼Æ¬
+					// ç»˜åˆ¶æ—‹è½¬å›¾ç‰‡
 					canvas.drawBitmap(bmpDir, matrix, paint);
-					// »æÖÆ½ÇÉ«Ãû³Æ
+					// ç»˜åˆ¶è§’è‰²åç§°
 					paint.setColor(Color.WHITE);
 					paint.setTextSize(myBall.radius > 40 ? (20 + (myBall.radius > 90 ? 15
 							: myBall.radius / 6))
@@ -538,23 +538,23 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							(float) myBall.positionY
 									+ (myBall.radius > 40 ? (20 + (myBall.radius > 90 ? 15
 											: myBall.radius / 6))
-											: 23) / 4, paint);// »æÖÆ½ÇÉ«Çò
+											: 23) / 4, paint);// ç»˜åˆ¶è§’è‰²çƒ
 				}
 				canvas.restore();
 
 				canvas.save();
 
-				// Ò¡¸Ë
+				// æ‘‡æ†
 				if (flagRockerDisplay) {
 					paint.setColor(getResources()
 							.getColor(R.color.rockerRudder));
 					canvas.drawCircle(ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
-							rockerWheelRadius, paint);// »æÖÆ·¶Î§
+							rockerWheelRadius, paint);// ç»˜åˆ¶èŒƒå›´
 					paint.setColor(getResources().getColor(R.color.rocker));
 					canvas.drawCircle(ptRockerPosition.x, ptRockerPosition.y,
-							rockerRudderRadius, paint);// »æÖÆÒ¡¸Ë
+							rockerRudderRadius, paint);// ç»˜åˆ¶æ‘‡æ†
 				}
-				// score¼Æ·Ö°å
+				// scoreè®¡åˆ†æ¿
 				paint.setColor(getResources().getColor(R.color.rockerRudder));
 				canvas.drawRect(screenW - (screenW / 6) - 5, 5, screenW - 5,
 						screenH / 2 + 5, paint);
@@ -592,7 +592,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * ÓÎÏ·Âß¼­
+	 * æ¸¸æˆé€»è¾‘
 	 */
 	private final void logic() {
 		if (!getClockIsInRange(timeNewRaceBegin, timeNewRaceRange)) {
@@ -604,7 +604,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							* (ptRockerPosition.y - ptRockerCtrlPoint.y))
 					/ rockerWheelRadius);
 		} else {
-			// Ëø¶¨Ò£¸Ğ
+			// é”å®šé¥æ„Ÿ
 			ptRockerPosition.y = ptRockerCtrlPoint.y;
 			ptRockerPosition.x = ptRockerCtrlPoint.x;
 			flagRockerDisplay = false;
@@ -612,9 +612,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		}
 
 		for (index = 0; index < AiBallList.length; index++) {
-			// AI´óÇòÎ»ÒÆ¿ØÖÆ
+			// AIå¤§çƒä½ç§»æ§åˆ¶
 			ActionBall aiBall = AiBallList[index];
-			// ÅÅÃû
+			// æ’å
 			rank = 0;
 			for (index2 = 0; index2 < AiBallList.length; index2++) {
 				if (AiBallList[index].radius < AiBallList[index2].radius) {
@@ -625,7 +625,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 				rankList[rank] = index;
 			}
 			if (aiBall.life < 1) {
-				// ÉúÃüÖµÎª¿Õ
+				// ç”Ÿå‘½å€¼ä¸ºç©º
 				aiBall.radius = 0;
 				continue;
 			}
@@ -645,12 +645,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * »æÖÆ±³¾°
+	 * ç»˜åˆ¶èƒŒæ™¯
 	 */
 	private final void DrawBackground() {
-		// -----------ÀûÓÃÌî³ä»­²¼£¬Ë¢ÆÁ
+		// -----------åˆ©ç”¨å¡«å……ç”»å¸ƒï¼Œåˆ·å±
 		canvas.drawColor(getResources().getColor(R.color.Background) + 1);
-		// //»æÖÆ¾ØĞÎ
+		// //ç»˜åˆ¶çŸ©å½¢
 		paint.setColor(getResources().getColor(R.color.Background));
 		canvas.drawRect(0, 0, mapW, mapH, paint);
 		int rowWidth = 3, rowInterval = 40;
@@ -667,7 +667,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * Ëæ»úÉú³ÉÑÕÉ«
+	 * éšæœºç”Ÿæˆé¢œè‰²
 	 */
 	private static final int randomColor() {
 		return ballColor[(int) (Math.random() * ballColor.length)];
@@ -694,7 +694,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * ¶¨ÒåÊ³ÎïÇòÇòµÄ»ùÀà
+	 * å®šä¹‰é£Ÿç‰©çƒçƒçš„åŸºç±»
 	 */
 	private class FoodBall {
 		int state;
@@ -704,14 +704,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		int colorBall;
 
 		FoodBall(double positionX, double positionY, int colorBall) {
-			this.state = 1;// Î´±»³Ô
+			this.state = 1;// æœªè¢«åƒ
 			this.positionX = positionX;
 			this.positionY = positionY;
 			this.colorBall = colorBall;
 		}
 
 		void reSetBall(double positionX, double positionY, int colorBall) {
-			this.state = 1;// Î´±»³Ô
+			this.state = 1;// æœªè¢«åƒ
 			this.positionX = positionX;
 			this.positionY = positionY;
 			this.colorBall = colorBall;
@@ -719,7 +719,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * ¶¨Òå»î¶¯ÇòÇòµÄÀà£¬¼´½ÇÉ«Çò
+	 * å®šä¹‰æ´»åŠ¨çƒçƒçš„ç±»ï¼Œå³è§’è‰²çƒ
 	 */
 	private class ActionBall {
 		int life;
@@ -746,7 +746,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		// nameString
 		// ActionBall(double positionX, double positionY, int colorBall,
 		// float weight, String nameString) {
-		// this.state = 1;// Î´±»³Ô
+		// this.state = 1;// æœªè¢«åƒ
 		// this.positionX = positionX;
 		// this.positionY = positionY;
 		// this.colorBall = colorBall;
@@ -763,7 +763,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		ActionBall(double positionX, double positionY, int colorBall,
 				float weight, String nameString, int life) {
 			timeBallSafeBegin = getClock();
-			this.state = 1;// Î´±»³Ô
+			this.state = 1;// æœªè¢«åƒ
 			this.positionX = positionX;
 			this.positionY = positionY;
 			this.colorBall = colorBall;
@@ -780,8 +780,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		void reSetBall(double positionX, double positionY, int colorBall,
 				float weight) {
 			timeBallSafeBegin = getClock();
-			// Æô¶¯±£»¤ÕÖ
-			this.state = 1;// Î´±»³Ô
+			// å¯åŠ¨ä¿æŠ¤ç½©
+			this.state = 1;// æœªè¢«åƒ
 			this.positionX = positionX;
 			this.positionY = positionY;
 			this.colorBall = colorBall;
@@ -793,29 +793,29 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
 		public void action() {
 			if (state == 0) {
-				// ËÀÍöÅĞ¶Ï
+				// æ­»äº¡åˆ¤æ–­
 				life--;
 				reSetBall((int) (mapW * Math.random()),
 						(int) (mapH * Math.random()), randomColor(),
 						ballDefaultSize);
 			}
 			if ((int) radius < (int) Math.sqrt(weight)) {
-				// ×èÄáÔöÖØ
+				// é˜»å°¼å¢é‡
 				radius += (Math.sqrt(weight) - radius) / actionDamping;
 			}
 			if ((int) radius > (int) Math.sqrt(weight)) {
-				// ×èÄá¼õÖØ
+				// é˜»å°¼å‡é‡
 				radius -= (radius - Math.sqrt(weight)) / actionDamping;
 			}
 			weight -= (int) radius / 100 * actionDamping;
-			// ËğºÄ¼õÖØ
+			// æŸè€—å‡é‡
 			if (radius > mapW || radius > mapH) {
-				// ½ÇÉ«Çò³ß´çÏŞÖÆ£¬ÖØÖÃ³ß´ç
+				// è§’è‰²çƒå°ºå¯¸é™åˆ¶ï¼Œé‡ç½®å°ºå¯¸
 				weight = (int) ballDefaultSize;
 			}
 
 			if (radius > 300) {
-				// ½ÇÉ«Çò³ß´çÏŞÖÆ£¬ÖØÖÃ³ß´ç
+				// è§’è‰²çƒå°ºå¯¸é™åˆ¶ï¼Œé‡ç½®å°ºå¯¸
 				weight = (int) ballDefaultSize;
 			}
 		}
@@ -840,26 +840,26 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 				targetY += moveSpeed * Math.sin(dectionTarget)
 						* (30 / radius * 1 + 0.6) * moveSpeedRandom;
 				if (targetX < 0) {
-					// ±ß½çÅĞ¶Ï
+					// è¾¹ç•Œåˆ¤æ–­
 					targetX = 0;
 					// myBall.targetX = 0;
 					// ptRockerPosition.x = ptRockerCtrlPoint.x;
 
 				}
 				if (targetX > mapW) {
-					// ±ß½çÅĞ¶Ï
+					// è¾¹ç•Œåˆ¤æ–­
 					targetX = mapW;
 					// myBall.targetX = mapW;
 					// ptRockerPosition.x = ptRockerCtrlPoint.x;
 				}
 				if (targetY < 0) {
-					// ±ß½çÅĞ¶Ï
+					// è¾¹ç•Œåˆ¤æ–­
 					targetY = 0;
 					// myBall.targetY = 0;
 					// ptRockerPosition.y = ptRockerCtrlPoint.y;
 				}
 				if (targetY > mapH) {
-					// ±ß½çÅĞ¶Ï
+					// è¾¹ç•Œåˆ¤æ–­
 					targetY = mapH;
 					// // myBall.targetY = mapH;
 					// ptRockerPosition.y = ptRockerCtrlPoint.y;
@@ -881,7 +881,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 			targetY += moveSpeed * Math.sin(dectionTarget)
 					* (30 / radius * 1 + 0.6) * rocker;
 			if (targetX < 0) {
-				// ±ß½çÅĞ¶Ï
+				// è¾¹ç•Œåˆ¤æ–­
 				targetX = 0;
 				dectionTarget = getRadian(ptRockerCtrlPoint.x,
 						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
@@ -891,7 +891,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
 			}
 			if (targetX > mapW) {
-				// ±ß½çÅĞ¶Ï
+				// è¾¹ç•Œåˆ¤æ–­
 				targetX = mapW;
 				dectionTarget = getRadian(ptRockerCtrlPoint.x,
 						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
@@ -900,7 +900,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 				// ptRockerPosition.x = ptRockerCtrlPoint.x;
 			}
 			if (targetY < 0) {
-				// ±ß½çÅĞ¶Ï
+				// è¾¹ç•Œåˆ¤æ–­
 				targetY = 0;
 				dectionTarget = getRadian(ptRockerCtrlPoint.x,
 						ptRockerPosition.x, ptRockerCtrlPoint.y,
@@ -909,7 +909,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 				// ptRockerPosition.y = ptRockerCtrlPoint.y;
 			}
 			if (targetY > mapH) {
-				// ±ß½çÅĞ¶Ï
+				// è¾¹ç•Œåˆ¤æ–­
 				targetY = mapH;
 				dectionTarget = getRadian(ptRockerCtrlPoint.x,
 						ptRockerPosition.x, ptRockerCtrlPoint.y,

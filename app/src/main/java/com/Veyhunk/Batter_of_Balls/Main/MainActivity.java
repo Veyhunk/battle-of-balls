@@ -35,23 +35,23 @@ public class MainActivity extends Activity implements OnTouchListener {
 	static float ballGrowSpeed = 300;
 	static float aiDifficult = 6;
 	static int ballColorIndex = 10;
-	// public static String ballName = "ÖĞ¹úÀ±ÌõĞ­»á»á³¤";// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
-	public static String ballName = "";// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
+	// public static String ballName = "ä¸­å›½è¾£æ¡åä¼šä¼šé•¿";// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
+	public static String ballName = "";// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
 	EditText edtName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		DataRead();
 		if (ballName.length() == 0) {
-			ballName = "ÖĞ¹úÀ±ÌõĞ­»á»á³¤";
+			ballName = "ä¸­å›½è¾£æ¡åä¼šä¼šé•¿";
 		}
 		super.onCreate(savedInstanceState);
-		// ÉèÖÃÈ¥³ı±êÌâÀ¸
+		// è®¾ç½®å»é™¤æ ‡é¢˜æ 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// ÉèÖÃÈ«ÆÁ
+		// è®¾ç½®å…¨å±
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// ÉèÖÃµ±Ç°ÆÁÄ»³£ÁÁ
+		// è®¾ç½®å½“å‰å±å¹•å¸¸äº®
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_main);
@@ -74,7 +74,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	public static void Setting(String name, float speed, float grow,
 			float difficule, int color) {
-		ballName = name;// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
+		ballName = name;// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
 		ballMoveSpeed = speed;// ballGrowSpeed
 		ballGrowSpeed = grow;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -84,7 +84,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static void Setting(String name, float speed, float grow,
 			float difficule, int color, int score) {
 		// TODO Auto-generated method stub
-		ballName = name;// ÖĞ¹úÀ±ÌõĞ­»á»á³¤
+		ballName = name;// ä¸­å›½è¾£æ¡åä¼šä¼šé•¿
 		ballMoveSpeed = speed;// ballGrowSpeed
 		ballGrowSpeed = grow;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -160,9 +160,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public void DataSave() {
 		String stringSave = "";
 		try {
-			// Îªroot´´½¨Ò»¸öJSONObject¶ÔÏó
+			// ä¸ºrootåˆ›å»ºä¸€ä¸ªJSONObjectå¯¹è±¡
 			JSONObject ball = new JSONObject();
-			// Îªroot JSONObject¶ÔÏóÌí¼ÓÒ»¸ö¡°Ãû³Æ,Öµ¡±¶Ô
+			// ä¸ºroot JSONObjectå¯¹è±¡æ·»åŠ ä¸€ä¸ªâ€œåç§°,å€¼â€å¯¹
 			ball.put("bestScore", bestScore);
 			ballName = edtName.getText().toString();
 			ball.put("ballName", ballName);
