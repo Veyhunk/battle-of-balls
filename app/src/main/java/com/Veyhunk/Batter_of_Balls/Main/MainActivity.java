@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.Veyhunk.Batter_of_Balls.R;
+import Veyhunk.Batter_of_Balls.R;
 import com.Veyhunk.Batter_of_Balls.Activity.optionActivity;
 import com.Veyhunk.Batter_of_Balls.SurfaceView.BallActivity;
 import com.Veyhunk.Batter_of_Balls.SurfaceView.MySurfaceView;

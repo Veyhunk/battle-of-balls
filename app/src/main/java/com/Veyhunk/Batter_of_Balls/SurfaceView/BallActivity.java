@@ -1,7 +1,7 @@
 
 package com.Veyhunk.Batter_of_Balls.SurfaceView;
 
-import com.Veyhunk.Batter_of_Balls.R;
+import Veyhunk.Batter_of_Balls.R;
 import com.Veyhunk.Batter_of_Balls.Main.MainActivity;
 import com.Veyhunk.Batter_of_Balls.SurfaceView.MySurfaceView.OnEndOfGameInterface;
 
