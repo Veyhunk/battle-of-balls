@@ -36,7 +36,7 @@ Eclipse projects. Here's how the projects were restructured:
 * src/.DS_Store => app/src/main/resources/.DS_Store
 * src/com/.DS_Store => app/src/main/resources/com/.DS_Store
 * src/com/Veyhunk/.DS_Store => app/src/main/resources/com/Veyhunk/.DS_Store
-* src/com/Veyhunk/Batter_of_Balls/.DS_Store => app/src/main/resources/com/Veyhunk/Batter_of_Balls/.DS_Store
+* src/com/Veyhunk/Battle_of_Balls/.DS_Store => app/src/main/resources/com/Veyhunk/Battle_of_Balls/.DS_Store
 * login.PNG => login.png
 * main_bg.PNG => main_bg.png
 

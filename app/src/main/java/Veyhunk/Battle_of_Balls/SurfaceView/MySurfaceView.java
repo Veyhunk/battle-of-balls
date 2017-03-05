@@ -1,7 +1,7 @@
-package com.Veyhunk.Batter_of_Balls.SurfaceView;
+package Veyhunk.Battle_of_Balls.SurfaceView;
 
-import Veyhunk.Batter_of_Balls.R;
-import com.Veyhunk.Batter_of_Balls.Utils.MathUtils;
+import Veyhunk.Battle_of_Balls.R;
+import Veyhunk.Battle_of_Balls.Utils.MathUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

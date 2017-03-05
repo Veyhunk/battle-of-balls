@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="Veyhunk.Batter_of_Balls"
+    package="Veyhunk.Battle_of_Balls"
     android:versionCode="1"
     android:versionName="2.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="Veyhunk.Batter_of_Balls.Main"
+            android:name="Veyhunk.Battle_of_Balls.Main"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="Veyhunk.Batter_of_Balls.Activity.optionActivity"
+            android:name="Veyhunk.Battle_of_Balls.Activity.optionActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="Veyhunk.Batter_of_Balls.Activity.BallActivity"
+            android:name="Veyhunk.Battle_of_Balls.Activity.BallActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

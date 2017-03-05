@@ -1,4 +1,4 @@
-package com.Veyhunk.Batter_of_Balls.IO;
+package Veyhunk.Battle_of_Balls.IO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;

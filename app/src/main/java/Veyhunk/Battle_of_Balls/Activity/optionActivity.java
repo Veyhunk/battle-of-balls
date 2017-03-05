@@ -1,6 +1,6 @@
-package com.Veyhunk.Batter_of_Balls.Activity;
+package Veyhunk.Battle_of_Balls.Activity;
 
-import Veyhunk.Batter_of_Balls.R;
+import Veyhunk.Battle_of_Balls.R;
 
 import android.app.Activity;
 import android.content.Intent;
