@@ -1,4 +1,4 @@
-package Veyhunk.Battle_of_Balls.Utils;
+package veyhunk.battle_of_balls.utils;
 
 import android.graphics.Point;
 

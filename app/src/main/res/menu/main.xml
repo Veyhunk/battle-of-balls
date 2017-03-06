@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.lwh069.MainActivity" >
+    tools:context="veyhunk.battle_of_balls.main.MainActivity" >
 
     <item
         android:id="@+id/action_settings"

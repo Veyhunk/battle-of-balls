@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 16
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "Veyhunk.Battle_of_Balls"
+        applicationId "veyhunk.battle_of_balls"
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 16
     }
 
     buildTypes {

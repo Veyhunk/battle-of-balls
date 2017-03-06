@@ -1,4 +1,4 @@
-package Veyhunk.Battle_of_Balls.Main;
+package veyhunk.battle_of_balls.main;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -9,10 +9,10 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Veyhunk.Battle_of_Balls.R;
-import Veyhunk.Battle_of_Balls.Activity.optionActivity;
-import Veyhunk.Battle_of_Balls.SurfaceView.BallActivity;
-import Veyhunk.Battle_of_Balls.SurfaceView.MySurfaceView;
+import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.activity.optionActivity;
+import veyhunk.battle_of_balls.surface_view.BallActivity;
+import veyhunk.battle_of_balls.surface_view.MySurfaceView;
 
 import android.app.Activity;
 import android.content.Intent;

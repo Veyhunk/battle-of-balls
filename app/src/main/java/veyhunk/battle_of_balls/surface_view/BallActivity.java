@@ -1,9 +1,9 @@
 
-package Veyhunk.Battle_of_Balls.SurfaceView;
+package veyhunk.battle_of_balls.surface_view;
 
-import Veyhunk.Battle_of_Balls.R;
-import Veyhunk.Battle_of_Balls.Main.MainActivity;
-import Veyhunk.Battle_of_Balls.SurfaceView.MySurfaceView.OnEndOfGameInterface;
+import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.main.MainActivity;
+import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package Veyhunk.Battle_of_Balls.log;
+package veyhunk.battle_of_balls.log;
 /**
  * 
  * @author Veyhunk
