@@ -42,4 +42,16 @@
         android:background="#00000000"
         android:textColor="#00000000" />
 
+    <TextView
+        android:id="@+id/tvBestScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingTop="3dp"
+        android:paddingRight="10dp"
+        android:text="5555555"
+        android:textColor="@color/Background"
+        android:textSize="@dimen/fonesize" />
+
 </RelativeLayout>

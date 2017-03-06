@@ -19,8 +19,6 @@ public class optionActivity extends Activity {
 	SeekBar sbrSpeed;
 	SeekBar sbrGrow;
 
-	// 【Name: "goodnight 逗逗"】 【 grow =20f】【speed = * 4F】 【color = 8】
-
 	protected void onCreate(Bundle savedInstanceState) {
 		// Button btnSure= (Button) findViewById(R.id.button1);;
 		// Button btnCenter = (Button) findViewById(R.id.button3);
