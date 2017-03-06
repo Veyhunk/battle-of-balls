@@ -26,24 +26,29 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener {
-	private static String bestScore;
+	private static String bestScore="";
 	private Button button[];
 	private String fileName = "BallBastScore";
 	static float ballMoveSpeed = 60;
 	static float ballGrowSpeed = 300;
 	static float aiDifficult = 6;
 	static int ballColorIndex = 10;
-	// public static String ballName = "中国辣条协会会长";// 中国辣条协会会长
-	public static String ballName = "";// 中国辣条协会会长
+	// public static String ballName = "感情淡了要放盐";// 感情淡了要放盐
+	public static String ballName = "";// 感情淡了要放盐
 	EditText edtName;
+	TextView tvBestScore;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		DataRead();
 		if (ballName.length() == 0) {
-			ballName = "中国辣条协会会长";
+			ballName = "感情淡了要放盐";
+		}
+		if (bestScore.length() == 0) {
+			bestScore = "0";
 		}
 		super.onCreate(savedInstanceState);
 		// 设置去除标题栏
@@ -58,6 +63,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 		button = new Button[2];
 		button[0] = (Button) findViewById(R.id.start);
 		button[1] = (Button) findViewById(R.id.setting);
+		tvBestScore = (TextView) findViewById(R.id.tvBestScore);
+		tvBestScore.setText("最高分:" + bestScore);
 		edtName = (EditText) findViewById(R.id.edtName);
 		edtName.setText(ballName);
 		for (int i = 0; i < button.length; i++) {
@@ -74,7 +81,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	public static void Setting(String name, float speed, float grow,
 			float difficule, int color) {
-		ballName = name;// 中国辣条协会会长
+		ballName = name;// 感情淡了要放盐
 		ballMoveSpeed = speed;// ballGrowSpeed
 		ballGrowSpeed = grow;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -84,12 +91,12 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static void Setting(String name, float speed, float grow,
 			float difficule, int color, int score) {
 		// TODO Auto-generated method stub
-		ballName = name;// 中国辣条协会会长
+		ballName = name;// 感情淡了要放盐
 		ballMoveSpeed = speed;// ballGrowSpeed
 		ballGrowSpeed = grow;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
 		aiDifficult = difficule;// playerColor
-		bestScore=score+"";
+		bestScore = score + "";
 	}
 
 	@Override
@@ -104,7 +111,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				// System.out.println("Difficult" + aiDifficult);
 				ballName = edtName.getText().toString();
 				MySurfaceView.Setting(ballName, ballMoveSpeed, ballGrowSpeed,
-						aiDifficult, ballColorIndex);
+						aiDifficult, ballColorIndex, bestScore);
 				Intent intent = new Intent();
 				intent.setClass(this, BallActivity.class);
 				startActivityForResult(intent, 1);
@@ -154,6 +161,8 @@ public class MainActivity extends Activity implements OnTouchListener {
 			ballGrowSpeed = data.getIntExtra("Grow", 0);
 			aiDifficult = data.getIntExtra("AiDifficult", 0);
 			// ballColorIndex = data.getIntExtra("Color", 0);
+		}else if (resultCode == 2) {
+			tvBestScore.setText("最高分:" + bestScore);
 		}
 	};
 
