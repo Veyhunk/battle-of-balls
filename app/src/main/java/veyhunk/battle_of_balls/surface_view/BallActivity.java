@@ -1,9 +1,10 @@
-
 package veyhunk.battle_of_balls.surface_view;
 
 import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.main.MainActivity;
+import veyhunk.battle_of_balls.surface_view.MySurfaceView;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
+import veyhunk.battle_of_balls.utils.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,6 +55,7 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		MainActivity.gameMusic.starMusic(GameMusic.CLICK);
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Intent intent = getIntent();
 			// intent.putExtra("Speed", MySurfaceView.ballMoveSpeed*10);

@@ -1,8 +1,8 @@
 package veyhunk.battle_of_balls.surface_view;
 
 import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.utils.MathUtils;
 import veyhunk.battle_of_balls.utils.GameMusic;
+import veyhunk.battle_of_balls.utils.MathUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,9 +20,9 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
 
 /**
- * 
+ *
  * @author Veyhunk
- * 
+ *
  */
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	// user customer
@@ -35,6 +35,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	public static float aiDifficult = 6;// AiDifficult
 	// constant
 	// private static final String strPalyerName = "感情淡了要放盐";// 感情淡了要放盐
+	// 琪红小傻瓜
 	// private static final float ballGrowSpeed = 20f;// ballGrowSpeed
 	// private static final float ballMoveSpeed = 4F;// ballMoveSpeed
 	private static final int frameRate = 50;// 帧率（单位：Hz/s）
@@ -105,7 +106,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		super(context, attrs);
 		mOnEndOfGame = (OnEndOfGameInterface) context;
 		gameMusic = new GameMusic(context);
-		gameMusic.starMusic(GameMusic.BG_MUSIC);
+		gameMusic.starMusic(GameMusic.BGM);
 		// 实例SurfaceHolder
 		sfh = this.getHolder();
 		// 为SurfaceView添加状态监听
@@ -126,12 +127,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	/**
 	 * 【Name: "感情淡了要放盐"】 【 grow =20f】【speed = * 4F】 【color =
 	 * 8】[【AiDifficult = 6】
-	 * 
-	 * @param color2
+	 *
+	 * @param color
 	 * @return
 	 */
 	public static void Setting(String Name, float speed, float grow,
-			float Difficule, int color, String oldBestScore) {
+							   float Difficule, int color, String oldBestScore) {
 		// user customer
 		if (Name.length() == 0) {
 			Name = "你个傻瓜没写名字";
@@ -207,7 +208,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	 */
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+							   int height) {
 	}
 
 	/**
@@ -223,7 +224,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		// bestScore = score;
 		// }
 
-//		System.out.println("surf de" + bestScore + "surf run" + score);
+		// System.out.println("surf de" + bestScore + "surf run" + score);
 		// MainActivity.Setting(ballName, ballMoveSpeed * 10, ballGrowSpeed *
 		// 10,
 		// aiDifficult, ballColorIndex, bestScore);
@@ -235,48 +236,48 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			// System.out.println("---按下----");
-			ptRockerCtrlPoint.set((int) event.getRawX(), (int) event.getRawY());
-			ptRockerPosition.set((int) event.getX(), (int) event.getY());
-			break;
-		case MotionEvent.ACTION_UP:
-			// System.out.println("----放开----");
-			flagIsTouchLongMove = true;
-			break;
-		case MotionEvent.ACTION_MOVE:
-			flagRockerDisplay = true;
-			// System.out.println("----移动----");
-			if (event.getPointerCount() == 1
-					&& !getClockIsInRange(myBall.timeBallSafeBegin, 15)) {
-				int len = MathUtils.getLength(ptRockerCtrlPoint.x,
-						ptRockerCtrlPoint.y, event.getX(), event.getY());
-				if (len < 20 && flagIsTouchLongMove) {
-					// 如果屏幕接触点不在摇杆挥动范围内,则不处理
-					break;
+			case MotionEvent.ACTION_DOWN:
+				// System.out.println("---按下----");
+				ptRockerCtrlPoint.set((int) event.getRawX(), (int) event.getRawY());
+				ptRockerPosition.set((int) event.getX(), (int) event.getY());
+				break;
+			case MotionEvent.ACTION_UP:
+				// System.out.println("----放开----");
+				flagIsTouchLongMove = true;
+				break;
+			case MotionEvent.ACTION_MOVE:
+				flagRockerDisplay = true;
+				// System.out.println("----移动----");
+				if (event.getPointerCount() == 1
+						&& !getClockIsInRange(myBall.timeBallSafeBegin, 15)) {
+					int len = MathUtils.getLength(ptRockerCtrlPoint.x,
+							ptRockerCtrlPoint.y, event.getX(), event.getY());
+					if (len < 20 && flagIsTouchLongMove) {
+						// 如果屏幕接触点不在摇杆挥动范围内,则不处理
+						break;
+					}
+					if (len <= rockerWheelRadius) {
+						// 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
+						flagIsTouchLongMove = false;
+						ptRockerPosition
+								.set((int) event.getX(), (int) event.getY());
+
+					} else {
+						// 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
+						flagIsTouchLongMove = false;
+						ptRockerPosition = MathUtils.getBorderPoint(
+								ptRockerCtrlPoint, new Point((int) event.getX(),
+										(int) event.getY()), rockerWheelRadius);
+					}
+
+					myBall.dectionTarget = MathUtils.getRadian(ptRockerCtrlPoint,
+							ptRockerPosition);
+
 				}
-				if (len <= rockerWheelRadius) {
-					// 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
-					flagIsTouchLongMove = false;
-					ptRockerPosition
-							.set((int) event.getX(), (int) event.getY());
+				break;
 
-				} else {
-					// 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
-					flagIsTouchLongMove = false;
-					ptRockerPosition = MathUtils.getBorderPoint(
-							ptRockerCtrlPoint, new Point((int) event.getX(),
-									(int) event.getY()), rockerWheelRadius);
-				}
-
-				myBall.dectionTarget = MathUtils.getRadian(ptRockerCtrlPoint,
-						ptRockerPosition);
-
-			}
-			break;
-
-		default:
-			break;
+			default:
+				break;
 		}
 		return true;
 
@@ -292,7 +293,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 			if (myBall.life > 32 || myBall.life < 1) {
 				// 游戏结束
 				if (bestScore < score) {
-					//bestScore
+					// bestScore
 					bestScore = score;
 				}
 
@@ -410,19 +411,19 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					}
 					if (aiBall.life > 0
 							&& ((aiBall.positionX - myBall.positionX)
-									* (aiBall.positionX - myBall.positionX)
-									+ (aiBall.positionY - myBall.positionY)
-									* (aiBall.positionY - myBall.positionY) < (myBall.radius)
-									* (myBall.radius) || (aiBall.positionX - myBall.positionX)
-									* (aiBall.positionX - myBall.positionX)
-									+ (aiBall.positionY - myBall.positionY)
-									* (aiBall.positionY - myBall.positionY) < (aiBall.radius)
-									* (aiBall.radius))) {
+							* (aiBall.positionX - myBall.positionX)
+							+ (aiBall.positionY - myBall.positionY)
+							* (aiBall.positionY - myBall.positionY) < (myBall.radius)
+							* (myBall.radius) || (aiBall.positionX - myBall.positionX)
+							* (aiBall.positionX - myBall.positionX)
+							+ (aiBall.positionY - myBall.positionY)
+							* (aiBall.positionY - myBall.positionY) < (aiBall.radius)
+							* (aiBall.radius))) {
 						// 判断是否被吃
 						if (aiBall.radius > (myBall.radius + myBall.radius / 10)
 								&& !getClockIsInRange(myBall)
 								&& !getClockIsInRange(timeNewRaceBegin,
-										timeNewRaceRange)) {
+								timeNewRaceRange)) {
 							// 判断是否被AI吃
 							// 判断是否无敌时间
 							// 主角死亡标记
@@ -434,7 +435,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							aiBall.life++;
 							aiBall.weight += myBall.weight;
 							aiBall.eatCount++;
-							gameMusic.starMusic(GameMusic.MENU_MUSIC);
+							gameMusic.starMusic(GameMusic.EAT_DEFAULT);
 
 						} else if (myBall.radius > (aiBall.radius + aiBall.radius / 10)
 								&& !getClockIsInRange(aiBall)) {
@@ -446,7 +447,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							myBall.life++;
 							myBall.weight += aiBall.weight;
 							score += aiBall.weight / 10;
-							gameMusic.starMusic(GameMusic.BOOM_MUSIC);
+							gameMusic.starMusic(GameMusic.EAT_ZBZG);
 						}
 
 					}
@@ -461,14 +462,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							if (aiBall.life > 0
 									&& aiBall2.life > 0
 									&& ((aiBall.positionX - aiBall2.positionX)
-											* (aiBall.positionX - aiBall2.positionX)
-											+ (aiBall.positionY - aiBall2.positionY)
-											* (aiBall.positionY - aiBall2.positionY) < (aiBall.radius)
-											* (aiBall.radius) || (aiBall.positionX - aiBall2.positionX)
-											* (aiBall.positionX - aiBall2.positionX)
-											+ (aiBall.positionY - aiBall2.positionY)
-											* (aiBall.positionY - aiBall2.positionY) < (aiBall2.radius)
-											* (aiBall2.radius))) {
+									* (aiBall.positionX - aiBall2.positionX)
+									+ (aiBall.positionY - aiBall2.positionY)
+									* (aiBall.positionY - aiBall2.positionY) < (aiBall.radius)
+									* (aiBall.radius) || (aiBall.positionX - aiBall2.positionX)
+									* (aiBall.positionX - aiBall2.positionX)
+									+ (aiBall.positionY - aiBall2.positionY)
+									* (aiBall.positionY - aiBall2.positionY) < (aiBall2.radius)
+									* (aiBall2.radius))) {
 								// 是否满足吃球的距离
 								if (aiBall.radius > (aiBall2.radius + aiBall2.radius / 10)
 										&& !getClockIsInRange(aiBall2)) {
@@ -517,8 +518,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 								(float) aiBall.positionX - textLength / 2,
 								(float) aiBall.positionY
 										+ (aiBall.radius > 40 ? (20 + ((int) aiBall.radius > 90 ? 15
-												: aiBall.radius / 6))
-												: 23) / 4, paint);
+										: aiBall.radius / 6))
+										: 23) / 4, paint);
 					}
 				}
 				// 绘制角色球
@@ -544,26 +545,28 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					canvas.drawCircle((float) myBall.positionX,
 							(float) myBall.positionY, myBall.radius, paint);// 绘制角色球
 					// dir
-					Matrix matrix = new Matrix();
-					// 设置旋转角度
-					matrix.postScale(myBall.radius / 230, myBall.radius / 230,
-							bmpDir.getWidth() / 2, bmpDir.getHeight() / 2);
-					matrix.postRotate(
-							(float) (myBall.dection * (180 / Math.PI)) + 90,
-							bmpDir.getWidth() / 2, bmpDir.getHeight() / 2);
-					matrix.postTranslate(
-							(float) myBall.positionX
-									- bmpDir.getWidth()
-									/ 2
-									+ (int) (myBall.radius * 1.25 * Math
-											.cos(myBall.dection)),
-							(float) myBall.positionY
-									- bmpDir.getHeight()
-									/ 2
-									+ (int) (myBall.radius * 1.25 * Math
-											.sin(myBall.dection)));
-					// 绘制旋转图片
-					canvas.drawBitmap(bmpDir, matrix, paint);
+					if (myBall.dectionTarget!=404) {
+						Matrix matrix = new Matrix();
+						// 设置旋转角度
+						matrix.postScale(myBall.radius / 230, myBall.radius / 230,
+								bmpDir.getWidth() / 2, bmpDir.getHeight() / 2);
+						matrix.postRotate(
+								(float) (myBall.dection * (180 / Math.PI)) + 90,
+								bmpDir.getWidth() / 2, bmpDir.getHeight() / 2);
+						matrix.postTranslate(
+								(float) myBall.positionX
+										- bmpDir.getWidth()
+										/ 2
+										+ (int) (myBall.radius * 1.25 * Math
+										.cos(myBall.dection)),
+								(float) myBall.positionY
+										- bmpDir.getHeight()
+										/ 2
+										+ (int) (myBall.radius * 1.25 * Math
+										.sin(myBall.dection)));
+						// 绘制旋转图片
+						canvas.drawBitmap(bmpDir, matrix, paint);
+					}
 					// 绘制角色名称
 					paint.setColor(Color.WHITE);
 					paint.setTextSize(myBall.radius > 40 ? (20 + (myBall.radius > 90 ? 15
@@ -575,8 +578,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							(float) myBall.positionX - textLength / 2,
 							(float) myBall.positionY
 									+ (myBall.radius > 40 ? (20 + (myBall.radius > 90 ? 15
-											: myBall.radius / 6))
-											: 23) / 4, paint);// 绘制角色球
+									: myBall.radius / 6))
+									: 23) / 4, paint);// 绘制角色球
 				}
 				canvas.restore();
 
@@ -673,6 +676,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	private final void logic() {
 		// System.out.println("logic=====================================================");
 		if (!getClockIsInRange(timeNewRaceBegin, timeNewRaceRange)) {
+			if (myBall.state == 0) {
+				gameMusic.stopBGM();
+				gameMusic.restarBGM();
+			}
 			myBall.action();
 			// System.out.println("myBall.life"+myBall.life);
 			myBall.move((float) Math
@@ -838,7 +845,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		// positionX, positionY, colorBall, size, targetX, targetY,
 		// nameString,life
 		ActionBall(double positionX, double positionY, int colorBall,
-				float weight, String nameString, int life) {
+				   float weight, String nameString, int life) {
 			timeBallSafeBegin = getClock();
 			this.state = 1;// 未被吃
 			this.positionX = positionX;
@@ -855,7 +862,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
 		// positionX, positionY, colorBall, size
 		void reSetBall(double positionX, double positionY, int colorBall,
-				float weight) {
+					   float weight) {
 			timeBallSafeBegin = getClock();
 			// 启动保护罩
 			if (life > 0) {
@@ -908,13 +915,20 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					timeRandomActtionRang)) {
 				timeRandomActtionBegin = getClock();
 				timeRandomActtionRang = (int) (Math.random() * 12000);
-				dectionTarget = (Math.random() * Math.PI * 2) - Math.PI;
+//				dectionTarget = (Math.random() * Math.PI * 2) - Math.PI;
+				if (myBall.state != 0) {
+					dectionTarget = getRadian((float) positionX,
+							(float) myBall.positionX, (float) positionY,
+							(float) myBall.positionY);
+				} else {
+					dectionTarget = (Math.random() * Math.PI * 2) - Math.PI;
+				}
 				moveSpeedRandom = (float) Math.random();
 			} else {
 				dection += Math.abs((dectionTarget - dection)) < Math.PI ? (((dectionTarget - dection) / actionDamping))
 						: ((dectionTarget - dection) > 0 ? -(Math
-								.abs((dectionTarget - dection - 2 * Math.PI)) / actionDamping)
-								: +(Math.abs((dectionTarget - dection + 2 * Math.PI)) / actionDamping));
+						.abs((dectionTarget - dection - 2 * Math.PI)) / actionDamping)
+						: +(Math.abs((dectionTarget - dection + 2 * Math.PI)) / actionDamping));
 				dection += (dection >= Math.PI) ? (-2 * Math.PI)
 						: ((dection <= -Math.PI) ? (+2 * Math.PI) : 0);
 				targetX += moveSpeed * Math.cos(dectionTarget)
@@ -952,60 +966,68 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		}
 
 		public void move(float rocker) {
-			dection += Math.abs((dectionTarget - dection)) < Math.PI ? (((dectionTarget - dection) / actionDamping))
-					: ((dectionTarget - dection) > 0 ? -(Math
-							.abs((dectionTarget - dection - 2 * Math.PI)) / actionDamping)
-							: +(Math.abs((dectionTarget - dection + 2 * Math.PI)) / actionDamping));
-			dection += (dection >= Math.PI) ? (-2 * Math.PI)
-					: ((dection <= -Math.PI) ? (+2 * Math.PI) : 0);
-			targetX += moveSpeed * Math.cos(dectionTarget)
-					* (30 / radius * 1 + 0.6) * rocker;
-			targetY += moveSpeed * Math.sin(dectionTarget)
-					* (30 / radius * 1 + 0.6) * rocker;
-			if (targetX < 0) {
-				// 边界判断
-				targetX = 0;
-				dectionTarget = getRadian(ptRockerCtrlPoint.x,
-						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
-						ptRockerPosition.y);
-				// myBall.targetX = 0;
-				// ptRockerPosition.x = ptRockerCtrlPoint.x;
+			if (dectionTarget == 404) {
 
+			} else {
+				dection += Math.abs((dectionTarget - dection)) < Math.PI ? (((dectionTarget - dection) / actionDamping))
+						: ((dectionTarget - dection) > 0 ? -(Math
+						.abs((dectionTarget - dection - 2 * Math.PI)) / actionDamping)
+						: +(Math.abs((dectionTarget - dection + 2 * Math.PI)) / actionDamping));
+				dection += (dection >= Math.PI) ? (-2 * Math.PI)
+						: ((dection <= -Math.PI) ? (+2 * Math.PI) : 0);
+				targetX += moveSpeed * Math.cos(dectionTarget)
+						* (30 / radius * 1 + 0.6) * rocker;
+				targetY += moveSpeed * Math.sin(dectionTarget)
+						* (30 / radius * 1 + 0.6) * rocker;
+				if (targetX < 0) {
+					// 边界判断
+					targetX = 0;
+					dectionTarget = getRadian(ptRockerCtrlPoint.x,
+							ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
+							ptRockerPosition.y);
+					// myBall.targetX = 0;
+					// ptRockerPosition.x = ptRockerCtrlPoint.x;
+
+				}
+				if (targetX > mapW) {
+					// 边界判断
+					targetX = mapW;
+					dectionTarget = getRadian(ptRockerCtrlPoint.x,
+							ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
+							ptRockerPosition.y);
+					// myBall.targetX = mapW;
+					// ptRockerPosition.x = ptRockerCtrlPoint.x;
+				}
+				if (targetY < 0) {
+					// 边界判断
+					targetY = 0;
+					dectionTarget = getRadian(ptRockerCtrlPoint.x,
+							ptRockerPosition.x, ptRockerCtrlPoint.y,
+							ptRockerCtrlPoint.y);
+					// myBall.targetY = 0;
+					// ptRockerPosition.y = ptRockerCtrlPoint.y;
+				}
+				if (targetY > mapH) {
+					// 边界判断
+					targetY = mapH;
+					dectionTarget = getRadian(ptRockerCtrlPoint.x,
+							ptRockerPosition.x, ptRockerCtrlPoint.y,
+							ptRockerCtrlPoint.y);
+					// // myBall.targetY = mapH;
+					// ptRockerPosition.y = ptRockerCtrlPoint.y;
+				}
+				positionX += (targetX - positionX) / actionDamping;
+				positionY += (targetY - positionY) / actionDamping;
 			}
-			if (targetX > mapW) {
-				// 边界判断
-				targetX = mapW;
-				dectionTarget = getRadian(ptRockerCtrlPoint.x,
-						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
-						ptRockerPosition.y);
-				// myBall.targetX = mapW;
-				// ptRockerPosition.x = ptRockerCtrlPoint.x;
-			}
-			if (targetY < 0) {
-				// 边界判断
-				targetY = 0;
-				dectionTarget = getRadian(ptRockerCtrlPoint.x,
-						ptRockerPosition.x, ptRockerCtrlPoint.y,
-						ptRockerCtrlPoint.y);
-				// myBall.targetY = 0;
-				// ptRockerPosition.y = ptRockerCtrlPoint.y;
-			}
-			if (targetY > mapH) {
-				// 边界判断
-				targetY = mapH;
-				dectionTarget = getRadian(ptRockerCtrlPoint.x,
-						ptRockerPosition.x, ptRockerCtrlPoint.y,
-						ptRockerCtrlPoint.y);
-				// // myBall.targetY = mapH;
-				// ptRockerPosition.y = ptRockerCtrlPoint.y;
-			}
-			positionX += (targetX - positionX) / actionDamping;
-			positionY += (targetY - positionY) / actionDamping;
+
 		}
 
 		public float getRadian(float x1, float x2, float y1, float y2) {
 			float lenA = x2 - x1;
 			float lenB = y2 - y1;
+			if (lenA == 0 && lenB == 0) {
+				return 404;
+			}
 			float lenC = (float) Math.sqrt(lenA * lenA + lenB * lenB);
 			float ang = (float) Math.acos(lenA / lenC);
 			ang = ang * (y2 < y1 ? -1 : 1);
@@ -1014,4 +1036,3 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 }
-

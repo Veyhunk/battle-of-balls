@@ -13,9 +13,12 @@ import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.activity.optionActivity;
 import veyhunk.battle_of_balls.surface_view.BallActivity;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView;
+import veyhunk.battle_of_balls.utils.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +32,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener {
-	private static String bestScore="";
+	private static String bestScore = "";
 	private Button button[];
 	private String fileName = "BallBastScore";
 	static float ballMoveSpeed = 60;
@@ -40,16 +43,11 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static String ballName = "";// 感情淡了要放盐
 	EditText edtName;
 	TextView tvBestScore;
+	public static  GameMusic gameMusic;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		DataRead();
-		if (ballName.length() == 0) {
-			ballName = "感情淡了要放盐";
-		}
-		if (bestScore.length() == 0) {
-			bestScore = "0";
-		}
 		super.onCreate(savedInstanceState);
 		// 设置去除标题栏
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,15 +58,31 @@ public class MainActivity extends Activity implements OnTouchListener {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.activity_main);
+
 		button = new Button[2];
 		button[0] = (Button) findViewById(R.id.start);
 		button[1] = (Button) findViewById(R.id.setting);
 		tvBestScore = (TextView) findViewById(R.id.tvBestScore);
-		tvBestScore.setText("最高分:" + bestScore);
+		TextView versionNumber = (TextView) findViewById(R.id.tvVersionNumber);
 		edtName = (EditText) findViewById(R.id.edtName);
+		gameMusic=new GameMusic(getApplication());
+		tvBestScore.setText("最高分:" + bestScore);
+		if (ballName.length() == 0) {
+			ballName = "感情淡了要放盐";
+		}
+		if (bestScore.length() == 0) {
+			bestScore = "0";
+		}		
 		edtName.setText(ballName);
 		for (int i = 0; i < button.length; i++) {
 			button[i].setOnTouchListener(this);
+		}
+		
+		try {
+			versionNumber.setText("版本号：" + getVersionName());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -77,6 +91,16 @@ public class MainActivity extends Activity implements OnTouchListener {
 		// TODO Auto-generated method stub
 		DataSave();
 		super.onDestroy();
+	}
+
+	private String getVersionName() throws Exception {
+		// 获取packagemanager的实例
+		PackageManager packageManager = getPackageManager();
+		// getPackageName()是你当前类的包名，0代表是获取版本信息
+		PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(),
+				0);
+		String version = packInfo.versionName;
+		return version;
 	}
 
 	public static void Setting(String name, float speed, float grow,
@@ -102,6 +126,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
+		gameMusic.starMusic(GameMusic.CLICK);
 		switch (v.getId()) {
 
 		case R.id.start:
@@ -161,7 +186,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			ballGrowSpeed = data.getIntExtra("Grow", 0);
 			aiDifficult = data.getIntExtra("AiDifficult", 0);
 			// ballColorIndex = data.getIntExtra("Color", 0);
-		}else if (resultCode == 2) {
+		} else if (resultCode == 2) {
 			tvBestScore.setText("最高分:" + bestScore);
 		}
 	};

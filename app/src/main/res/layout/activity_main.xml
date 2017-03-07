@@ -50,8 +50,25 @@
         android:layout_alignParentTop="true"
         android:paddingTop="3dp"
         android:paddingRight="10dp"
-        android:text="5555555"
+        android:text="bestScore"
         android:textColor="@color/Background"
         android:textSize="@dimen/fonesize" />
+
+   <TextView
+       android:id="@+id/tvVersionNumber"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:layout_alignParentRight="true"
+        android:paddingBottom="3dp"
+        android:paddingRight="10dp"
+       android:gravity="bottom"
+       android:shadowColor="#FFFFFF"
+       android:shadowDx="0"
+       android:shadowDy="2"
+       android:shadowRadius="1"
+       android:text="version"
+       android:textColor="@color/BackgroundStripe"
+       android:textSize="@dimen/fonesize"/>
 
 </RelativeLayout>

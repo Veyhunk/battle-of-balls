@@ -1,6 +1,8 @@
 package veyhunk.battle_of_balls.activity;
 
 import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.main.MainActivity;
+import veyhunk.battle_of_balls.utils.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 
+
 public class optionActivity extends Activity {
 	public static float speed = 20f;
 	public static float grow = 4F;
@@ -18,6 +21,8 @@ public class optionActivity extends Activity {
 	SeekBar sbrDifficult;
 	SeekBar sbrSpeed;
 	SeekBar sbrGrow;
+
+	// 【Name: "感情淡了要放盐"】 【 grow =20f】【speed = * 4F】 【color = 8】
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// Button btnSure= (Button) findViewById(R.id.button1);;
@@ -51,6 +56,7 @@ public class optionActivity extends Activity {
 	}
 
 	public void btnYes(View view) {
+		MainActivity.gameMusic.starMusic(GameMusic.CLICK);
 		Intent intent = getIntent();
 		intent.putExtra("Speed", sbrSpeed.getProgress());
 		intent.putExtra("AiDifficult", sbrDifficult.getProgress());
@@ -60,11 +66,13 @@ public class optionActivity extends Activity {
 	}
 
 	public void btnNo(View view) {
+		MainActivity.gameMusic.starMusic(GameMusic.CLICK);
 		setResult(2, getIntent());
 		finish();
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		MainActivity.gameMusic.starMusic(GameMusic.CLICK);
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 
 			setResult(2, getIntent());
