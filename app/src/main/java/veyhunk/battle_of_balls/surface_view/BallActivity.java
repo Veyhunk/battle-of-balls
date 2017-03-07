@@ -2,7 +2,6 @@ package veyhunk.battle_of_balls.surface_view;
 
 import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.main.MainActivity;
-import veyhunk.battle_of_balls.surface_view.MySurfaceView;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
 import veyhunk.battle_of_balls.utils.GameMusic;
 
@@ -34,25 +33,27 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
 		setContentView(R.layout.activity_ball);
 	}
 
-	/**
-	 * 下一张按钮事件
-	 * 
-	 * @param view
-	 */
-	public void nextBt(View view) {
-		Toast.makeText(getApplicationContext(), "现在还不能分身，点一点就好了",
-				Toast.LENGTH_SHORT).show();
-	}
-
-	/**
-	 * 上一张按钮事件
-	 * 
-	 * @param view
-	 */
-	public void preBt(View view) {
-		Toast.makeText(getApplicationContext(), "来来来，快吐个豆豆出来",
-				Toast.LENGTH_SHORT).show();
-	}
+	// /**
+	// * 下一张按钮事件
+	// *
+	// * @param view
+	// */
+	// public void nextBt(View view) {
+	// MainActivity.gameMusic.starMusic(GameMusic.AVATAR);
+	// Toast.makeText(getApplicationContext(), "现在还不能分身，点一点就好了",
+	// Toast.LENGTH_SHORT).show();
+	// }
+	//
+	// /**
+	// * 上一张按钮事件
+	// *
+	// * @param view
+	// */
+	// public void preBt(View view) {
+	// MainActivity.gameMusic.starMusic(GameMusic.BUBBLE);
+	// // Toast.makeText(getApplicationContext(), "来来来，快吐个豆豆出来",
+	// // Toast.LENGTH_SHORT).show();
+	// }
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		MainActivity.gameMusic.starMusic(GameMusic.CLICK);

@@ -13,7 +13,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 
-
 public class optionActivity extends Activity {
 	public static float speed = 20f;
 	public static float grow = 4F;
@@ -22,7 +21,7 @@ public class optionActivity extends Activity {
 	SeekBar sbrSpeed;
 	SeekBar sbrGrow;
 
-	// 【Name: "感情淡了要放盐"】 【 grow =20f】【speed = * 4F】 【color = 8】
+	// 【Name: "感情淡了放盐啊"】 【 grow =20f】【speed = * 4F】 【color = 8】
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// Button btnSure= (Button) findViewById(R.id.button1);;

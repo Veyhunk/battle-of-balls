@@ -1,3 +1,4 @@
+
 package veyhunk.battle_of_balls.main;
 
 import java.io.ByteArrayOutputStream;
@@ -35,15 +36,15 @@ public class MainActivity extends Activity implements OnTouchListener {
 	private static String bestScore = "";
 	private Button button[];
 	private String fileName = "BallBastScore";
-	static float ballMoveSpeed = 60;
-	static float ballGrowSpeed = 300;
-	static float aiDifficult = 6;
+	static float ballMoveSpeed;
+	static float ballGrowSpeed;
+	static float aiDifficult;
 	static int ballColorIndex = 10;
-	// public static String ballName = "感情淡了要放盐";// 感情淡了要放盐
-	public static String ballName = "";// 感情淡了要放盐
+	// public static String ballName = "感情淡了放盐啊";// 感情淡了放盐啊
+	public static String ballName = "";// 感情淡了放盐啊
 	EditText edtName;
 	TextView tvBestScore;
-	public static  GameMusic gameMusic;
+	public static GameMusic gameMusic;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +66,19 @@ public class MainActivity extends Activity implements OnTouchListener {
 		tvBestScore = (TextView) findViewById(R.id.tvBestScore);
 		TextView versionNumber = (TextView) findViewById(R.id.tvVersionNumber);
 		edtName = (EditText) findViewById(R.id.edtName);
-		gameMusic=new GameMusic(getApplication());
+		gameMusic = new GameMusic(getApplication());
 		tvBestScore.setText("最高分:" + bestScore);
 		if (ballName.length() == 0) {
-			ballName = "感情淡了要放盐";
+			ballName = "感情淡了放盐啊";
 		}
 		if (bestScore.length() == 0) {
 			bestScore = "0";
-		}		
+		}
 		edtName.setText(ballName);
 		for (int i = 0; i < button.length; i++) {
 			button[i].setOnTouchListener(this);
 		}
-		
+
 		try {
 			versionNumber.setText("版本号：" + getVersionName());
 		} catch (Exception e) {
@@ -105,7 +106,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 	public static void Setting(String name, float speed, float grow,
 			float difficule, int color) {
-		ballName = name;// 感情淡了要放盐
+		ballName = name;// 感情淡了放盐啊
 		ballMoveSpeed = speed;// ballGrowSpeed
 		ballGrowSpeed = grow;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -115,7 +116,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 	public static void Setting(String name, float speed, float grow,
 			float difficule, int color, int score) {
 		// TODO Auto-generated method stub
-		ballName = name;// 感情淡了要放盐
+		ballName = name;// 感情淡了放盐啊
 		ballMoveSpeed = speed;// ballGrowSpeed
 		ballGrowSpeed = grow;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -186,6 +187,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 			ballGrowSpeed = data.getIntExtra("Grow", 0);
 			aiDifficult = data.getIntExtra("AiDifficult", 0);
 			// ballColorIndex = data.getIntExtra("Color", 0);
+			DataSave();
 		} else if (resultCode == 2) {
 			tvBestScore.setText("最高分:" + bestScore);
 		}

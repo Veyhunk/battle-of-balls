@@ -2,27 +2,31 @@
 <resources>
 
     <color name="color0">#ffdad049</color>
-    <color name="color1">#FF63c33c</color>
-    <color name="color2">#FFe4af3c</color>
-    <color name="color3">#FF30d28b</color>
-    <color name="color4">#FFa061ee</color>
-    <color name="color5">#FF59a0d8</color>
-    <color name="color6">#FFe03c5e</color>
-    <color name="rocker">#ddffffff</color>
-    <color name="rockerRudder">#88000000</color>
+    <color name="color1">#ff63c33c</color>
+    <color name="color2">#ffe4af3c</color>
+    <color name="color3">#ff30d28b</color>
+    <color name="color4">#ffa061ee</color>
+    <color name="color5">#ff59a0d8</color>
+    <color name="color6">#ffe03c5e</color>
     
-    <color name="font">#88ffffff</color>
-    <color name="Background">#FF383838</color>
-    <color name="BackgroundStripe">#FF3F3F3F</color>
-    <color name="safeLight">#aacccc88</color>
-    <color name="title">#ff0</color>
-    <color name="introduce">#7e8</color>
-    <color name="company">#f70</color>
-    <color name="verdigris">#446</color>
+    <color name="font_deep">#ff97b180</color>
+    <color name="font_lite">#ff677d55</color>
     
+    <color name="white_transparent">#88ffffff</color>
     <color name="white">#ffffff</color>
-    <color name="url">#9f60</color>
-    <color name="ui_font">#ff677d55</color>
+    <color name="black">#000000</color>
+    <color name="black_win">#dd08070c</color>
+    <color name="black_lite">#0c0c0c</color>
+    
+    <color name="safeLight">#aacccc88</color>
+    <color name="rocker">#ccffffff</color>
+    <color name="rockerRudder">#66000000</color>
+    <color name="background">#ff383838</color>
+    <color name="backgroundStripe">#ff3f3f3f</color>
+    
     <color name="ui_bg">#fff8ffe0</color>
     <color name="ui_btn_bg">#fff3fed4</color>
+    <color name="green_selected">#ff97b180</color>
+    <color name="green_unselect">#fff3fed4</color>
+    
 </resources>

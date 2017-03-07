@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:shadowColor="#FFFFFFFF"
                 android:text="@string/changgeDifficult"
-                android:textColor="@color/ui_font"
+                android:textColor="@color/font_lite"
                 android:textSize="@dimen/fonesize" />
 
             <SeekBar
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:shadowColor="#FFFFFFFF"
                 android:text="@string/changgeSpeed"
-                android:textColor="@color/ui_font"
+                android:textColor="@color/font_lite"
                 android:textSize="@dimen/fonesize" />
 
             <SeekBar
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:shadowColor="#FFFFFFFF"
                 android:text="@string/changgeGrow"
-                android:textColor="@color/ui_font"
+                android:textColor="@color/font_lite"
                 android:textSize="@dimen/fonesize" />
 
             <SeekBar
@@ -78,7 +78,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="好的就是这样"
-                    android:textColor="@color/ui_font"
+                    android:textColor="@color/font_lite"
                     android:textSize="@dimen/fonesize" 
 	       android:onClick="btnYes"/>
 
@@ -91,7 +91,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="感觉不对 下次再改"
-                    android:textColor="@color/ui_font"
+                    android:textColor="@color/font_lite"
                     android:textSize="@dimen/fonesize"
 	       android:onClick="btnNo"/>
             </TableRow>

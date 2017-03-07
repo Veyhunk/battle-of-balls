@@ -51,7 +51,7 @@
         android:paddingTop="3dp"
         android:paddingRight="10dp"
         android:text="bestScore"
-        android:textColor="@color/Background"
+        android:textColor="@color/font_deep"
         android:textSize="@dimen/fonesize" />
 
    <TextView
@@ -63,12 +63,8 @@
         android:paddingBottom="3dp"
         android:paddingRight="10dp"
        android:gravity="bottom"
-       android:shadowColor="#FFFFFF"
-       android:shadowDx="0"
-       android:shadowDy="2"
-       android:shadowRadius="1"
        android:text="version"
-       android:textColor="@color/BackgroundStripe"
+       android:textColor="@color/font_deep"
        android:textSize="@dimen/fonesize"/>
 
 </RelativeLayout>
