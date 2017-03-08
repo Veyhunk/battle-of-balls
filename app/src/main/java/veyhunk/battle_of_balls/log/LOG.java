@@ -1,7 +1,7 @@
 package log;
 
 /**
- * 
+ *
  * @author Veyhunk
  *@category 更新日志
  *@version 3.2
@@ -10,7 +10,7 @@ package log;
  *
  */
 /**
- * 
+ *
  * @author Veyhunk
  *@category 更新日志
  *@version 3.3
@@ -21,7 +21,7 @@ package log;
  */
 
 /**
- * 
+ *
  * @author Veyhunk
  *@category 更新日志
  *@version 3.4
@@ -34,7 +34,7 @@ package log;
  */
 
 /**
- * 
+ *
  * @author Veyhunk
  *@category 更新日志
  *@version 3.5
@@ -45,7 +45,7 @@ package log;
  *完善游戏文件架构@@@@@@@@
  */
 /**
- * 
+ *
  * @author Veyhunk
  *@category 更新日志
  *@version 3.6
@@ -54,9 +54,14 @@ package log;
  *新增游戏胜利和失败的提示框
  *新增吐球功能
  */
-
 /**
- * 
+ *
+ * @author Veyhunk
+ *@category 更新日志
+ *@version 3.7
+ *修复了分身系统导致的无法复活
+/**
+ *
  * @author Veyhunk
  * @category 更新日志
  * @version 10.0 完成游戏
