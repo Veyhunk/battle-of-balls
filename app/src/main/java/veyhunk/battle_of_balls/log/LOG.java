@@ -61,6 +61,17 @@ package log;
  *@version 3.7
  *修复了分身系统导致的无法复活
  *移动GameMusic到sound包
+ */
+/**
+ * 
+ * @author Veyhunk
+ *@category 更新日志
+ *@version 3.8
+ *修复了分身系统分身数量不对
+ *增加分身系统吃豆豆
+ *增加分身与ai的互吃
+ *完成游戏时间限制
+ */
 /**
  *
  * @author Veyhunk
