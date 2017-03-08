@@ -1,19 +1,14 @@
 package veyhunk.battle_of_balls.main;
 
 import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.utils.GameMusic;
+import veyhunk.battle_of_balls.sound.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 public class SplashScreen2 extends Activity {
 	/**

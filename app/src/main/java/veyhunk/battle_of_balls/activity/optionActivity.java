@@ -2,7 +2,7 @@ package veyhunk.battle_of_balls.activity;
 
 import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.main.MainActivity;
-import veyhunk.battle_of_balls.utils.GameMusic;
+import veyhunk.battle_of_balls.sound.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;

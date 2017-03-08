@@ -3,16 +3,14 @@ package veyhunk.battle_of_balls.surface_view;
 import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.main.MainActivity;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
-import veyhunk.battle_of_balls.utils.GameMusic;
+import veyhunk.battle_of_balls.sound.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 public class BallActivity extends Activity implements OnEndOfGameInterface {
 	MySurfaceView mGameSurfaceView;

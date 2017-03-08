@@ -14,7 +14,7 @@ import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.activity.optionActivity;
 import veyhunk.battle_of_balls.surface_view.BallActivity;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView;
-import veyhunk.battle_of_balls.utils.GameMusic;
+import veyhunk.battle_of_balls.sound.GameMusic;
 
 import android.app.Activity;
 import android.content.Intent;

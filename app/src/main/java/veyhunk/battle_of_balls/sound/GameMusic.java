@@ -1,4 +1,4 @@
-package veyhunk.battle_of_balls.utils;
+package veyhunk.battle_of_balls.sound;
 
 import java.io.IOException;
 

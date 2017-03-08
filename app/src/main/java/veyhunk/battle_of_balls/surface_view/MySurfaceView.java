@@ -2,13 +2,11 @@
 package veyhunk.battle_of_balls.surface_view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.utils.GameMusic;
+import veyhunk.battle_of_balls.sound.GameMusic;
 import veyhunk.battle_of_balls.utils.MathUtils;
 
-import android.R.array;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +15,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
