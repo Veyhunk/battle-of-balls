@@ -60,6 +60,7 @@ package log;
  *@category 更新日志
  *@version 3.7
  *修复了分身系统导致的无法复活
+ *移动GameMusic到sound包
 /**
  *
  * @author Veyhunk
