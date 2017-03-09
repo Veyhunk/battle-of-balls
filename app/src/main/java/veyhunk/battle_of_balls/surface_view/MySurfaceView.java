@@ -19,9 +19,13 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.ball.FoodBall;
-import veyhunk.battle_of_balls.sound.GameMusic;
+import veyhunk.battle_of_balls.model.FoodBall;
+import veyhunk.battle_of_balls.db.GameParams;
+import veyhunk.battle_of_balls.sounds.GameSounds;
 import veyhunk.battle_of_balls.utils.MathUtils;
+
+import static veyhunk.battle_of_balls.activities.optionActivity.grow;
+import static veyhunk.battle_of_balls.activities.optionActivity.speed;
 
 /**
  * 
@@ -104,7 +108,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	private Bitmap bmpBtnLaunch = BitmapFactory.decodeResource(
 			this.getResources(), R.drawable.button_launch);// 球球失败徽章素材
 	// Music
-	private GameMusic gameMusic;
+	private GameSounds gameSounds;
 	// callback
 	protected OnEndOfGameInterface mOnEndOfGame; // callback interface
 
@@ -120,9 +124,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	 */
 	public MySurfaceView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        Setting();
 		mOnEndOfGame = (OnEndOfGameInterface) context;
-		gameMusic = new GameMusic(context);
-		gameMusic.starMusic(GameMusic.BGM);
+		gameSounds = new GameSounds(context);
+		gameSounds.starMusic(GameSounds.BGM);
 		// 实例SurfaceHolder
 		sfh = this.getHolder();
 		// 为SurfaceView添加状态监听
@@ -140,25 +145,20 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		// 设置焦点
 	}
 
-	/**
-	 * @param Name speed grow Difficule color oldBestScore
-	 * @return
-	 */
-	public static void Setting(String Name, float speed, float grow,
-                               float Difficule, int color, String oldBestScore) {
+	public static void Setting() {
 		// user customer
-		if (Name.length() == 0) {
-			Name = "你个傻瓜没写名字";
+		if (GameParams.ballName.length() == 0) {
+            GameParams.ballName = "你个傻瓜没写名字";
 		}
-		if (color > 6 || color < 0) {
-			color = 10;
+		if (GameParams.ballColorIndex > 6 || GameParams.ballColorIndex < 0) {
+            GameParams.ballColorIndex = 10;
 		}
-        bestScore = Integer.parseInt(oldBestScore);
-		ballName = Name;// ballName
+        bestScore = Integer.parseInt(GameParams.bestScore);
+		ballName = GameParams.ballName;// ballName
 		ballMoveSpeed = speed / 10F;// ballGrowSpeed
 		ballGrowSpeed = grow / 10F;// ballMoveSpeed
-		ballColorIndex = color;// playerColor
-		aiDifficult = Difficule;// playerColor
+		ballColorIndex = GameParams.ballColorIndex;// playerColor
+		aiDifficult = GameParams.aiDifficult;// playerColor
 		timeSecond = 0;
 		timeMinute = 1;
 		timeGame = 320;
@@ -235,8 +235,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		flagGameThread = false;
-		gameMusic.stopMusic();
-		gameMusic.recycle();
+		gameSounds.stopMusic();
+		gameSounds.recycle();
 		// 销毁画图线程
 		// if (bestScore < score) {
 		// bestScore = score;
@@ -270,11 +270,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 									.getHeight())) {
 						if (event.getX(index) < (screenW - bmpBtnLaunch
 								.getWidth())) {
-							gameMusic.starMusic(GameMusic.BUBBLE);
+							gameSounds.starMusic(GameSounds.BUBBLE);
 							launchBubble(myBall);
 						} else {
 							myBall.avatar();
-							gameMusic.starMusic(GameMusic.AVATAR);
+							gameSounds.starMusic(GameSounds.AVATAR);
 						}
 						flagButtonIndex = index;
 						break;
@@ -350,7 +350,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 				if (event.getX() > (screenW - bmpBtnLaunch.getWidth() * 2)
 						&& event.getY() > (screenH - bmpBtnLaunch.getHeight())) {
 					if (event.getX() < (screenW - bmpBtnLaunch.getWidth())) {
-						gameMusic.starMusic(GameMusic.BUBBLE);
+						gameSounds.starMusic(GameSounds.BUBBLE);
 						if (myBall.isAvatar != 0) {
 							for (ActionBall avata : myBall.myAvatars) {
 								launchBubble(avata);
@@ -360,7 +360,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 						}
 					} else {
 						myBall.avatar();
-						gameMusic.starMusic(GameMusic.AVATAR);
+						gameSounds.starMusic(GameSounds.AVATAR);
 					}
 					flagButtonIndex = 1;
 					break;
@@ -879,8 +879,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		}
 		if (!getClockIsInRange(timeNewRaceBegin, timeNewRaceRange)) {
 			if (myBall.state == 0) {
-				gameMusic.stopBGM();
-				gameMusic.restarBGM();
+				gameSounds.stopBGM();
+				gameSounds.restarBGM();
 			}
 			// 角色球
 			myBall.action();
@@ -1036,7 +1036,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 						aiBall.weight += myBall.weight;
 						myBall.weight = 0;
 						aiBall.eatCount++;
-						gameMusic.starMusic(GameMusic.EAT_DEFAULT);
+						gameSounds.starMusic(GameSounds.EAT_DEFAULT);
 
 					} else if (myBall.radius > (aiBall.radius + aiBall.radius / 10)
 							&& !getClockIsInRange(aiBall)) {
@@ -1049,7 +1049,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 						myBall.weight += aiBall.weight;
 						aiBall.weight = 0;
 						score += aiBall.weight / 10;
-						gameMusic.starMusic(GameMusic.EAT_ZBZG);
+						gameSounds.starMusic(GameSounds.EAT_ZBZG);
 					}
 
 				}
@@ -1087,7 +1087,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							aiBall.life++;
 							aiBall.weight += avata.weight;
 							aiBall.eatCount++;
-							gameMusic.starMusic(GameMusic.EAT_DEFAULT);
+							gameSounds.starMusic(GameSounds.EAT_DEFAULT);
 							myBall.myAvatars.remove(index--);
 							myBall.isAvatar--;
 							if (myBall.myAvatars.size() == 0) {
@@ -1113,7 +1113,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 							avata.weight += aiBall.weight;
 							aiBall.weight = 0;
 							score += aiBall.weight / 10;
-							gameMusic.starMusic(GameMusic.EAT_ZBZG);
+							gameSounds.starMusic(GameSounds.EAT_ZBZG);
 						}
 
 					}

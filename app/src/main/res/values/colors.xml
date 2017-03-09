@@ -14,16 +14,14 @@
     
     <color name="white_transparent">#88ffffff</color>
     <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
     <color name="black_win">#dd08070c</color>
-    <color name="black_lite">#0c0c0c</color>
-    
+
     <color name="safeLight">#aacccc88</color>
     <color name="rocker">#ccffffff</color>
     <color name="rockerRudder">#66000000</color>
     <color name="background">#ff383838</color>
     <color name="backgroundStripe">#ff3f3f3f</color>
-    
+
     <color name="ui_bg">#fff8ffe0</color>
     <color name="ui_btn_bg">#fff3fed4</color>
     <color name="green_selected">#ff97b180</color>

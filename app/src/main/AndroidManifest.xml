@@ -7,12 +7,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="veyhunk.battle_of_balls.main.MainActivity"
+            android:name="veyhunk.battle_of_balls.activities.MainActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape" >
         </activity>
         <activity
-        android:name="veyhunk.battle_of_balls.main.SplashScreen"
+        android:name="veyhunk.battle_of_balls.activities.SplashScreen"
         android:label="@string/app_name"
         android:screenOrientation="landscape" >
             <intent-filter>
@@ -22,22 +22,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="veyhunk.battle_of_balls.main.SplashScreen2"
+            android:name="veyhunk.battle_of_balls.activities.SplashScreen2"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="veyhunk.battle_of_balls.activity.optionActivity"
+            android:name="veyhunk.battle_of_balls.activities.optionActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="veyhunk.battle_of_balls.surface_view.BallActivity"
-            android:label="@string/app_name" 
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
-            android:name="veyhunk.battle_of_balls.file_io.ScoreIO"
+            android:name="veyhunk.battle_of_balls.activities.BallActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape" >
         </activity>

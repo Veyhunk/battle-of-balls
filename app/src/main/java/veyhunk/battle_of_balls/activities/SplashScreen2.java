@@ -1,7 +1,4 @@
-package veyhunk.battle_of_balls.main;
-
-import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.sound.GameMusic;
+package veyhunk.battle_of_balls.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,12 +7,15 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class SplashScreen extends Activity {
+import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.sounds.GameSounds;
+
+public class SplashScreen2 extends Activity {
 	/**
 	 * Called when the activity is first created.
 	 */
 
-	private GameMusic gameMusic;
+	private GameSounds gameSounds;
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -25,20 +25,20 @@ public class SplashScreen extends Activity {
 		// 设置全屏
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.splashscreen);
+		setContentView(R.layout.splashscreen2);
 
 
-		gameMusic=new GameMusic(getApplication());
-		gameMusic.starMusic(GameMusic.LOGO1);
+		gameSounds =new GameSounds(getApplication());
+		gameSounds.starMusic(GameSounds.LOGO2);
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
 				/* Create an Intent that will start the Main WordPress Activity. */
-				Intent mainIntent = new Intent(SplashScreen.this,
-						SplashScreen2.class);
-				SplashScreen.this.startActivity(mainIntent);
-				SplashScreen.this.finish();
+				Intent mainIntent = new Intent(SplashScreen2.this,
+						MainActivity.class);
+				SplashScreen2.this.startActivity(mainIntent);
+				SplashScreen2.this.finish();
 			}
-		}, 1200); // 2900 for release
+		}, 2000); // 2900 for release
 
 	}
 }

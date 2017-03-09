@@ -1,4 +1,4 @@
-package veyhunk.battle_of_balls.sound;
+package veyhunk.battle_of_balls.sounds;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -7,7 +7,7 @@ import android.media.SoundPool;
 
 import veyhunk.battle_of_balls.R;
 
-public class GameMusic {
+public class GameSounds {
 	// 音乐类型
 	public static final int BGM = 0;
 	public static final int LOGO1 = 1;
@@ -27,7 +27,7 @@ public class GameMusic {
 	MediaPlayer player;// 背景音乐播放器
 	boolean isOpen;// 音乐开关量
 
-	public GameMusic(Context context) {
+	public GameSounds(Context context) {
 		this.context=context.getApplicationContext();
 		// TODO Auto-generated constructor stub
 		isOpen = true;

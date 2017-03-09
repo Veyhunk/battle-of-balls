@@ -1,6 +1,4 @@
-package veyhunk.battle_of_balls.ball;
-
-import java.util.ArrayList;
+package veyhunk.battle_of_balls.model;
 
 public class Myball extends ActionBall {
 //	// array

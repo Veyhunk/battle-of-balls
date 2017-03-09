@@ -1,4 +1,4 @@
-package veyhunk.battle_of_balls.ball;
+package veyhunk.battle_of_balls.model;
 
 /**
  * 定义食物球球的基类
