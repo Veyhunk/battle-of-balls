@@ -2,6 +2,7 @@ package veyhunk.battle_of_balls.db;
 
 /**
  * Created by Veyhunk on 09/March/2017.
+ * Game Params
  */
 
 public class GameParams {

@@ -8,43 +8,45 @@ import android.media.SoundPool;
 import veyhunk.battle_of_balls.R;
 
 public class GameSounds {
-	// 音乐类型
+
+    private Context context;
+    private SoundPool soundPool;// 音效播放器
+    private MediaPlayer player;// 背景音乐播放器
+    private boolean isOpen;// 音乐开关量
+	// 音乐列表
 	public static final int BGM = 0;
 	public static final int LOGO1 = 1;
 	public static final int LOGO2 = 2;
 	public static final int CLICK = 3;
 	public static final int INVITE = 4;
 	public static final int AVATAR = 5;
-	public static final int FUTION = 6;
+	public static final int BE_EATEN = 6;
 	public static final int BUBBLE = 7;
 	public static final int EAT_DEFAULT = 8;
-	public static final int EAT_QTDS = 9;
-	public static final int EAT_QSDD = 10;
-	public static final int EAT_ZBZG = 11;
-	private Context context;
-
-	SoundPool soundPool;// 音效播放器
-	MediaPlayer player;// 背景音乐播放器
-	boolean isOpen;// 音乐开关量
+	public static final int EAT_1 = 9;
+	public static final int EAT_2 = 10;
+	public static final int EAT_3 = 11;
 
 	public GameSounds(Context context) {
 		this.context=context.getApplicationContext();
-		// TODO Auto-generated constructor stub
-		isOpen = true;
 		player = MediaPlayer.create(context, R.raw.bgm);
 		player.setLooping(true);
+
 		soundPool = new SoundPool(11, AudioManager.STREAM_MUSIC, 5);
+		// TODO: 09/March/2017  Api version
 		soundPool.load(context, R.raw.logo1, 1);
 		soundPool.load(context, R.raw.logo2, 1);
 		soundPool.load(context, R.raw.click, 1);
 		soundPool.load(context, R.raw.invite, 1);
 		soundPool.load(context, R.raw.avatar, 1);
-		soundPool.load(context, R.raw.fusion, 1);
+		soundPool.load(context, R.raw.be_eaten, 1);
 		soundPool.load(context, R.raw.bubble, 1);
 		soundPool.load(context, R.raw.eat_default, 1);
 		soundPool.load(context, R.raw.eat_qingtingdianshui, 1);
 		soundPool.load(context, R.raw.eat_quanshuidingdong, 1);
 		soundPool.load(context, R.raw.eat_zhenbeizouge, 1);
+        setMusicOpen();
+
 //		try {
 //			Thread.sleep(1000);// 给予初始化音乐文件足够时间
 //		} catch (InterruptedException e) {
@@ -79,8 +81,8 @@ public class GameSounds {
 			case AVATAR:
 				soundPool.play(AVATAR, 1, 1, 0, 0, 1);
 				break;
-			case FUTION:
-				soundPool.play(FUTION, 1, 1, 0, 0, 1);
+			case BE_EATEN:
+				soundPool.play(BE_EATEN, 1, 1, 0, 0, 1);
 				break;
 			case BUBBLE:
 				soundPool.play(BUBBLE, 1, 1, 0, 0, 1);
@@ -88,14 +90,14 @@ public class GameSounds {
 			case EAT_DEFAULT:
 				soundPool.play(EAT_DEFAULT, 1, 1, 0, 0, 1);
 				break;
-			case EAT_QTDS:
-				soundPool.play(EAT_QTDS, 1, 1, 0, 0, 1);
+			case EAT_1:
+				soundPool.play(EAT_1, 1, 1, 0, 0, 1);
 				break;
-			case EAT_QSDD:
-				soundPool.play(EAT_QSDD, 1, 1, 0, 0, 1);
+			case EAT_2:
+				soundPool.play(EAT_2, 1, 1, 0, 0, 1);
 				break;
-			case EAT_ZBZG:
-				soundPool.play(EAT_ZBZG, 1, 1, 0, 0, 1);
+			case EAT_3:
+				soundPool.play(EAT_3, 1, 1, 0, 0, 1);
 				break;
 			}
 		}
@@ -111,7 +113,7 @@ public class GameSounds {
 	public void stopBGM() {
 		player.stop();
 		
-	}	public void restarBGM() {
+	}	public void restartBGM() {
 		player = MediaPlayer.create(context, R.raw.bgm);
 		player.setLooping(true);
 		player.start();
@@ -119,9 +121,8 @@ public class GameSounds {
 	/**
 	 * 设置音乐开启
 	 */
-	public void setMusicOpen() {
+    private void setMusicOpen() {
 		isOpen = true;
-		starMusic(BGM);
 	}
 
 	/**

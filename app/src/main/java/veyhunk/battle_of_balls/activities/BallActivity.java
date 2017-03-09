@@ -13,7 +13,6 @@ import veyhunk.battle_of_balls.surface_view.MySurfaceView;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
 
 public class BallActivity extends Activity implements OnEndOfGameInterface {
-	MySurfaceView mGameSurfaceView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,8 +32,6 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
 		MainActivity.gameSounds.starMusic(GameSounds.CLICK);
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Intent intent = getIntent();
-			System.out.println("onKeyDownonKeyDown" + MySurfaceView.bestScore
-					+ "   onKeyDownonKeyDown" + MySurfaceView.score);
 			if (MySurfaceView.bestScore < MySurfaceView.score) {
 				MySurfaceView.bestScore = MySurfaceView.score;
 			}
@@ -47,8 +44,6 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
 
 	@Override
 	public void onEndOfGame() {
-		// TODO Auto-generated method stub
-		System.out.println("act onEndOfGame" + MySurfaceView.bestScore);
 		Intent intent = getIntent();
 		setResult(2, intent);
 		finish();
