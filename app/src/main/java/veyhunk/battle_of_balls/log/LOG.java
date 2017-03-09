@@ -73,6 +73,18 @@ package log;
  *完成游戏时间限制
  */
 /**
+ * 
+ * @author Veyhunk
+ *@category 更新日志
+ *@version 3.9
+ * TODO list
+ * string merge
+ * final value
+ * class extract
+ * improved bubble system
+ * improved avatar system
+ */
+/**
  *
  * @author Veyhunk
  * @category 更新日志
