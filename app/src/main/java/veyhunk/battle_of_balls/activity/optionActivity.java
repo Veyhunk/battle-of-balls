@@ -1,17 +1,17 @@
 package veyhunk.battle_of_balls.activity;
 
-import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.main.MainActivity;
-import veyhunk.battle_of_balls.sound.GameMusic;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+
+import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.main.MainActivity;
+import veyhunk.battle_of_balls.sound.GameMusic;
 
 public class optionActivity extends Activity {
 	public static float speed = 20f;
@@ -20,8 +20,6 @@ public class optionActivity extends Activity {
 	SeekBar sbrDifficult;
 	SeekBar sbrSpeed;
 	SeekBar sbrGrow;
-
-	// 【Name: "感情淡了放盐啊"】 【 grow =20f】【speed = * 4F】 【color = 8】
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// Button btnSure= (Button) findViewById(R.id.button1);;

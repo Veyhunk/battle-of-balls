@@ -28,8 +28,7 @@
         android:paddingRight="30dp"
         android:textColor="@color/white"
         android:textSize="@dimen/fonesize" >
-
-        <requestFocus />
+        <!--<requestFocus />-->
     </EditText>
 
     <Button

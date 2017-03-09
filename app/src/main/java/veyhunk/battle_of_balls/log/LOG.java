@@ -77,6 +77,8 @@ package log;
  * @author Veyhunk
  *@category 更新日志
  *@version 3.9
+ * Added doble-click exit
+ * simplify code
  * TODO list
  * string merge
  * final value

@@ -1,13 +1,6 @@
 
 package veyhunk.battle_of_balls.surface_view;
 
-import java.util.ArrayList;
-
-import veyhunk.battle_of_balls.R;
-import veyhunk.battle_of_balls.sound.GameMusic;
-import veyhunk.battle_of_balls.ball.FoodBall;
-import veyhunk.battle_of_balls.utils.MathUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,8 +13,15 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
+import android.view.SurfaceView;
+
+import java.util.ArrayList;
+
+import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.ball.FoodBall;
+import veyhunk.battle_of_balls.sound.GameMusic;
+import veyhunk.battle_of_balls.utils.MathUtils;
 
 /**
  * 
@@ -30,7 +30,7 @@ import android.view.SurfaceHolder.Callback;
  */
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	// user customer
-	public static String ballName = "感情淡了放盐啊";// 感情淡了放盐啊
+	public static String ballName;// ballName
 	public static int ballColorIndex = 8;// playerColo
 	public static int score = 0;// score
 	public static int bestScore = 0;// score
@@ -141,14 +141,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	}
 
 	/**
-	 * 【Name: "感情淡了放盐啊"】 【speed = * 4F】 【 grow =20f】【AiDifficult = 6】【color
-	 * = 8】【oldBestScore】
-	 * 
 	 * @param Name speed grow Difficule color oldBestScore
 	 * @return
 	 */
 	public static void Setting(String Name, float speed, float grow,
-			float Difficule, int color, String oldBestScore) {
+                               float Difficule, int color, String oldBestScore) {
 		// user customer
 		if (Name.length() == 0) {
 			Name = "你个傻瓜没写名字";
@@ -156,8 +153,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		if (color > 6 || color < 0) {
 			color = 10;
 		}
-		bestScore = Integer.parseInt(oldBestScore);
-		ballName = Name;// 感情淡了放盐啊
+        bestScore = Integer.parseInt(oldBestScore);
+		ballName = Name;// ballName
 		ballMoveSpeed = speed / 10F;// ballGrowSpeed
 		ballGrowSpeed = grow / 10F;// ballMoveSpeed
 		ballColorIndex = color;// playerColor
@@ -245,10 +242,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 		// bestScore = score;
 		// }
 
-		// System.out.println("surf de" + bestScore + "surf run" + score);
-		// MainActivity.Setting(ballName, ballMoveSpeed * 10, ballGrowSpeed *
-		// 10,
-		// aiDifficult, ballColorIndex, bestScore);
 	}
 
 	/**
@@ -507,12 +500,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 					// bestScore
 					bestScore = score;
 				}
-
-				// System.out.println("surf run" + bestScore + "surf run" +
-				// score);
-				// MainActivity.Setting(ballName, ballMoveSpeed * 10,
-				// ballGrowSpeed * 10, aiDifficult, ballColorIndex,
-				// bestScore);
 
 				flagGameThread = false;
 				mOnEndOfGame.onEndOfGame();
