@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="veyhunk.battle_of_balls"
-    android:versionCode="1"
-    android:versionName="3.8">
-
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="25" />
-
+    package="veyhunk.battle_of_balls">
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
