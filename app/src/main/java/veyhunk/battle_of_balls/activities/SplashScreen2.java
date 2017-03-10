@@ -25,7 +25,7 @@ public class SplashScreen2 extends Activity {
 		// 设置全屏
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.splashscreen2);
+		setContentView(R.layout.splash_screen_2);
 
 
 		gameSounds =new GameSounds(getApplication());

@@ -9,9 +9,6 @@
     <color name="color5">#ff59a0d8</color>
     <color name="color6">#ffe03c5e</color>
     
-    <color name="font_deep">#ff97b180</color>
-    <color name="font_lite">#ff677d55</color>
-    
     <color name="white_transparent">#88ffffff</color>
     <color name="white">#ffffff</color>
     <color name="black_win">#dd08070c</color>
@@ -22,9 +19,13 @@
     <color name="background">#ff383838</color>
     <color name="backgroundStripe">#ff3f3f3f</color>
 
-    <color name="ui_bg">#fff8ffe0</color>
-    <color name="ui_btn_bg">#fff3fed4</color>
-    <color name="green_selected">#ff97b180</color>
-    <color name="green_unselect">#fff3fed4</color>
-    
+    <color name="green_lighter">#fff8ffe0</color>
+    <color name="green_light">#fff3fed4</color>
+    <color name="green_dark">#ff97b180</color>
+    <color name="green">#fff3fed4</color>
+    <color name="green_active">#84ce7c</color>
+
+    <color name="font_deep">#ff97b180</color>
+    <color name="font_lite">#ff677d55</color>
+
 </resources>

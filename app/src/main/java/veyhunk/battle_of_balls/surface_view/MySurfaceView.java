@@ -96,14 +96,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	private Bitmap bmpDir = BitmapFactory.decodeResource(this.getResources(),
 			R.drawable.dir);// 小球指针素材
 	private Bitmap bmpInfo = BitmapFactory.decodeResource(this.getResources(),
-			R.drawable.infowindows);// 球球通知框素材
+			R.drawable.toast);// 球球通知框素材
 	private Bitmap bmpBadgesVictory = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.badges_win);// 球球胜利徽章素材
+			this.getResources(), R.drawable.badges_victory);// 球球胜利徽章素材
 	private Bitmap bmpBadgesDefeat = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.badges_faile);// 球球失败徽章素材
+			this.getResources(), R.drawable.badges_defeat);// 球球失败徽章素材
 	// button
 	private Bitmap bmpBtnAvatar = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.button_aveta);// 分身按钮
+			this.getResources(), R.drawable.button_avetar);// 分身按钮
 	private Bitmap bmpBtnLaunch = BitmapFactory.decodeResource(
 			this.getResources(), R.drawable.button_launch);// 发射按钮
 	// Music

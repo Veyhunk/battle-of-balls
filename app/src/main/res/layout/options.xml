@@ -1,34 +1,38 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/setting" >
+    android:background="@drawable/setting">
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:paddingTop="100dp" >
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="0dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="100dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="310dp"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvDifficult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
-                android:text="@string/changgeDifficult"
+                android:text="@string/gameDifficult"
                 android:textColor="@color/font_lite"
-                android:textSize="@dimen/fonesize" />
+                android:textSize="@dimen/fontSize" />
 
             <SeekBar
                 android:id="@+id/sbrDifficult"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
                 android:max="50"
                 android:progress="1" />
 
@@ -36,65 +40,70 @@
                 android:id="@+id/tvSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
-                android:text="@string/changgeSpeed"
+                android:text="@string/moveSpeed"
                 android:textColor="@color/font_lite"
-                android:textSize="@dimen/fonesize" />
+                android:textSize="@dimen/fontSize" />
 
             <SeekBar
                 android:id="@+id/sbrSpeed"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:max="200"
+                android:layout_margin="@dimen/padding"
+                android:max="300"
+                android:paddingBottom="1dp"
                 android:progress="1" />
 
             <TextView
                 android:id="@+id/tvGrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
-                android:text="@string/changgeGrow"
+                android:text="@string/growSpeed"
                 android:textColor="@color/font_lite"
-                android:textSize="@dimen/fonesize" />
+                android:textSize="@dimen/fontSize" />
 
             <SeekBar
                 android:id="@+id/sbrGrow"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
                 android:max="1000"
                 android:progress="1" />
 
-            <TableRow
+            <android.support.v7.widget.ButtonBarLayout
                 android:id="@+id/tableRow1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginStart="@dimen/margin">
 
                 <Button
                     android:id="@+id/btnYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/ui_btn_bg"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="好的就是这样"
-                    android:textColor="@color/font_lite"
-                    android:textSize="@dimen/fonesize" 
-	       android:onClick="btnYes"/>
+                    android:layout_marginLeft="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:background="@drawable/button_style"
+                    android:onClick="btnYes"
+                    android:text="@string/settingSave"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fontSize" />
 
                 <Button
                     android:id="@+id/btnNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/ui_btn_bg"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="感觉不对 下次再改"
-                    android:textColor="@color/font_lite"
-                    android:textSize="@dimen/fonesize"
-	       android:onClick="btnNo"/>
-            </TableRow>
+                    android:layout_marginLeft="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:background="@drawable/button_style"
+                    android:onClick="btnNo"
+                    android:text="@string/settingCancel"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/fontSize" />
+            </android.support.v7.widget.ButtonBarLayout>
         </LinearLayout>
     </ScrollView>
 
