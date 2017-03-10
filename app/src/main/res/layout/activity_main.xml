@@ -23,28 +23,28 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/start"
         android:layout_alignStart="@+id/start"
-        android:layout_marginTop="110dp"
-        android:background="#0000"
+        android:layout_marginTop="120dp"
         android:ems="10"
         android:inputType="text"
-        android:paddingEnd="30dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="30dp"
-        android:paddingStart="0dp"
+        android:maxLines="1"
+        android:padding="@dimen/margin"
         android:textColor="@color/white"
+        android:background="@drawable/input_style"
         android:textSize="@dimen/fontSize">
         <!--<requestFocus />-->
     </EditText>
 
     <Button
         android:id="@+id/start"
-        android:layout_width="200dp"
+        android:layout_width="230dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:background="#00000000"
-        android:textColor="#00000000" />
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/button_style"
+        android:text="@string/gameStart"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fontSize_lg"/>
 
     <TextView
         android:id="@+id/tvBestScore"
@@ -53,18 +53,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:paddingEnd="10dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="10dp"
+        android:paddingTop="@dimen/margin"
         android:paddingStart="0dp"
-        android:paddingTop="3dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/margin"
+        android:paddingRight="@dimen/margin"
         android:text="@string/bestScore"
         android:textColor="@color/font_deep"
         android:textSize="@dimen/fontSize" />
 
     <TextView
         android:id="@+id/tvVersionNumber"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -72,11 +72,11 @@
         android:layout_toLeftOf="@id/start"
         android:layout_toStartOf="@id/start"
         android:gravity="bottom"
-        android:paddingBottom="3dp"
-        android:paddingEnd="10dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="10dp"
+        android:paddingBottom="@dimen/margin"
         android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="@dimen/margin"
+        android:paddingRight="@dimen/margin"
         android:text="@string/version"
         android:textColor="@color/font_deep"
         android:textSize="@dimen/fontSize" />

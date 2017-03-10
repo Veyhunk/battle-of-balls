@@ -2,24 +2,23 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 连框颜色值 -->
     <item>
-    <shape>
-        <solid android:color="@color/green_dark" />
-        <!-- android:radius 弧形的半径 -->
-        <corners android:radius="5dip" />
-    </shape>
-</item>
+        <shape>
+            <solid android:color="@color/font_shadow" />
+            <!-- android:radius 弧形的半径 -->
+            <corners android:radius="5dip" />
+        </shape>
+    </item>
     <!-- 主体背景颜色值 -->
     <item android:bottom="3dp" android:right="3dp">
         <shape>
             <!-- android:radius 弧形的半径 -->
             <corners android:radius="5dp" />
-            <solid android:color="@color/green_primary" />
+            <solid android:color="@color/font_bg" />
 
             <padding android:bottom="0dp"
                 android:left="10dp"
                 android:right="10dp"
                 android:top="0dp" />
-
         </shape>
     </item>
 </layer-list>

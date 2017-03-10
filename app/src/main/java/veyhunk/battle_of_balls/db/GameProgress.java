@@ -85,6 +85,13 @@ public class GameProgress extends Activity  {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+
+			GameParams.bestScore = "0";
+			GameParams.ballName = "感情淡了放盐啊";
+			GameParams.ballColorIndex = 0;
+			GameParams.ballGrowSpeed = 10;
+			GameParams.ballMoveSpeed = 10;
+			GameParams.aiDifficult = 10;
 		}
     }
 

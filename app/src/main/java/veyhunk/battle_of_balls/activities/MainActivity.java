@@ -56,10 +56,6 @@ public class MainActivity extends Activity implements OnTouchListener {
         edtName = (EditText) findViewById(R.id.edtName);
 
         tvBestScore.setText("最高分:" + GameParams.bestScore);
-
-        if (GameParams.bestScore.length() == 0) {
-            GameParams.bestScore = "0";
-        }
         edtName.setText(GameParams.ballName);
         for (Button button : buttons) button.setOnTouchListener(this);
 

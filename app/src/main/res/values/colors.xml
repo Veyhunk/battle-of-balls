@@ -23,9 +23,10 @@
     <color name="green_light">#fff3fed4</color>
     <color name="green_dark">#ff97b180</color>
     <color name="green">#fff3fed4</color>
-    <color name="green_active">#84ce7c</color>
+    <color name="green_primary">#84ce7c</color>
 
-    <color name="font_deep">#ff97b180</color>
-    <color name="font_lite">#ff677d55</color>
+    <color name="font_deep">#869b74</color>
+    <color name="font_shadow">#677d55</color>
+    <color name="font_bg">@color/font_deep</color>
 
 </resources>

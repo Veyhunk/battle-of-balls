@@ -25,7 +25,7 @@
                 android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
                 android:text="@string/gameDifficult"
-                android:textColor="@color/font_lite"
+                android:textColor="@color/font_shadow"
                 android:textSize="@dimen/fontSize" />
 
             <SeekBar
@@ -43,7 +43,7 @@
                 android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
                 android:text="@string/moveSpeed"
-                android:textColor="@color/font_lite"
+                android:textColor="@color/font_shadow"
                 android:textSize="@dimen/fontSize" />
 
             <SeekBar
@@ -62,7 +62,7 @@
                 android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
                 android:text="@string/growSpeed"
-                android:textColor="@color/font_lite"
+                android:textColor="@color/font_shadow"
                 android:textSize="@dimen/fontSize" />
 
             <SeekBar

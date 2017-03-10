@@ -10,5 +10,6 @@
     <string name="settingCancel">取消</string>
     <string name="bestScore">最高分</string>
     <string name="version">版本号</string>
+    <string name="gameStart">开始游戏</string>
 
 </resources>
