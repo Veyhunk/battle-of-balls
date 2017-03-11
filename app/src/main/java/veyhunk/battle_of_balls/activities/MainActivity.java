@@ -23,27 +23,8 @@ import veyhunk.battle_of_balls.db.GameParams;
 import veyhunk.battle_of_balls.db.GameProgress;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 
-/**
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @author Veyhunk
- *         更新日志
- * @version 10.0 完成游戏
- */
+
+
 public class MainActivity extends Activity implements OnTouchListener {
     private static GameSounds gameSounds;
     private static GameProgress gameProgress;
