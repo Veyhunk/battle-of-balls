@@ -29,13 +29,16 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
 	}
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		MainActivity.gameSounds.starMusic(GameSounds.CLICK);
+		GameSounds gameSounds;
+		gameSounds =new GameSounds(getApplication());
+		gameSounds.starMusic(GameSounds.CLICK);
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Intent intent = getIntent();
 			if (MySurfaceView.bestScore < MySurfaceView.score) {
 				MySurfaceView.bestScore = MySurfaceView.score;
 			}
 			setResult(2, intent);
+			gameSounds.recycle();
 			finish();
 
 		}

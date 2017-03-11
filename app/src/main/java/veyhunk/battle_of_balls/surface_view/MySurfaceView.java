@@ -33,7 +33,7 @@ import veyhunk.battle_of_balls.utils.MathUtils;
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	// user customer
 	public static String ballName;// ballName
-    Context context;
+	final Context context;
 	public static int ballColorIndex = 8;// playerColo
 	public static int score = 0;// score
 	public static int bestScore = 0;// score

@@ -14,15 +14,12 @@ import veyhunk.battle_of_balls.db.GameParams;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 
 public class optionActivity extends Activity {
-    SeekBar sbrDifficult;
-    SeekBar sbrSpeed;
-    SeekBar sbrGrow;
+    private SeekBar sbrDifficult;
+    private SeekBar sbrSpeed;
+    private SeekBar sbrGrow;
+    GameSounds gameSounds;
 
     protected void onCreate(Bundle savedInstanceState) {
-        // Button btnSure= (Button) findViewById(R.id.button1);;
-        // Button btnCenter = (Button) findViewById(R.id.button3);
-        // btnSure = (Button) findViewById(R.id.button1);
-        // btnCenter = (Button) findViewById(R.id.button3);
         super.onCreate(savedInstanceState);
         // 设置去除标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -31,6 +28,8 @@ public class optionActivity extends Activity {
         // 设置当前屏幕常亮
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.options);
+
+        gameSounds = new GameSounds(getApplication());
         sbrDifficult = (SeekBar) findViewById(R.id.sbrDifficult);
         sbrSpeed = (SeekBar) findViewById(R.id.sbrSpeed);
         sbrGrow = (SeekBar) findViewById(R.id.sbrGrow);
@@ -42,7 +41,8 @@ public class optionActivity extends Activity {
     }
 
     public void btnYes(View view) {
-        MainActivity.gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.recycle();
         Intent intent = getIntent();
         GameParams.ballMoveSpeed = sbrSpeed.getProgress();
         GameParams.aiDifficult = sbrDifficult.getProgress();
@@ -52,13 +52,15 @@ public class optionActivity extends Activity {
     }
 
     public void btnNo(View view) {
-        MainActivity.gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.recycle();
         setResult(2, getIntent());
         finish();
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        MainActivity.gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.recycle();
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 
             setResult(2, getIntent());

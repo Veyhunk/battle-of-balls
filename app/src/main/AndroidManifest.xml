@@ -5,22 +5,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="veyhunk.battle_of_balls.activities.MainActivity"
-            android:label="@string/app_name" 
-            android:screenOrientation="landscape" >
-        </activity>
-        <activity
-        android:name="veyhunk.battle_of_balls.activities.SplashScreen"
-        android:label="@string/app_name"
-        android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="true">
         <activity
             android:name="veyhunk.battle_of_balls.activities.SplashScreen2"
             android:label="@string/app_name"
@@ -35,6 +21,27 @@
             android:name="veyhunk.battle_of_balls.activities.BallActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape" >
+        </activity>
+
+        <activity
+            android:name="veyhunk.battle_of_balls.activities.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name="veyhunk.battle_of_balls.activities.SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

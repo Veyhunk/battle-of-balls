@@ -15,7 +15,6 @@ public class SplashScreen2 extends Activity {
 	 * Called when the activity is first created.
 	 */
 
-	private GameSounds gameSounds;
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -28,6 +27,7 @@ public class SplashScreen2 extends Activity {
 		setContentView(R.layout.splash_screen_2);
 
 
+		final GameSounds gameSounds;
 		gameSounds =new GameSounds(getApplication());
 		gameSounds.starMusic(GameSounds.LOGO2);
 		new Handler().postDelayed(new Runnable() {
@@ -37,6 +37,7 @@ public class SplashScreen2 extends Activity {
 						MainActivity.class);
 				SplashScreen2.this.startActivity(mainIntent);
 				SplashScreen2.this.finish();
+				gameSounds.recycle();
 			}
 		}, 2000); // 2900 for release
 

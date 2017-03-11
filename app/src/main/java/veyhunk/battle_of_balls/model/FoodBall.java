@@ -7,7 +7,7 @@ public class FoodBall {
 	public int state;
 	public double positionX;
 	public double positionY;
-	public float radius = 6;
+	public final float radius = 6;
 	public int colorDraw;
 
 	public FoodBall(double positionX, double positionY, int colorDraw) {

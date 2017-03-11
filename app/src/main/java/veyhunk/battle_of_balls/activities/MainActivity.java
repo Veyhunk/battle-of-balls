@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -25,18 +23,37 @@ import veyhunk.battle_of_balls.db.GameParams;
 import veyhunk.battle_of_balls.db.GameProgress;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 
+/**
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @author Veyhunk
+ *         更新日志
+ * @version 10.0 完成游戏
+ */
 public class MainActivity extends Activity implements OnTouchListener {
-    public static GameSounds gameSounds;
-    public static GameProgress gameProgress;
+    private static GameSounds gameSounds;
+    private static GameProgress gameProgress;
 
-    EditText edtName;
-    TextView tvBestScore;
-    //Double-click exit app
-    boolean isExitAppState = true;
+    private EditText edtName;
+    private TextView tvBestScore;
+    private boolean isNoExitAppState = true;//Double-click exit app
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gameSounds = new GameSounds(getApplication());
         gameProgress = new GameProgress(getApplication());
         gameProgress.Read();
         super.onCreate(savedInstanceState);
@@ -50,17 +67,17 @@ public class MainActivity extends Activity implements OnTouchListener {
 
         Button[] buttons = new Button[2];
         buttons[0] = (Button) findViewById(R.id.start);
-        buttons[1] = (Button) findViewById(R.id.setting);
+        buttons[1] = (Button) findViewById(R.id.btSetting);
         tvBestScore = (TextView) findViewById(R.id.tvBestScore);
         TextView versionNumber = (TextView) findViewById(R.id.tvVersionNumber);
-        edtName = (EditText) findViewById(R.id.edtName);
+        edtName = (EditText) findViewById(R.id.edtNickName);
 
-        tvBestScore.setText("最高分:" + GameParams.bestScore);
+        tvBestScore.setText(getString(R.string.bestScore) + ":" + GameParams.bestScore);
         edtName.setText(GameParams.ballName);
         for (Button button : buttons) button.setOnTouchListener(this);
 
         try {
-            versionNumber.setText("版本号：" + getVersionName());
+            versionNumber.setText(getString(R.string.version) + ":" + getVersionName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,65 +100,65 @@ public class MainActivity extends Activity implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        gameSounds.starMusic(GameSounds.CLICK);
-        switch (v.getId()) {
+        if (isNoExitAppState) {
+            isNoExitAppState = false;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    gameSounds = new GameSounds(getApplication());
+                    gameSounds.starMusic(GameSounds.CLICK);
+                    gameSounds.recycle();
+                    switch (v.getId()) {
 
-            case R.id.start:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    GameParams.ballName = edtName.getText().toString();
-                    Intent intent = new Intent();
-                    intent.setClass(this, BallActivity.class);
-                    startActivityForResult(intent, 1);
+                        case R.id.start:
+                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                GameParams.ballName = edtName.getText().toString();
+                                Intent intent = new Intent();
+                                intent.setClass(this, BallActivity.class);
+                                startActivityForResult(intent, 1);
 
+                            }
+                            break;
+                        case R.id.btSetting:
+                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                Intent intent = new Intent();
+                                intent.setClass(this, optionActivity.class);
+                                startActivityForResult(intent, 1);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                break;
-            case R.id.setting:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Intent intent = new Intent();
-                    intent.setClass(this, optionActivity.class);
-                    startActivityForResult(intent, 1);
-                }
-                break;
-            default:
-                break;
+                default:
+                    break;
+            }
         }
-        return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return (item.getItemId() == R.id.action_settings) || super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        isNoExitAppState = true;
         if (resultCode == 1) {
             gameProgress.Save();
         } else if (resultCode == 2) {
-            tvBestScore.setText("最高分:" + GameParams.bestScore);
+            tvBestScore.setText(getString(R.string.bestScore) + ":" + GameParams.bestScore);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (isExitAppState) { //isExitAppState初始值为true
-            isExitAppState = false;
+        gameSounds = new GameSounds(getApplication());
+        gameSounds.starMusic(GameSounds.CLICK);
+        gameSounds.recycle();
+        if (isNoExitAppState) { //isExitAppState初始值为true
+            isNoExitAppState = false;
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             new Timer().schedule(new TimerTask() {
 
                 @Override
                 public void run() {
-                    isExitAppState = true;
+                    isNoExitAppState = true;
                 }
             }, 2000);
         } else {
@@ -152,84 +169,3 @@ public class MainActivity extends Activity implements OnTouchListener {
 
 }
 
-
-/**
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.2
- *新增了AI互吃；横屏锁定；
- *新增游戏本地文件存储
- *
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.3
- *完善排行榜UI
- *完善积分体重UI
- *修复AI的0生命被吃
- *修复AI是否达到复活条件
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.4
- *完成游戏音效
- *完成游戏的回调
- *实现游戏最高分累积
- *json的保存读取与处理
- *内录游戏配音失败，一个晚上啊，声卡缺陷害死人，
- *反编译游戏成功，然而并没有什么卵用，都是图片
- *
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.5
- *新增启动动画
- *修复了边界移动黑屏
- *完成游戏配音内录
- *完成全局配音
- *完善游戏文件架构@@@@@@@@
- *
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.6
- *完善游戏文件架构@@@@@@@@
- *新增被吃提示框
- *新增游戏胜利和失败的提示框
- *新增吐球功能
- *
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.7
- *修复了分身系统导致的无法复活
- *移动GameMusic到sound包
-
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.8
- *修复了分身系统分身数量不对
- *增加分身系统吃豆豆
- *增加分身与ai的互吃
- *完成游戏时间限制
- *
- *
- * @author Veyhunk
- * 更新日志
- *@version 3.9
- * Added doble-click exit
- * simplify code
- * TODO list
- * string merge
- * final value
- * class extract
- * improved bubble system
- * improved avatar system
-
- *
- * @author Veyhunk
- *  更新日志
- * @version 10.0 完成游戏
- */

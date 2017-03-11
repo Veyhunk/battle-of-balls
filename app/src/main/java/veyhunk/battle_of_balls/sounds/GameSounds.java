@@ -9,8 +9,8 @@ import veyhunk.battle_of_balls.R;
 
 public class GameSounds {
 
-    private Context context;
-    private SoundPool soundPool;// 音效播放器
+    private final Context context;
+    private final SoundPool soundPool;// 音效播放器
     private MediaPlayer player;// 背景音乐播放器
     private boolean isOpen;// 音乐开关量
 	// 音乐列表
@@ -113,7 +113,8 @@ public class GameSounds {
 	public void stopBGM() {
 		player.stop();
 		
-	}	public void restartBGM() {
+	}
+	public void restartBGM() {
 		player = MediaPlayer.create(context, R.raw.bgm);
 		player.setLooping(true);
 		player.start();
@@ -129,6 +130,7 @@ public class GameSounds {
 	 * 音频回收
 	 */
 	public void recycle() {
+		player.reset();
 		player.release();
 		soundPool.release();
 	}

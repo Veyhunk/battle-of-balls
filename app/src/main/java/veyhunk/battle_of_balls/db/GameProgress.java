@@ -11,9 +11,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class GameProgress extends Activity  {
-	private static String fileName = "BallBastScore";
-    private Context context;
+public class GameProgress {
+	private final static String fileName = "BallBastScore";
+    private final Context context;
 
     public GameProgress(Context context) {
         this.context=context.getApplicationContext();
