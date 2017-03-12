@@ -25,6 +25,19 @@ import veyhunk.battle_of_balls.model.FoodBall;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 import veyhunk.battle_of_balls.utils.MathUtils;
 
+import static veyhunk.battle_of_balls.constants.Constants.actionDamping;
+import static veyhunk.battle_of_balls.constants.Constants.ballAiCount;
+import static veyhunk.battle_of_balls.constants.Constants.ballColor;
+import static veyhunk.battle_of_balls.constants.Constants.ballDefaultLife;
+import static veyhunk.battle_of_balls.constants.Constants.ballDefaultWeight;
+import static veyhunk.battle_of_balls.constants.Constants.ballFoodCount;
+import static veyhunk.battle_of_balls.constants.Constants.frameRate;
+import static veyhunk.battle_of_balls.constants.Constants.itemH;
+import static veyhunk.battle_of_balls.constants.Constants.itemW;
+import static veyhunk.battle_of_balls.constants.Constants.mapH;
+import static veyhunk.battle_of_balls.constants.Constants.mapW;
+import static veyhunk.battle_of_balls.constants.Constants.strArrayName;
+
 /**
  * 
  * @author Veyhunk
@@ -40,21 +53,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 	public static float ballGrowSpeed = 20f;// ballGrowSpeed
 	public static float ballMoveSpeed = 4F;// ballMoveSpeed
 	public static float aiDifficult = 6;// AiDifficult
-	// constant
-	private static final float actionDamping = 10;// 活动阻尼
-	private static final float itemW = 210, itemH = 32.5F; // tab_size
-	private static final int frameRate = 50;// 帧率（单位：Hz/s）
-	private static final int ballDefaultLife = 3;// ballDefaultLife
-	private static final int ballAiCount = 10;// ballAiCount
-	private static final int ballFoodCount = 600;// ballFoodCount
-	private static final int ballDefaultWeight = 1600;// ballDefaultSize
-	private static final int mapW = 3000, mapH = 2000; // Map_size
-	private static final int[] ballColor = new int[] { R.color.color0,
-			R.color.color1, R.color.color2, R.color.color3, R.color.color4,
-			R.color.color5, R.color.color6 };// 颜色表
-	private static final String[] strArrayName = new String[] { "触手TV大白",
-			"董大鹏", "关注我带团", "孙红雷", "北丘", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
-			"超萌的一天" };
 	// flag
 	private boolean flagGameThread;// 线程消亡的标识位
 	private int flagButtonIndex;// 线程消亡的标识位
