@@ -7,12 +7,12 @@ This is a standalone version of the Battle of Balls hope you like them!
 ## Project structure description
 ```java
 Battle of Balls
- |-app                          // App souce
+ |-app                          // App source
     |-build                     // Build
-    |-_src                      // Souce
+    |-_src                      // Source
       |- main                   // Main project context
         |- java                 // Contains the source code files
         |- res                  // Contains various visual resources.
-        |- resouces             // Resouces              
+        |- resouces             // Resources
  |-README.md          
 ```

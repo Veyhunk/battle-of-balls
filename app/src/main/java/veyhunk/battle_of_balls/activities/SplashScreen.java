@@ -56,7 +56,7 @@ import veyhunk.battle_of_balls.sounds.GameSounds;
  *完成游戏时间限制
  *
  *@version 3.9
- * Added doble-click exit
+ * Added double-click exit
  * simplify code
  * TODO list
  * string merge

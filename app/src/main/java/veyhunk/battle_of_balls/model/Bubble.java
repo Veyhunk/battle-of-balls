@@ -11,9 +11,9 @@ class Bubble {
 //		this.colorDraw = launchBall.colorDraw;
 //		this.positionX = launchBall.positionX;
 //		this.positionY = launchBall.positionY;
-//		this.dection = launchBall.dectionTarget;
-//		this.positionX += (launchBall.radius) * Math.cos(dection);
-//		this.positionY += (launchBall.radius) * Math.sin(dection);
+//		this.direction = launchBall.directionTarget;
+//		this.positionX += (launchBall.radius) * Math.cos(direction);
+//		this.positionY += (launchBall.radius) * Math.sin(direction);
 //		this.moveSpeed = ballMoveSpeed;
 //		this.targetX = positionX;
 //		this.targetY = positionY;
@@ -22,8 +22,8 @@ class Bubble {
 //
 //	public void move() {
 //		if (distance-- > 0) {
-//			targetX += moveSpeed * Math.cos(dection) * 4;
-//			targetY += moveSpeed * Math.sin(dection) * 4;
+//			targetX += moveSpeed * Math.cos(direction) * 4;
+//			targetY += moveSpeed * Math.sin(direction) * 4;
 //			if (targetX < 0) {
 //				// 边界判断
 //				targetX = 0;
@@ -57,7 +57,7 @@ class Bubble {
 //	double positionY;
 //	double targetX;
 //	double targetY;
-//	double dection = 0;
+//	double direction = 0;
 //	int distance = 20;
 //
 //}

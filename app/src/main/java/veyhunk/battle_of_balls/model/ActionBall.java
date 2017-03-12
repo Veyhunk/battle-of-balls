@@ -12,8 +12,8 @@ class ActionBall {
 //	int weight;
 //	int eatCount;
 //	int colorDraw;
-//	public int timeRandomActtionBegin;
-//	public int timeRandomActtionRang;
+//	public int timeRandomActionBegin;
+//	public int timeRandomActionRang;
 //	public int timeBallSafeRange = timeBallSafeRangeConstants;
 //	public int timeBallSafeBegin;
 //	float moveSpeed;
@@ -23,8 +23,8 @@ class ActionBall {
 //	double positionY;
 //	double targetX;
 //	double targetY;
-//	double dection = 0;
-//	double dectionTarget = 0;
+//	double direction = 0;
+//	double directionTarget = 0;
 //	String name;
 //
 //	// // positionX, positionY, colorDraw, size, targetX, targetY,
@@ -59,7 +59,7 @@ class ActionBall {
 //		this.targetX = positionX;
 //		this.targetY = positionY;
 //		this.weight = (int) weight;
-//		this.timeRandomActtionBegin = getClock() + 500;
+//		this.timeRandomActionBegin = getClock() + 500;
 //	}
 //
 //	// positionX, positionY, colorDraw, size
@@ -110,29 +110,29 @@ class ActionBall {
 //
 //	public void moveRandom() {
 //		// action();
-//		if (!getClockIsInRange(timeRandomActtionBegin,
-//				timeRandomActtionRang)) {
-//			timeRandomActtionBegin = getClock();
-//			timeRandomActtionRang = (int) (Math.random() * 12000);
-//			// dectionTarget = (Math.random() * Math.PI * 2) - Math.PI;
+//		if (!getClockIsInRange(timeRandomActionBegin,
+//				timeRandomActionRang)) {
+//			timeRandomActionBegin = getClock();
+//			timeRandomActionRang = (int) (Math.random() * 12000);
+//			// directionTarget = (Math.random() * Math.PI * 2) - Math.PI;
 //			if (myBall.state != 0 && weight > myBall.weight) {
-//				dectionTarget = getRadian((float) positionX,
+//				directionTarget = getRadian((float) positionX,
 //						(float) myBall.positionX, (float) positionY,
 //						(float) myBall.positionY);
 //			} else {
-//				dectionTarget = (Math.random() * Math.PI * 2) - Math.PI;
+//				directionTarget = (Math.random() * Math.PI * 2) - Math.PI;
 //			}
 //			moveSpeedRandom = (float) Math.random();
 //		} else {
-//			dection += Math.abs((dectionTarget - dection)) < Math.PI ? (((dectionTarget - dection) / actionDamping))
-//					: ((dectionTarget - dection) > 0 ? -(Math
-//							.abs((dectionTarget - dection - 2 * Math.PI)) / actionDamping)
-//							: +(Math.abs((dectionTarget - dection + 2 * Math.PI)) / actionDamping));
-//			dection += (dection >= Math.PI) ? (-2 * Math.PI)
-//					: ((dection <= -Math.PI) ? (+2 * Math.PI) : 0);
-//			targetX += moveSpeed * Math.cos(dectionTarget)
+//			direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / actionDamping))
+//					: ((directionTarget - direction) > 0 ? -(Math
+//							.abs((directionTarget - direction - 2 * Math.PI)) / actionDamping)
+//							: +(Math.abs((directionTarget - direction + 2 * Math.PI)) / actionDamping));
+//			direction += (direction >= Math.PI) ? (-2 * Math.PI)
+//					: ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
+//			targetX += moveSpeed * Math.cos(directionTarget)
 //					* (30 / radius * 1 + 0.6) * moveSpeedRandom;
-//			targetY += moveSpeed * Math.sin(dectionTarget)
+//			targetY += moveSpeed * Math.sin(directionTarget)
 //					* (30 / radius * 1 + 0.6) * moveSpeedRandom;
 //			if (targetX < 0) {
 //				// 边界判断
@@ -165,23 +165,23 @@ class ActionBall {
 //	}
 //
 //	public void move(float rocker) {
-//		if (dectionTarget == 404) {
+//		if (directionTarget == 404) {
 //			return;
 //		} else {
-//			dection += Math.abs((dectionTarget - dection)) < Math.PI ? (((dectionTarget - dection) / actionDamping))
-//					: ((dectionTarget - dection) > 0 ? -(Math
-//							.abs((dectionTarget - dection - 2 * Math.PI)) / actionDamping)
-//							: +(Math.abs((dectionTarget - dection + 2 * Math.PI)) / actionDamping));
-//			dection += (dection >= Math.PI) ? (-2 * Math.PI)
-//					: ((dection <= -Math.PI) ? (+2 * Math.PI) : 0);
-//			targetX += moveSpeed * Math.cos(dectionTarget)
+//			direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / actionDamping))
+//					: ((directionTarget - direction) > 0 ? -(Math
+//							.abs((directionTarget - direction - 2 * Math.PI)) / actionDamping)
+//							: +(Math.abs((directionTarget - direction + 2 * Math.PI)) / actionDamping));
+//			direction += (direction >= Math.PI) ? (-2 * Math.PI)
+//					: ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
+//			targetX += moveSpeed * Math.cos(directionTarget)
 //					* (30 / radius * 1 + 0.6) * rocker;
-//			targetY += moveSpeed * Math.sin(dectionTarget)
+//			targetY += moveSpeed * Math.sin(directionTarget)
 //					* (30 / radius * 1 + 0.6) * rocker;
 //			if (targetX < 0) {
 //				// 边界判断
 //				targetX = 0;
-//				dectionTarget = getRadian(ptRockerCtrlPoint.x,
+//				directionTarget = getRadian(ptRockerCtrlPoint.x,
 //						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
 //						ptRockerPosition.y);
 //				ptRockerPosition.x = ptRockerCtrlPoint.x;
@@ -192,7 +192,7 @@ class ActionBall {
 //			if (targetX > mapW) {
 //				// 边界判断
 //				targetX = mapW;
-//				dectionTarget = getRadian(ptRockerCtrlPoint.x,
+//				directionTarget = getRadian(ptRockerCtrlPoint.x,
 //						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
 //						ptRockerPosition.y);
 //				ptRockerPosition.x = ptRockerCtrlPoint.x;
@@ -202,7 +202,7 @@ class ActionBall {
 //			if (targetY < 0) {
 //				// 边界判断
 //				targetY = 0;
-//				dectionTarget = getRadian(ptRockerCtrlPoint.x,
+//				directionTarget = getRadian(ptRockerCtrlPoint.x,
 //						ptRockerPosition.x, ptRockerCtrlPoint.y,
 //						ptRockerCtrlPoint.y);
 //				ptRockerPosition.y = ptRockerCtrlPoint.y;
@@ -212,7 +212,7 @@ class ActionBall {
 //			if (targetY > mapH) {
 //				// 边界判断
 //				targetY = mapH;
-//				dectionTarget = getRadian(ptRockerCtrlPoint.x,
+//				directionTarget = getRadian(ptRockerCtrlPoint.x,
 //						ptRockerPosition.x, ptRockerCtrlPoint.y,
 //						ptRockerCtrlPoint.y);
 //				ptRockerPosition.y = ptRockerCtrlPoint.y;
