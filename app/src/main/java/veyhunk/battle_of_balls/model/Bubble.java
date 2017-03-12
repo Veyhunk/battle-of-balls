@@ -28,20 +28,20 @@ class Bubble {
 //				// 边界判断
 //				targetX = 0;
 //			}
-//			if (targetX > mapW) {
+//			if (targetX > MAP_WIDTH) {
 //				// 边界判断
-//				targetX = mapW;
+//				targetX = MAP_WIDTH;
 //			}
 //			if (targetY < 0) {
 //				// 边界判断
 //				targetY = 0;
 //			}
-//			if (targetY > mapH) {
+//			if (targetY > MAP_HEIGHT) {
 //				// 边界判断
-//				targetY = mapH;
+//				targetY = MAP_HEIGHT;
 //			}
-//			positionX += (targetX - positionX) / (actionDamping / 2);
-//			positionY += (targetY - positionY) / (actionDamping / 2);
+//			positionX += (targetX - positionX) / (ACTION_DAMPING / 2);
+//			positionY += (targetY - positionY) / (ACTION_DAMPING / 2);
 //			state++;
 //		}
 //	}

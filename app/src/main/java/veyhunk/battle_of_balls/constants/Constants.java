@@ -13,18 +13,18 @@ public  class Constants {
     public static boolean BALL_STATE_DEAD=false;
     public static boolean BALL_STATE_ALIVE=true;
     // constant
-    public static final float actionDamping = 10;// 活动阻尼
-    public static final float itemW = 210, itemH = 32.5F; // tab_size
-    public static final int frameRate = 50;// 帧率（单位：Hz/s）
-    public static final int ballDefaultLife = 3;// ballDefaultLife
-    public static final int ballAiCount = 10;// ballAiCount
-    public static final int ballFoodCount = 600;// ballFoodCount
-    public static final int ballDefaultWeight = 1600;// ballDefaultSize
-    public static final int mapW = 3000, mapH = 2000; // Map_size
-    public static final int[] ballColor = new int[] { R.color.color0,
+    public static final float ACTION_DAMPING = 10;// 活动阻尼
+    public static final float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // tab_size
+    public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
+    public static final int BALL_DEFAULT_LIFE = 3;// BALL_DEFAULT_LIFE
+    public static final int BALL_AI_COUNT = 10;// BALL_AI_COUNT
+    public static final int BALL_FOOD_COUNT = 600;// BALL_FOOD_COUNT
+    public static final int BALL_DEFAULT_WEIGHT = 1600;// ballDefaultSize
+    public static final int MAP_WIDTH = 3000, MAP_HEIGHT = 2000; // Map_size
+    public static final int[] BALL_COLORS = new int[] { R.color.color0,
             R.color.color1, R.color.color2, R.color.color3, R.color.color4,
             R.color.color5, R.color.color6 };// 颜色表
-    public static final String[] strArrayName = new String[] { "触手TV大白",
+    public static final String[] BALL_NAMES = new String[] { "触手TV大白",
             "董大鹏", "关注我带团", "孙红雷", "北丘", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
             "超萌的一天" };
 

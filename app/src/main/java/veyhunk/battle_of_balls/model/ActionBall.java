@@ -86,24 +86,24 @@ class ActionBall {
 //		if (state == 0) {
 //			// 死亡判断
 //			life--;
-//			reSetBall((int) (mapW * Math.random()),
-//					(int) (mapH * Math.random()), getColorRandom(),
-//					ballDefaultWeight);
+//			reSetBall((int) (MAP_WIDTH * Math.random()),
+//					(int) (MAP_HEIGHT * Math.random()), getColorRandom(),
+//					BALL_DEFAULT_WEIGHT);
 //		}
 //		if ((int) radius < (int) Math.sqrt(weight)) {
 //			// 阻尼增重
-//			radius += (Math.sqrt(weight) - radius) / actionDamping;
+//			radius += (Math.sqrt(weight) - radius) / ACTION_DAMPING;
 //		}
 //		if ((int) radius > (int) Math.sqrt(weight)) {
 //			// 阻尼减重
-//			radius -= (radius - Math.sqrt(weight)) / actionDamping;
+//			radius -= (radius - Math.sqrt(weight)) / ACTION_DAMPING;
 //		}
 //		weight -= (int) radius / 100 * 5;
 //		// 损耗减重
 //
 //		if (radius > 400) {
 //			// 角色球尺寸限制，重置尺寸
-//			weight = (int) ballDefaultWeight;
+//			weight = (int) BALL_DEFAULT_WEIGHT;
 //			timeBallSafeBegin = getClock();
 //		}
 //	}
@@ -124,10 +124,10 @@ class ActionBall {
 //			}
 //			moveSpeedRandom = (float) Math.random();
 //		} else {
-//			direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / actionDamping))
+//			direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / ACTION_DAMPING))
 //					: ((directionTarget - direction) > 0 ? -(Math
-//							.abs((directionTarget - direction - 2 * Math.PI)) / actionDamping)
-//							: +(Math.abs((directionTarget - direction + 2 * Math.PI)) / actionDamping));
+//							.abs((directionTarget - direction - 2 * Math.PI)) / ACTION_DAMPING)
+//							: +(Math.abs((directionTarget - direction + 2 * Math.PI)) / ACTION_DAMPING));
 //			direction += (direction >= Math.PI) ? (-2 * Math.PI)
 //					: ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
 //			targetX += moveSpeed * Math.cos(directionTarget)
@@ -141,10 +141,10 @@ class ActionBall {
 //				// ptRockerPosition.x = ptRockerCtrlPoint.x;
 //
 //			}
-//			if (targetX > mapW) {
+//			if (targetX > MAP_WIDTH) {
 //				// 边界判断
-//				targetX = mapW;
-//				// myBall.targetX = mapW;
+//				targetX = MAP_WIDTH;
+//				// myBall.targetX = MAP_WIDTH;
 //				// ptRockerPosition.x = ptRockerCtrlPoint.x;
 //			}
 //			if (targetY < 0) {
@@ -153,14 +153,14 @@ class ActionBall {
 //				// myBall.targetY = 0;
 //				// ptRockerPosition.y = ptRockerCtrlPoint.y;
 //			}
-//			if (targetY > mapH) {
+//			if (targetY > MAP_HEIGHT) {
 //				// 边界判断
-//				targetY = mapH;
-//				// // myBall.targetY = mapH;
+//				targetY = MAP_HEIGHT;
+//				// // myBall.targetY = MAP_HEIGHT;
 //				// ptRockerPosition.y = ptRockerCtrlPoint.y;
 //			}
-//			positionX += (targetX - positionX) / actionDamping;
-//			positionY += (targetY - positionY) / actionDamping;
+//			positionX += (targetX - positionX) / ACTION_DAMPING;
+//			positionY += (targetY - positionY) / ACTION_DAMPING;
 //		}
 //	}
 //
@@ -168,10 +168,10 @@ class ActionBall {
 //		if (directionTarget == 404) {
 //			return;
 //		} else {
-//			direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / actionDamping))
+//			direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / ACTION_DAMPING))
 //					: ((directionTarget - direction) > 0 ? -(Math
-//							.abs((directionTarget - direction - 2 * Math.PI)) / actionDamping)
-//							: +(Math.abs((directionTarget - direction + 2 * Math.PI)) / actionDamping));
+//							.abs((directionTarget - direction - 2 * Math.PI)) / ACTION_DAMPING)
+//							: +(Math.abs((directionTarget - direction + 2 * Math.PI)) / ACTION_DAMPING));
 //			direction += (direction >= Math.PI) ? (-2 * Math.PI)
 //					: ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
 //			targetX += moveSpeed * Math.cos(directionTarget)
@@ -189,14 +189,14 @@ class ActionBall {
 //				// ptRockerPosition.x = ptRockerCtrlPoint.x;
 //
 //			}
-//			if (targetX > mapW) {
+//			if (targetX > MAP_WIDTH) {
 //				// 边界判断
-//				targetX = mapW;
+//				targetX = MAP_WIDTH;
 //				directionTarget = getRadian(ptRockerCtrlPoint.x,
 //						ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
 //						ptRockerPosition.y);
 //				ptRockerPosition.x = ptRockerCtrlPoint.x;
-//				// myBall.targetX = mapW;
+//				// myBall.targetX = MAP_WIDTH;
 //				// ptRockerPosition.x = ptRockerCtrlPoint.x;
 //			}
 //			if (targetY < 0) {
@@ -209,18 +209,18 @@ class ActionBall {
 //				// myBall.targetY = 0;
 //				// ptRockerPosition.y = ptRockerCtrlPoint.y;
 //			}
-//			if (targetY > mapH) {
+//			if (targetY > MAP_HEIGHT) {
 //				// 边界判断
-//				targetY = mapH;
+//				targetY = MAP_HEIGHT;
 //				directionTarget = getRadian(ptRockerCtrlPoint.x,
 //						ptRockerPosition.x, ptRockerCtrlPoint.y,
 //						ptRockerCtrlPoint.y);
 //				ptRockerPosition.y = ptRockerCtrlPoint.y;
-//				// // myBall.targetY = mapH;
+//				// // myBall.targetY = MAP_HEIGHT;
 //				// ptRockerPosition.y = ptRockerCtrlPoint.y;
 //			}
-//			positionX += (targetX - positionX) / actionDamping;
-//			positionY += (targetY - positionY) / actionDamping;
+//			positionX += (targetX - positionX) / ACTION_DAMPING;
+//			positionY += (targetY - positionY) / ACTION_DAMPING;
 //		}
 //
 //	}
