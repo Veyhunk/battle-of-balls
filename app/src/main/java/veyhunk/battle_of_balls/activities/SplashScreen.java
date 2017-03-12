@@ -16,7 +16,7 @@ import veyhunk.battle_of_balls.sounds.GameSounds;
  *
  * Code refactor
  * Removed bubble system
- *
+ * Refactored Colors & Clock
  *
  *@version v4.x
  * TODO list

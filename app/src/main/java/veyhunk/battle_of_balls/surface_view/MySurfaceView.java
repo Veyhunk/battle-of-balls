@@ -17,8 +17,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-import java.util.ArrayList;
-
 import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.db.GameParams;
 import veyhunk.battle_of_balls.model.FoodBall;
@@ -235,7 +233,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                                     .getWidth())) {
                                 gameSounds.starMusic(GameSounds.BUBBLE);
                             } else {
-                                myBall.avatar();
+//                                myBall.avatar();
                                 gameSounds.starMusic(GameSounds.AVATAR);
                             }
                             flagButtonIndex = index;
@@ -310,7 +308,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         if (event.getX() < (screenW - bmpBtnLaunch.getWidth())) {
                             gameSounds.starMusic(GameSounds.BUBBLE);
                         } else {
-                            myBall.avatar();
+//                            myBall.avatar();
                             gameSounds.starMusic(GameSounds.AVATAR);
                         }
                         flagButtonIndex = 1;
@@ -499,13 +497,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 }
                 if (myBall.state != 0) {
                     // 绘制角色球
-                    if (myBall.isAvatar == 0) {
-                        drawBall(myBall);
-                    } else {
-                        for (ActionBall avatar : myBall.myAvatars) {
-                            drawBall(avatar);
-                        }
-                    }
+                    drawBall(myBall);
                 }
                 canvas.restore();
 
@@ -750,30 +742,15 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //            flagRockerDisplay = false;
         for (FoodBall foodBall : FoodBallList) {
             // 食物小球
-            if (myBall.isAvatar == 0) {
-                if ((foodBall.positionX - myBall.positionX)
-                        * (foodBall.positionX - myBall.positionX)
-                        + (foodBall.positionY - myBall.positionY)
-                        * (foodBall.positionY - myBall.positionY) < (myBall.radius)
-                        * (myBall.radius)) {
-                    // 判断是否被吃
-                    foodBall.state = 0;
-                    myBall.weight += ballGrowSpeed;
-                    score += ballGrowSpeed / 10;
-                }
-            } else {
-                for (ActionBall avatar : myBall.myAvatars) {
-                    if ((foodBall.positionX - avatar.positionX)
-                            * (foodBall.positionX - avatar.positionX)
-                            + (foodBall.positionY - avatar.positionY)
-                            * (foodBall.positionY - avatar.positionY) < (avatar.radius)
-                            * (avatar.radius)) {
-                        // 判断是否被吃
-                        foodBall.state = 0;
-                        avatar.weight += ballGrowSpeed;
-                        score += ballGrowSpeed / 10;
-                    }
-                }
+            if ((foodBall.positionX - myBall.positionX)
+                    * (foodBall.positionX - myBall.positionX)
+                    + (foodBall.positionY - myBall.positionY)
+                    * (foodBall.positionY - myBall.positionY) < (myBall.radius)
+                    * (myBall.radius)) {
+                // 判断是否被吃
+                foodBall.state = 0;
+                myBall.weight += ballGrowSpeed;
+                score += ballGrowSpeed / 10;
             }
             for (ActionBall aiBall2 : AiBallList) {
                 // 判断是否被吃
@@ -796,85 +773,41 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         for (index = 0; index < AiBallList.length; index++) {
             // AI大球
             ActionBall aiBall = AiBallList[index];
-            if (myBall.isAvatar == 0) {
-                if (aiBall.life > 0
-                        && ((aiBall.positionX - myBall.positionX)
-                        * (aiBall.positionX - myBall.positionX)
-                        + (aiBall.positionY - myBall.positionY)
-                        * (aiBall.positionY - myBall.positionY) < (myBall.radius)
-                        * (myBall.radius) || (aiBall.positionX - myBall.positionX)
-                        * (aiBall.positionX - myBall.positionX)
-                        + (aiBall.positionY - myBall.positionY)
-                        * (aiBall.positionY - myBall.positionY) < (aiBall.radius)
-                        * (aiBall.radius))) {
+            if (aiBall.life > 0
+                    && ((aiBall.positionX - myBall.positionX)
+                    * (aiBall.positionX - myBall.positionX)
+                    + (aiBall.positionY - myBall.positionY)
+                    * (aiBall.positionY - myBall.positionY) < (myBall.radius)
+                    * (myBall.radius) || (aiBall.positionX - myBall.positionX)
+                    * (aiBall.positionX - myBall.positionX)
+                    + (aiBall.positionY - myBall.positionY)
+                    * (aiBall.positionY - myBall.positionY) < (aiBall.radius)
+                    * (aiBall.radius))) {
+                // AI吃主角
+                if (aiBall.radius > (myBall.radius + myBall.radius / 10)) {
                     // AI吃主角
-                    if (aiBall.radius > (myBall.radius + myBall.radius / 10)) {
-                        // AI吃主角
-                        // 判断是否无敌时间
-                        // 主角死亡标记
-                        myBall.state = 0;
-                        myBall.eatByID = index;
-                        aiBall.life++;
-                        aiBall.weight += myBall.weight;
-                        myBall.weight = 0;
-                        aiBall.eatCount++;
-                        gameSounds.starMusic(GameSounds.EAT_DEFAULT);
+                    // 判断是否无敌时间
+                    // 主角死亡标记
+                    myBall.state = 0;
+                    myBall.eatByID = index;
+                    aiBall.life++;
+                    aiBall.weight += myBall.weight;
+                    myBall.weight = 0;
+                    aiBall.eatCount++;
+                    gameSounds.starMusic(GameSounds.EAT_DEFAULT);
 
-                    } else if (myBall.radius > (aiBall.radius + aiBall.radius / 10)
-                            ) {
-                        // 主角吃AI
-                        aiBall.state = 0;
-                        myBall.eatCount++;
-                        myBall.life++;
-                        myBall.weight += aiBall.weight;
-                        aiBall.weight = 0;
-                        score += aiBall.weight / 10;
-                        gameSounds.starMusic(GameSounds.EAT_3);
-                    }
-
+                } else if (myBall.radius > (aiBall.radius + aiBall.radius / 10)
+                        ) {
+                    // 主角吃AI
+                    aiBall.state = 0;
+                    myBall.eatCount++;
+                    myBall.life++;
+                    myBall.weight += aiBall.weight;
+                    aiBall.weight = 0;
+                    score += aiBall.weight / 10;
+                    gameSounds.starMusic(GameSounds.EAT_3);
                 }
-            } else {
-                for (int index = 0; index < myBall.myAvatars.size(); index++) {
-                    ActionBall avatar = myBall.myAvatars.get(index);
-                    if (aiBall.life > 0
-                            && ((aiBall.positionX - avatar.positionX)
-                            * (aiBall.positionX - avatar.positionX)
-                            + (aiBall.positionY - avatar.positionY)
-                            * (aiBall.positionY - avatar.positionY) < (avatar.radius)
-                            * (avatar.radius) || (aiBall.positionX - avatar.positionX)
-                            * (aiBall.positionX - avatar.positionX)
-                            + (aiBall.positionY - avatar.positionY)
-                            * (aiBall.positionY - avatar.positionY) < (aiBall.radius)
-                            * (aiBall.radius))) {
-                        // AI吃主角
-                        if (aiBall.radius > (avatar.radius + avatar.radius / 10)) {
-                            // AI吃主角
-                            // 主角死亡标记
-                            aiBall.life++;
-                            aiBall.weight += avatar.weight;
-                            aiBall.eatCount++;
-                            gameSounds.starMusic(GameSounds.EAT_DEFAULT);
-                            myBall.myAvatars.remove(index--);
-                            myBall.isAvatar--;
-                            if (myBall.myAvatars.size() == 0) {
-                                // 主角死亡标记
-                                myBall.state = 0;
-                                myBall.eatByID = index;
-                            }
-                            // TODO: 09/March/2017  continue;
-                        } else if (avatar.radius > (aiBall.radius + aiBall.radius / 10)) {
-                            // 主角吃AI
-                            aiBall.state = 0;
-                            avatar.eatCount++;
-                            avatar.life++;
-                            avatar.weight += aiBall.weight;
-                            aiBall.weight = 0;
-                            score += aiBall.weight / 10;
-                            gameSounds.starMusic(GameSounds.EAT_3);
-                        }
 
-                    }
-                }
             }
 
             // 排名
@@ -1188,14 +1121,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      * 定义角色球球的类，即角色球
      */
     private class MyBall extends ActionBall {
-        // array
-        ArrayList<ActionBall> myAvatars;
-        int isAvatar;
 
         MyBall(double positionX, double positionY, int colorDraw, float weight,
                String nameString, int life) {
             super(positionX, positionY, colorDraw, weight, nameString, life);
-            isAvatar = 0;
         }
 
         @Override
@@ -1203,131 +1132,51 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             if (state == 0) {
                 // 死亡判断
                 life--;
-                isAvatar = 0;
-                myAvatars = null;
                 reSetBall((int) (MAP_WIDTH * Math.random()),
                         (int) (MAP_HEIGHT * Math.random()), getColorRandom());
             }
+            if ((int) radius < (int) Math.sqrt(weight)) {
+                // 阻尼增重
+                radius += (Math.sqrt(weight) - radius) / ACTION_DAMPING;
+            }
+            if ((int) radius > (int) Math.sqrt(weight)) {
+                // 阻尼减重
+                radius -= (radius - Math.sqrt(weight)) / ACTION_DAMPING;
+            }
+//            weight -= (int) radius / 100 * 5;
+//            // 损耗减重
 
-            if (isAvatar == 0) {
-                if ((int) radius < (int) Math.sqrt(weight)) {
-                    // 阻尼增重
-                    radius += (Math.sqrt(weight) - radius) / ACTION_DAMPING;
-                }
-                if ((int) radius > (int) Math.sqrt(weight)) {
-                    // 阻尼减重
-                    radius -= (radius - Math.sqrt(weight)) / ACTION_DAMPING;
-                }
-                weight -= (int) radius / 100 * 5;
-                // 损耗减重
-
-                if (radius > 400) {
-                    // 角色球尺寸限制，重置尺寸
-                    weight = BALL_DEFAULT_WEIGHT;
-                }
-            } else {
-                for (ActionBall avatar : myAvatars) {
-                    if ((int) avatar.radius < (int) Math.sqrt(avatar.weight)) {
-                        // 阻尼增重
-                        avatar.radius += (Math.sqrt(avatar.weight) - avatar.radius)
-                                / ACTION_DAMPING;
-                    }
-                    if ((int) avatar.radius > (int) Math.sqrt(avatar.weight)) {
-                        // 阻尼减重
-                        avatar.radius -= (avatar.radius - Math
-                                .sqrt(avatar.weight)) / ACTION_DAMPING;
-                    }
-                    avatar.weight -= (int) avatar.radius / 100 * 5;
-                    // 损耗减重
-                }
+            if (radius > 400) {
+                // 角色球尺寸限制，重置尺寸
+                weight = BALL_DEFAULT_WEIGHT;
             }
         }
 
         @Override
         public void move(float rocker) {
-            if (isAvatar == 0) {
-                super.move(rocker);
-            } else {
-                targetX = 0;
-                targetY = 0;
-                for (ActionBall avatar : myAvatars) {
-                    avatar.directionTarget = directionTarget;
-                    if (directionTarget == 404) {
-                        return;
-                    } else {
-                        avatar.direction += Math
-                                .abs((directionTarget - avatar.direction)) < Math.PI ? (((directionTarget - avatar.direction) / ACTION_DAMPING))
-                                : ((directionTarget - avatar.direction) > 0 ? -(Math
-                                .abs((directionTarget - avatar.direction - 2 * Math.PI)) / ACTION_DAMPING)
-                                : +(Math.abs((directionTarget
-                                - avatar.direction + 2 * Math.PI)) / ACTION_DAMPING));
-                        avatar.direction += (avatar.direction >= Math.PI) ? (-2 * Math.PI)
-                                : ((avatar.direction <= -Math.PI) ? (+2 * Math.PI)
-                                : 0);
-                        avatar.targetX += moveSpeed * Math.cos(directionTarget)
-                                * (30 / avatar.radius * 1 + 0.6) * rocker;
-                        avatar.targetY += moveSpeed * Math.sin(directionTarget)
-                                * (30 / avatar.radius * 1 + 0.6) * rocker;
-                        if (avatar.targetX < 0) {
-                            // 边界判断
-                            avatar.targetX = 0;
-                            // myBall.targetX = 0;
-                            // ptRockerPosition.x = ptRockerCtrlPoint.x;
-
-                        }
-                        if (avatar.targetX > MAP_WIDTH) {
-                            // 边界判断
-                            avatar.targetX = MAP_WIDTH;
-                            // myBall.targetX = MAP_WIDTH;
-                            // ptRockerPosition.x = ptRockerCtrlPoint.x;
-                        }
-                        if (avatar.targetY < 0) {
-                            // 边界判断
-                            avatar.targetY = 0;
-                            // myBall.targetY = 0;
-                            // ptRockerPosition.y = ptRockerCtrlPoint.y;
-                        }
-                        if (avatar.targetY > MAP_HEIGHT) {
-                            // 边界判断
-                            avatar.targetY = MAP_HEIGHT;
-                            // // myBall.targetY = MAP_HEIGHT;
-                            // ptRockerPosition.y = ptRockerCtrlPoint.y;
-                        }
-                        avatar.positionX += (avatar.targetX - avatar.positionX)
-                                / ACTION_DAMPING;
-                        avatar.positionY += (avatar.targetY - avatar.positionY)
-                                / ACTION_DAMPING;
-                        targetX += avatar.positionX;
-                        targetY += avatar.positionY;
-                    }
-                }
-                positionX += (targetX / myAvatars.size() - positionX)
-                        / ACTION_DAMPING;
-                positionY += (targetY / myAvatars.size() - positionY)
-                        / ACTION_DAMPING;
-            }
+            super.move(rocker);
         }
 
         void avatar() {
-            if (isAvatar > 15) {
-                return;
-            }
-            if (isAvatar == 0) {
-                myAvatars = new ArrayList<>();
-                myAvatars.add(new ActionBall(positionX, positionY, colorDraw,
-                        weight, name, 1));
-                isAvatar = 1;
-            }
-            for (int i = 0; i < isAvatar; i++) {
-                ActionBall avatar = myAvatars.get(i);
-                avatar.weight /= 2;
-                myAvatars.add(new ActionBall(avatar.positionX
-                        + Math.sqrt(weight) * 2 * Math.cos(directionTarget),
-                        avatar.positionY + Math.sqrt(weight) * 2
-                                * Math.sin(directionTarget), colorDraw,
-                        avatar.weight, name, 1));
-            }
-            isAvatar = myAvatars.size();
+//            if (isAvatar > 15) {
+//                return;
+//            }
+//            if (isAvatar == 0) {
+//                myAvatars = new ArrayList<>();
+//                myAvatars.add(new ActionBall(positionX, positionY, colorDraw,
+//                        weight, name, 1));
+//                isAvatar = 1;
+//            }
+//            for (int i = 0; i < isAvatar; i++) {
+//                ActionBall avatar = myAvatars.get(i);
+//                avatar.weight /= 2;
+//                myAvatars.add(new ActionBall(avatar.positionX
+//                        + Math.sqrt(weight) * 2 * Math.cos(directionTarget),
+//                        avatar.positionY + Math.sqrt(weight) * 2
+//                                * Math.sin(directionTarget), colorDraw,
+//                        avatar.weight, name, 1));
+//            }
+//            isAvatar = myAvatars.size();
         }
     }
 
