@@ -13,6 +13,6 @@ Battle of Balls
       |- main                   // Main project context
         |- java                 // Contains the source code files
         |- res                  // Contains various visual resources.
-        |- resouces             // Resources
+        |- resources             // Resources
  |-README.md          
 ```

@@ -57,7 +57,9 @@ import veyhunk.battle_of_balls.sounds.GameSounds;
  *
  *@version 3.9
  * Added double-click exit
- * simplify code
+ * Simplified code
+ * Inspected code
+ * 
  * TODO list
  * string merge
  * final value

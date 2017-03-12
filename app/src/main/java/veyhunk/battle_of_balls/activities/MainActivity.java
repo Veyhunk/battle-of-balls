@@ -26,8 +26,8 @@ import veyhunk.battle_of_balls.sounds.GameSounds;
 
 
 public class MainActivity extends Activity implements OnTouchListener {
-    private static GameSounds gameSounds;
-    private static GameProgress gameProgress;
+    private  GameSounds gameSounds;
+    private  GameProgress gameProgress;
 
     private EditText edtName;
     private TextView tvBestScore;
@@ -52,13 +52,15 @@ public class MainActivity extends Activity implements OnTouchListener {
         tvBestScore = (TextView) findViewById(R.id.tvBestScore);
         TextView versionNumber = (TextView) findViewById(R.id.tvVersionNumber);
         edtName = (EditText) findViewById(R.id.edtNickName);
-
-        tvBestScore.setText(getString(R.string.bestScore) + ":" + GameParams.bestScore);
+        String strBestScore = getString(R.string.bestScore) + ":" + GameParams.bestScore;
+        tvBestScore.setText(strBestScore);
         edtName.setText(GameParams.ballName);
         for (Button button : buttons) button.setOnTouchListener(this);
 
         try {
-            versionNumber.setText(getString(R.string.version) + ":" + getVersionName());
+
+            String strVersionNumber = getString(R.string.version) + ":" + getVersionName();
+            versionNumber.setText(strVersionNumber);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -123,7 +125,8 @@ public class MainActivity extends Activity implements OnTouchListener {
         if (resultCode == 1) {
             gameProgress.Save();
         } else if (resultCode == 2) {
-            tvBestScore.setText(getString(R.string.bestScore) + ":" + GameParams.bestScore);
+            String strBestScore = getString(R.string.bestScore) + ":" + GameParams.bestScore;
+            tvBestScore.setText(strBestScore);
         }
     }
 

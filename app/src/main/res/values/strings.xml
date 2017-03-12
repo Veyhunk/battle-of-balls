@@ -2,16 +2,15 @@
 <resources>
 
     <string name="app_name">球球大作战</string>
-    <string name="action_settings">设置</string>
+    <string name="gameStart">开始游戏</string>
+    <string name="nickName">昵称</string>
+    <string name="setting">设置</string>
+    <string name="settingSave">保存设置</string>
+    <string name="settingCancel">取消</string>
     <string name="gameDifficult">游戏难度</string>
     <string name="moveSpeed">移动速度</string>
     <string name="growSpeed">发育速度</string>
-    <string name="settingSave">保存设置</string>
-    <string name="settingCancel">取消</string>
     <string name="bestScore">最高分</string>
     <string name="version">版本号</string>
-    <string name="gameStart">开始游戏</string>
-    <string name="setting">设置</string>
-    <string name="nickName">昵称</string>
     
 </resources>
