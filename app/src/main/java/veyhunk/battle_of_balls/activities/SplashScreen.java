@@ -15,15 +15,16 @@ import veyhunk.battle_of_balls.sounds.GameSounds;
  *@version v4.1
  *
  * Code refactor
+ * Removed bubble system
  *
  *
  *@version v4.x
  * TODO list
- * Code refactor
- * remove bubble system
- * remove avatar system
- * Added team system
- * Added char system
+ * Code refactoring
+ * Remove bubble system
+ * Remove avatar system
+ * Add team system
+ * Add char system
  */
 
 public class SplashScreen extends Activity {
