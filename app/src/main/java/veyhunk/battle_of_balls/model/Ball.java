@@ -14,8 +14,7 @@ import static veyhunk.battle_of_balls.utils.Clock.getClockIsInRange;
 
 public class Ball {
     //    public
-    int ID;
-    private BallTeam team;
+    public int ID;
     public String name;
     public boolean state;
     public int colorDraw;
@@ -23,7 +22,9 @@ public class Ball {
     public Point position;
     public float direction = 0;
     public float directionTarget = 0;
+
     //    private
+    private BallTeam team;
     private int weight;
     private int timeRandomActionBegin;
     private int timeRandomActionRang;
@@ -148,6 +149,7 @@ public class Ball {
     private void avatar() {
 
     }
+
     public void setTeam(BallTeam team) {
         this.team = team;
     }

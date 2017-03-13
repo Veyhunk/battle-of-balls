@@ -1,4 +1,3 @@
-
 package veyhunk.battle_of_balls.surface_view;
 
 import android.content.Context;
@@ -52,9 +51,11 @@ import static veyhunk.battle_of_balls.utils.Colors.getColorRandom;
  * @author Veyhunk
  */
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
+    public static int score = 0;// score
     // user customer
     final Context context;
-    public static int score = 0;// score
+    // callback
+    protected OnEndOfGameInterface mOnEndOfGame; // callback interface
     Clock clock;
     // flag
     private boolean flagGameThread;// 线程消亡的标识位
@@ -73,7 +74,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private Paint paint;// 声明一个画笔
     private Paint paintFont;// 声明一个画笔
     private Canvas canvas;// 声明一个画布
-
     // 声明Ball
     private MyBall myBall;
     private FoodBall[] FoodBallList = new FoodBall[BALL_FOOD_COUNT];
@@ -83,7 +83,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             R.drawable.rank);// 排行榜素材
     private Bitmap bmpDir = BitmapFactory.decodeResource(this.getResources(),
             R.drawable.dir);// 小球指针素材
-//    private Bitmap bmpInfo = BitmapFactory.decodeResource(this.getResources(),
+    //    private Bitmap bmpInfo = BitmapFactory.decodeResource(this.getResources(),
 //            R.drawable.toast);// 球球通知框素材
     private Bitmap bmpBadgesVictory = BitmapFactory.decodeResource(
             this.getResources(), R.drawable.badges_victory);// 球球胜利徽章素材
@@ -96,15 +96,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             this.getResources(), R.drawable.button_launch);// 发射按钮
     // Music
     private GameSounds gameSounds;
-    // callback
-    protected OnEndOfGameInterface mOnEndOfGame; // callback interface
-
-    /**
-     * callback interface
-     */
-    public interface OnEndOfGameInterface {
-        void onEndOfGame();
-    }
 
     /**
      * SurfaceView初始化函数
@@ -412,7 +403,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 //game over: 满足死亡的生命数，且不在等待时间内
 
                 // check bestScore
-                if (Integer.parseInt(bestScore) < score) bestScore = score+"";
+                if (Integer.parseInt(bestScore) < score) bestScore = score + "";
 
                 flagGameThread = false;
                 mOnEndOfGame.onEndOfGame();
@@ -528,7 +519,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         paintFont);
                 // 倒计时
                 canvas.drawText(clock.getTimeStr(),
-                            screenW / 2 - 25, 28, paintFont);
+                        screenW / 2 - 25, 28, paintFont);
                 // rank排行榜
                 canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, 5, screenW - 5, 26, paint);
 //                for (index = 0, index2 = 0; index2 < 10; index2++) {
@@ -879,6 +870,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
     }
 
+    /**
+     * callback interface
+     */
+    public interface OnEndOfGameInterface {
+        void onEndOfGame();
+    }
 
     /**
      * 定义活动球球的类，即角色球
@@ -1030,74 +1027,74 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         * (30 / radius * 1 + 0.6) * rocker;
                 targetY += moveSpeed * Math.sin(directionTarget)
                         * (30 / radius * 1 + 0.6) * rocker;
-                inscribedSquareLen_1_2=radius*SQRT1_2;
-                if (targetX < 0+inscribedSquareLen_1_2 ) {
+                inscribedSquareLen_1_2 = radius * SQRT1_2;
+                if (targetX < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetX = 0;
                     directionTarget = getRadian(ptRockerCtrlPoint.x,
                             ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
                             ptRockerPosition.y);
                     ptRockerPosition.x = ptRockerCtrlPoint.x;
-                    Log.wtf(TAG, "move1: "+directionTarget);
+                    Log.wtf(TAG, "move1: " + directionTarget);
                     // myBall.targetX = 0;
                     // ptRockerPosition.x = ptRockerCtrlPoint.x;
 
                 }
-                if (targetX > MAP_WIDTH-inscribedSquareLen_1_2 ) {
+                if (targetX > MAP_WIDTH - inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetX = MAP_WIDTH;
                     directionTarget = getRadian(ptRockerCtrlPoint.x,
                             ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
                             ptRockerPosition.y);
                     ptRockerPosition.x = ptRockerCtrlPoint.x;
-                    Log.wtf(TAG, "move2: "+directionTarget);
+                    Log.wtf(TAG, "move2: " + directionTarget);
                     // myBall.targetX = MAP_WIDTH;
                     // ptRockerPosition.x = ptRockerCtrlPoint.x;
                 }
-                if (targetY < 0+inscribedSquareLen_1_2 ) {
+                if (targetY < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetY = 0;
                     directionTarget = getRadian(ptRockerCtrlPoint.x,
                             ptRockerPosition.x, ptRockerCtrlPoint.y,
                             ptRockerCtrlPoint.y);
                     ptRockerPosition.y = ptRockerCtrlPoint.y;
-                    Log.wtf(TAG, "move3: "+directionTarget);
+                    Log.wtf(TAG, "move3: " + directionTarget);
                     // myBall.targetY = 0;
                     // ptRockerPosition.y = ptRockerCtrlPoint.y;
                 }
-                if (targetY > MAP_HEIGHT-inscribedSquareLen_1_2 ) {
+                if (targetY > MAP_HEIGHT - inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetY = MAP_HEIGHT;
                     directionTarget = getRadian(ptRockerCtrlPoint.x,
                             ptRockerPosition.x, ptRockerCtrlPoint.y,
                             ptRockerCtrlPoint.y);
                     ptRockerPosition.y = ptRockerCtrlPoint.y;
-                    Log.wtf(TAG, "move4: "+directionTarget);
+                    Log.wtf(TAG, "move4: " + directionTarget);
                     // // myBall.targetY = MAP_HEIGHT;
                     // ptRockerPosition.y = ptRockerCtrlPoint.y;
                 }
 
-                if (targetX < 0+inscribedSquareLen_1_2 ) {
+                if (targetX < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
                     targetX = inscribedSquareLen_1_2;
-                    directionTarget = directionTarget>0?Math.PI/2:-Math.PI/2;
+                    directionTarget = directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2;
 
                 }
-                if (targetX > MAP_WIDTH-inscribedSquareLen_1_2 ) {
+                if (targetX > MAP_WIDTH - inscribedSquareLen_1_2) {
                     // 边界判断
-                    targetX = MAP_WIDTH-inscribedSquareLen_1_2;
-                    directionTarget = directionTarget>0?Math.PI/2:-Math.PI/2;
+                    targetX = MAP_WIDTH - inscribedSquareLen_1_2;
+                    directionTarget = directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2;
                 }
-                if (targetY < 0+inscribedSquareLen_1_2 ) {
+                if (targetY < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
                     targetY = inscribedSquareLen_1_2;
-                    Log.wtf(TAG, "move33: "+directionTarget);
-                    directionTarget = (directionTarget>(-Math.PI/2)&&directionTarget<Math.PI/2)?0:Math.PI;
+                    Log.wtf(TAG, "move33: " + directionTarget);
+                    directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : Math.PI;
                 }
-                if (targetY > MAP_HEIGHT-inscribedSquareLen_1_2 ) {
+                if (targetY > MAP_HEIGHT - inscribedSquareLen_1_2) {
                     // 边界判断
-                    targetY = MAP_HEIGHT-inscribedSquareLen_1_2;
-                    directionTarget = directionTarget>Math.PI/2?Math.PI:0;
+                    targetY = MAP_HEIGHT - inscribedSquareLen_1_2;
+                    directionTarget = directionTarget > Math.PI / 2 ? Math.PI : 0;
                 }
                 positionX += (targetX - positionX) / ACTION_DAMPING;
                 positionY += (targetY - positionY) / ACTION_DAMPING;

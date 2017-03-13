@@ -12,7 +12,6 @@ import static veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 class BallTeam {
 
 
-
     public List<Ball> team;
     public List<Message> CharRoom;
 

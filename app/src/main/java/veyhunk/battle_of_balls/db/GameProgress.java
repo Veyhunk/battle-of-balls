@@ -12,56 +12,57 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class GameProgress {
-	private final static String fileName = "BallBastScore";
+    private final static String fileName = "BallBastScore";
     private final Context context;
 
     public GameProgress(Context context) {
-        this.context=context.getApplicationContext();
+        this.context = context.getApplicationContext();
     }
-	public void Save() {
-		String stringSave = "";
-		try {
-			// 为root创建一个JSONObject对象
-			JSONObject ball = new JSONObject();
-			// 为root JSONObject对象添加一个“名称,值”对
-			ball.put("bestScore", GameParams.bestScore);
-			ball.put("ballName", GameParams.ballName);
-			ball.put("ballColorIndex", GameParams.ballColorIndex);
-			ball.put("ballGrowSpeed", GameParams.ballGrowSpeed);
-			ball.put("ballMoveSpeed", GameParams.ballMoveSpeed);
-			ball.put("aiDifficult", GameParams.aiDifficult);
-			stringSave = ball.toString();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		try {
 
-			FileOutputStream outputStream = context.openFileOutput(fileName,
-					Activity.MODE_PRIVATE);
-			outputStream.write(stringSave.getBytes());
-			outputStream.flush();
-			outputStream.close();
-			System.out.println("save Ok:" + stringSave);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    public void Save() {
+        String stringSave = "";
+        try {
+            // 为root创建一个JSONObject对象
+            JSONObject ball = new JSONObject();
+            // 为root JSONObject对象添加一个“名称,值”对
+            ball.put("bestScore", GameParams.bestScore);
+            ball.put("ballName", GameParams.ballName);
+            ball.put("ballColorIndex", GameParams.ballColorIndex);
+            ball.put("ballGrowSpeed", GameParams.ballGrowSpeed);
+            ball.put("ballMoveSpeed", GameParams.ballMoveSpeed);
+            ball.put("aiDifficult", GameParams.aiDifficult);
+            stringSave = ball.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
 
-	}
+            FileOutputStream outputStream = context.openFileOutput(fileName,
+                    Activity.MODE_PRIVATE);
+            outputStream.write(stringSave.getBytes());
+            outputStream.flush();
+            outputStream.close();
+            System.out.println("save Ok:" + stringSave);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	public void Read() {
+    }
 
-		try {
-			FileInputStream inputStream = context.openFileInput(fileName);
-			byte[] bytes = new byte[1024];
-			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-			while (inputStream.read(bytes) != -1) {
-				arrayOutputStream.write(bytes, 0, bytes.length);
-			}
-			inputStream.close();
-			arrayOutputStream.close();
-			String content = new String(arrayOutputStream.toByteArray());
-			System.out.println("read Ok:" + content.trim());
-			// return content.trim();
+    public void Read() {
+
+        try {
+            FileInputStream inputStream = context.openFileInput(fileName);
+            byte[] bytes = new byte[1024];
+            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+            while (inputStream.read(bytes) != -1) {
+                arrayOutputStream.write(bytes, 0, bytes.length);
+            }
+            inputStream.close();
+            arrayOutputStream.close();
+            String content = new String(arrayOutputStream.toByteArray());
+            System.out.println("read Ok:" + content.trim());
+            // return content.trim();
             try {
                 // initialize
                 // object_result
@@ -83,16 +84,16 @@ public class GameProgress {
                 e.printStackTrace();
             }
 
-		} catch (IOException e) {
-			e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
 
-			GameParams.bestScore = "0";
-			GameParams.ballName = "感情淡了放盐啊";
-			GameParams.ballColorIndex = 0;
-			GameParams.ballGrowSpeed = 10;
-			GameParams.ballMoveSpeed = 10;
-			GameParams.aiDifficult = 10;
-		}
+            GameParams.bestScore = "0";
+            GameParams.ballName = "感情淡了放盐啊";
+            GameParams.ballColorIndex = 0;
+            GameParams.ballGrowSpeed = 10;
+            GameParams.ballMoveSpeed = 10;
+            GameParams.aiDifficult = 10;
+        }
     }
 
 

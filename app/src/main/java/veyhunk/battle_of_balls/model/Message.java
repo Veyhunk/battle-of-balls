@@ -11,6 +11,7 @@ public class Message {
     public String content;
     public Point position;
     public int sender;
+
     /**
      * Creat Message
      *

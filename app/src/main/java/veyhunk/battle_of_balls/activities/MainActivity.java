@@ -24,10 +24,9 @@ import veyhunk.battle_of_balls.db.GameProgress;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 
 
-
 public class MainActivity extends Activity implements OnTouchListener {
-    private  GameSounds gameSounds;
-    private  GameProgress gameProgress;
+    private GameSounds gameSounds;
+    private GameProgress gameProgress;
 
     private EditText edtName;
     private TextView tvBestScore;

@@ -11,8 +11,9 @@ public class Clock {
     public static int timeMinute;// m
     public static int timeSecond;// s
     public static int timeGame;// total second of time
-//    public static int timeNewRaceRange = 2000;// 开始游戏前的无敌时间（单位：ms）
-    public Clock(){
+
+    //    public static int timeNewRaceRange = 2000;// 开始游戏前的无敌时间（单位：ms）
+    public Clock() {
 
         timeSecond = 0;
         timeMinute = 1;
@@ -29,18 +30,19 @@ public class Clock {
     public static boolean getClockIsInRange(int begin, int range) {
         return (int) (System.currentTimeMillis() - timeBegin) - begin <= range;
     }
-    public String getTimeStr(){
+
+    public String getTimeStr() {
 
         String strTime;
         // 倒计时
         if (timeMinute > 9 && timeSecond > 9) {
-            strTime=timeMinute + ":" + timeSecond;
+            strTime = timeMinute + ":" + timeSecond;
         } else if (timeMinute > 9) {
-            strTime=timeMinute + ":0" + timeSecond;
+            strTime = timeMinute + ":0" + timeSecond;
         } else if (timeSecond > 9) {
-            strTime="0" + timeMinute + ":" + timeSecond;
+            strTime = "0" + timeMinute + ":" + timeSecond;
         } else {
-            strTime="0" + timeMinute + ":0" + timeSecond;
+            strTime = "0" + timeMinute + ":0" + timeSecond;
         }
         return strTime;
     }

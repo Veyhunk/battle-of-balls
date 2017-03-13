@@ -13,41 +13,41 @@ import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
 
 public class BallActivity extends Activity implements OnEndOfGameInterface {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// 设置去除标题栏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// 设置全屏
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// 设置当前屏幕常亮
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		setContentView(R.layout.activity_ball);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 设置去除标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // 设置全屏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // 设置当前屏幕常亮
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.activity_ball);
+    }
 
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		GameSounds gameSounds;
-		gameSounds =new GameSounds(getApplication());
-		gameSounds.starMusic(GameSounds.CLICK);
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			Intent intent = getIntent();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        GameSounds gameSounds;
+        gameSounds = new GameSounds(getApplication());
+        gameSounds.starMusic(GameSounds.CLICK);
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            Intent intent = getIntent();
 //			if (bestScore < MySurfaceView.score) {
 //				bestScore = MySurfaceView.score;
 //			}
-			setResult(2, intent);
-			gameSounds.recycle();
-			finish();
+            setResult(2, intent);
+            gameSounds.recycle();
+            finish();
 
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
-	@Override
-	public void onEndOfGame() {
-		Intent intent = getIntent();
-		setResult(2, intent);
-		finish();
-	}
+    @Override
+    public void onEndOfGame() {
+        Intent intent = getIntent();
+        setResult(2, intent);
+        finish();
+    }
 }

@@ -14,10 +14,10 @@ import veyhunk.battle_of_balls.db.GameParams;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 
 public class optionActivity extends Activity {
+    GameSounds gameSounds;
     private SeekBar sbrDifficult;
     private SeekBar sbrSpeed;
     private SeekBar sbrGrow;
-    GameSounds gameSounds;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
