@@ -2,6 +2,9 @@ package veyhunk.battle_of_balls.utils;
 
 import android.graphics.Point;
 
+/**
+ * Game Math Utils
+ */
 public class MathUtils {
     // 获取两点间直线距离
     public static int getLength(float x1, float y1, float x2, float y2) {

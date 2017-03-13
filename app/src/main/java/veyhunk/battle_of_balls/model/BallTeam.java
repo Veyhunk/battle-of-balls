@@ -7,7 +7,7 @@ import java.util.List;
 import static veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 
 /**
- * 定义泡泡的类
+ * BallTeam
  */
 class BallTeam {
 
@@ -38,6 +38,12 @@ class BallTeam {
         Message message = new Message(SAFE, new Point(0, 0));
         return message;
     }
+
+    public boolean addMenber(){
+        return false;
+    }
+
+
 
 }
 

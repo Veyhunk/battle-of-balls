@@ -7,6 +7,9 @@ import android.media.SoundPool;
 
 import veyhunk.battle_of_balls.R;
 
+/**
+ * GameSounds
+ */
 public class GameSounds {
 
     // 音乐列表
