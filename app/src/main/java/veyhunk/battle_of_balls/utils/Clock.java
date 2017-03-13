@@ -29,4 +29,19 @@ public class Clock {
     public static boolean getClockIsInRange(int begin, int range) {
         return (int) (System.currentTimeMillis() - timeBegin) - begin <= range;
     }
+    public String getTimeStr(){
+
+        String strTime;
+        // 倒计时
+        if (timeMinute > 9 && timeSecond > 9) {
+            strTime=timeMinute + ":" + timeSecond;
+        } else if (timeMinute > 9) {
+            strTime=timeMinute + ":0" + timeSecond;
+        } else if (timeSecond > 9) {
+            strTime="0" + timeMinute + ":" + timeSecond;
+        } else {
+            strTime="0" + timeMinute + ":0" + timeSecond;
+        }
+        return strTime;
+    }
 }

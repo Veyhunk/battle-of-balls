@@ -9,7 +9,6 @@ import android.view.WindowManager;
 
 import veyhunk.battle_of_balls.R;
 import veyhunk.battle_of_balls.sounds.GameSounds;
-import veyhunk.battle_of_balls.surface_view.MySurfaceView;
 import veyhunk.battle_of_balls.surface_view.MySurfaceView.OnEndOfGameInterface;
 
 public class BallActivity extends Activity implements OnEndOfGameInterface {
@@ -34,9 +33,9 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
 		gameSounds.starMusic(GameSounds.CLICK);
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Intent intent = getIntent();
-			if (MySurfaceView.bestScore < MySurfaceView.score) {
-				MySurfaceView.bestScore = MySurfaceView.score;
-			}
+//			if (bestScore < MySurfaceView.score) {
+//				bestScore = MySurfaceView.score;
+//			}
 			setResult(2, intent);
 			gameSounds.recycle();
 			finish();

@@ -39,4 +39,16 @@ public class MathUtils {
 		ang = ang * (b.y < a.y ? -1 : 1);
 		return ang;
 	}
+	//	计算角度
+	public static float getRadian(float x1, float x2, float y1, float y2) {
+		float lenA = x2 - x1;
+		float lenB = y2 - y1;
+		if (lenA == 0 && lenB == 0) {
+			return 404;
+		}
+		float lenC = (float) Math.sqrt(lenA * lenA + lenB * lenB);
+		float ang = (float) Math.acos(lenA / lenC);
+		ang = ang * (y2 < y1 ? -1 : 1);
+		return ang;
+	}
 }

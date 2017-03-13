@@ -35,6 +35,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        gameSounds = new GameSounds(getApplication());
         gameProgress = new GameProgress(getApplication());
         gameProgress.Read();
         super.onCreate(savedInstanceState);
@@ -68,6 +69,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
     @Override
     protected void onDestroy() {
+        gameSounds.recycle();
         gameProgress.Save();
         super.onDestroy();
     }
@@ -87,9 +89,7 @@ public class MainActivity extends Activity implements OnTouchListener {
             isNoExitAppState = false;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
-                    gameSounds = new GameSounds(getApplication());
                     gameSounds.starMusic(GameSounds.CLICK);
-                    gameSounds.recycle();
                     switch (v.getId()) {
 
                         case R.id.start:
@@ -132,9 +132,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
     @Override
     public void onBackPressed() {
-        gameSounds = new GameSounds(getApplication());
         gameSounds.starMusic(GameSounds.CLICK);
-        gameSounds.recycle();
         if (isNoExitAppState) { //isExitAppState初始值为true
             isNoExitAppState = false;
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
@@ -146,6 +144,7 @@ public class MainActivity extends Activity implements OnTouchListener {
                 }
             }, 2000);
         } else {
+            gameSounds.recycle();
             finish();
         }
     }
