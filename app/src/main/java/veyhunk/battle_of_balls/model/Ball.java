@@ -12,6 +12,9 @@ import static veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static veyhunk.battle_of_balls.utils.Clock.getClock;
 import static veyhunk.battle_of_balls.utils.Clock.getClockIsInRange;
 
+/**
+ * Ball
+ */
 public class Ball {
     //    public
     public int ID;

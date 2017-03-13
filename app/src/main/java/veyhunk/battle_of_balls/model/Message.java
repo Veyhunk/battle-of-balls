@@ -4,6 +4,7 @@ import android.graphics.Point;
 
 /**
  * Created by Veyhunk on 13/March/2017.
+ * Message
  */
 
 public class Message {
