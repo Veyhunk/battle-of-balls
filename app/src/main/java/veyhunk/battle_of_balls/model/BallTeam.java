@@ -2,21 +2,35 @@ package veyhunk.battle_of_balls.model;
 
 import android.graphics.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
+import static veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
+import static veyhunk.battle_of_balls.constants.Constants.getName;
 
 /**
  * BallTeam
  */
-class BallTeam {
+public class BallTeam {
 
 
-    public List<Ball> team;
-    public List<Message> CharRoom;
+    public List<Ball> members;
+    private List<Message> CharRoom;
+    private Message message;
+    public int teamColor;
+    public String teamName;
 
-    public BallTeam(List<Ball> team) {
-        this.team = team;
+
+    public BallTeam(List<Ball> members, int teamColor,String teamName) {
+        this.members = members;
+        this.teamColor = teamColor;
+        this.teamName = teamName;
+    }
+
+    public BallTeam( int teamColor,String teamName) {
+        members=new ArrayList<>();
+        this.teamColor = teamColor;
+        this.teamName = teamName;
     }
 
     /**
@@ -26,6 +40,12 @@ class BallTeam {
      * @return boolean
      */
     public boolean sendMessage(Message message) {
+        try {
+//            CharRoom.add(message);
+            this.message = message;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -35,15 +55,42 @@ class BallTeam {
      * @return message
      */
     public Message readMessage() {
-        Message message = new Message(SAFE, new Point(0, 0));
         return message;
     }
 
-    public boolean addMenber(){
+
+    public Ball initMember() {
+        for (Ball member : members) {
+            if (member.state == BALL_STATE_DEAD) {
+                return member;
+            }
+        }
+        return new Ball(teamColor, getName(), this);
+    }
+
+    public boolean addMember(Ball member) {
+        try {
+            members.add(member);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
+    public boolean addMember(Point target, int weight) {
+        Ball newBall = initMember();
+        if (newBall != null) {
+            weight = weight / 2;
+            newBall.reSetBall(target, weight);
 
-
+            try {
+                members.add(newBall);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
+    }
 }
 

@@ -12,5 +12,6 @@
     <string name="growSpeed">发育速度</string>
     <string name="bestScore">最高分</string>
     <string name="version">版本号</string>
-    
+    <string name="default_name">感情淡了放盐啊</string>
+
 </resources>

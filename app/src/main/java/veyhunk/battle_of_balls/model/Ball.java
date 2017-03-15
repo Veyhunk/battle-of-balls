@@ -2,15 +2,20 @@ package veyhunk.battle_of_balls.model;
 
 import android.graphics.Point;
 
+import veyhunk.battle_of_balls.utils.MathUtils;
+
 import static java.lang.Math.sqrt;
 import static veyhunk.battle_of_balls.constants.Constants.ACTION_DAMPING;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_DEFAULT_WEIGHT;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
+import static veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
 import static veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
 import static veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
+import static veyhunk.battle_of_balls.constants.Constants.MAX_ACCELERATED_SPEED;
+import static veyhunk.battle_of_balls.constants.Constants.MessageType.AVATAR;
+import static veyhunk.battle_of_balls.constants.Constants.MessageType.BATTLE;
+import static veyhunk.battle_of_balls.constants.Constants.MessageType.DANGED;
 import static veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
-import static veyhunk.battle_of_balls.utils.Clock.getClock;
-import static veyhunk.battle_of_balls.utils.Clock.getClockIsInRange;
 
 /**
  * Ball
@@ -29,65 +34,150 @@ public class Ball {
     //    private
     private BallTeam team;
     private int weight;
-    private int timeRandomActionBegin;
-    private int timeRandomActionRang;
+    //    private int timeRandomActionBegin;
+//    private int timeRandomActionRang;
     private float moveSpeed;
     private Point targetPosition;
     private float acceleratedSpeed = 0;
     private float inscribedSquareLen_1_2 = 0;
+    private Message message;
 
-    Ball(Point position, int colorDraw, String nameString) {
+    /**
+     * Initial new ball
+     *
+     * @param position   position
+     * @param colorDraw  colorDraw
+     * @param nameString nameString
+     * @param team       team
+     */
+//    Ball(Point position, int colorDraw, String nameString, BallTeam team) {
+//        this.state = BALL_STATE_ALIVE;
+//        this.position = position;
+//        this.targetPosition = position;
+//        this.colorDraw = colorDraw;
+//        this.name = nameString;
+//        this.weight = BALL_DEFAULT_WEIGHT;
+//        moveSpeed = GameParams.ballMoveSpeed;
+//        this.team = team;
+//        message = new Message();
+//    }
+
+    /**
+     * Initial new ball (born)
+     *
+     * @param colorDraw  colorDraw
+     * @param nameString nameString
+     * @param team       team
+     */
+    Ball(int colorDraw, String nameString, BallTeam team) {
         this.state = BALL_STATE_ALIVE;
-        this.position = position;
+        this.position = new Point(0, 0);
         this.targetPosition = position;
         this.colorDraw = colorDraw;
         this.name = nameString;
         this.weight = BALL_DEFAULT_WEIGHT;
-        this.timeRandomActionBegin = getClock() + 500;
+        this.radius = (int) sqrt(weight);
+        this.team = team;
+        message = new Message();
     }
 
-    // positionX, positionY, colorDraw, size
-    public void reSetBall(Point position, int colorDraw, int weight) {
+    /**
+     * Initial new ball by avatar
+     *
+     * @param position position
+     * @param weight   weight
+     */
+    public void reSetBall(Point position, int weight) {
         this.state = BALL_STATE_ALIVE;// 复活
         this.position = position;
         this.targetPosition = position;
-        this.colorDraw = colorDraw;
         this.weight = weight;
-        this.radius = 0;
+        this.radius = (int) sqrt(weight);
     }
 
+    /**
+     * basic action
+     */
     public void action() {
         grow();
         thinking();
         move();
     }
 
-    public void feeling(Ball ball) {
-        if (ball.radius * 2 < radius) {
-//            avatar();
-        } else if (ball.radius / 2 > radius) {
-//            escape();
+    /**
+     * basic action : die
+     */
+    public int die() {
+        state = BALL_STATE_DEAD;
+        return weight;
+    }
+
+    /**
+     * basic action : eat
+     */
+    public void eat(Ball enemy) {
+        weight = enemy.die();
+    }
+
+    /**
+     * feeling environment
+     *
+     * @param enemy ball
+     */
+    public void feeling(Ball enemy) {
+        if ((enemy.position.x - position.x)
+                * (enemy.position.x - position.x)
+                + (enemy.position.y - position.y)
+                * (enemy.position.y - position.y) < (radius / 2)
+                * (radius / 2)) {
+            eat(enemy);
         } else {
-//            fiting
-//            help();
+            if (enemy.radius * 2 < radius) {
+                message.editMessage(AVATAR, position);
+            } else if (enemy.radius / 2 > radius) {
+                message.editMessage(DANGED, enemy.position);
+            } else {
+//            battle
+                message.editMessage(BATTLE, enemy.position);
+            }
         }
+        team.sendMessage(message);
     }
 
     private void thinking() {
-        setTarget();
-    }
-
-    private void setTarget() {
-        // action();
-        if (!getClockIsInRange(timeRandomActionBegin,
-                timeRandomActionRang)) {
-            timeRandomActionBegin = getClock();
-            timeRandomActionRang = (int) (Math.random() * 12000);
-            directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
-            // TODO: 12/March/2017 speed
-            acceleratedSpeed = (float) Math.random() * 10;
+        if (message.type == DANGED) {
+            setTarget(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+        } else if (message.type == BATTLE) {
+            setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+        } else {
+            if (team.readMessage().type == DANGED) {
+                setTarget(MathUtils.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
+            } else if (team.readMessage().type == BATTLE) {
+                setTarget(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
+            } else {
+                if (message.type == AVATAR) {
+                    avatar(message.position);
+                    setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                } else {
+                    setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                }
+            }
         }
     }
+
+    private void setTarget(float direction, float acceleratedSpeed) {
+        this.directionTarget = direction;
+        this.acceleratedSpeed = acceleratedSpeed;
+        // action();
+//        if (!getClockIsInRange(timeRandomActionBegin,
+//                timeRandomActionRang)) {
+//            timeRandomActionBegin = getClock();
+//            timeRandomActionRang = (int) (Math.random() * 12000);
+//            directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
+//            acceleratedSpeed = (float) Math.random();
+//        }
+    }
+
 
     private void grow() {
         if ((int) radius < (int) sqrt(weight)) {
@@ -149,13 +239,19 @@ public class Ball {
 
     }
 
-    private void avatar() {
-
+    private void avatar(Point target) {
+//        Ball newBall = team.initMember();
+//        if (newBall != null) {
+//            weight = weight / 2;
+//            newBall.reSetBall(target, weight);
+//            team.addMember(newBall);
+//        }
+        // TODO: 15/March/2017  add animate
+        team.addMember(target, weight);
     }
 
-    public void setTeam(BallTeam team) {
-        this.team = team;
-    }
-
+//    private void escape(Point position) {
+//
+//    }
 
 }

@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import veyhunk.battle_of_balls.R;
+
 public class GameProgress {
     private final static String fileName = "BallBastScore";
     private final Context context;
@@ -78,7 +80,7 @@ public class GameProgress {
 
 
                 if (GameParams.ballName.length() == 0) {
-                    GameParams.ballName = "感情淡了放盐啊";
+                    GameParams.ballName = context.getString(R.string.default_name);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -88,7 +90,7 @@ public class GameProgress {
             e.printStackTrace();
 
             GameParams.bestScore = "0";
-            GameParams.ballName = "感情淡了放盐啊";
+            GameParams.ballName = "context.getString(R.string.default_name)";
             GameParams.ballColorIndex = 0;
             GameParams.ballGrowSpeed = 10;
             GameParams.ballMoveSpeed = 10;

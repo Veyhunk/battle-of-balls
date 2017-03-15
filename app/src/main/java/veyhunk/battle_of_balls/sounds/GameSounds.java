@@ -17,8 +17,8 @@ public class GameSounds {
     public static final int LOGO1 = 1;
     public static final int LOGO2 = 2;
     public static final int CLICK = 3;
-    public static final int INVITE = 4;
-    public static final int AVATAR = 5;
+    public static final int BATTLE = 4;//battle
+    public static final int AVATAR = 5;//avatar
     public static final int BE_EATEN = 6;
     public static final int BUBBLE = 7;
     public static final int EAT_DEFAULT = 8;
@@ -77,8 +77,8 @@ public class GameSounds {
                 case CLICK:
                     soundPool.play(CLICK, 1, 1, 0, 0, 1);
                     break;
-                case INVITE:
-                    soundPool.play(INVITE, 1, 1, 0, 0, 1);
+                case BATTLE:
+                    soundPool.play(BATTLE, 1, 1, 0, 0, 1);
                     break;
                 case AVATAR:
                     soundPool.play(AVATAR, 1, 1, 0, 0, 1);

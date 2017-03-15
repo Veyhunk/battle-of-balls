@@ -2,6 +2,8 @@ package veyhunk.battle_of_balls.model;
 
 import android.graphics.Point;
 
+import static veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
+
 /**
  * Created by Veyhunk on 13/March/2017.
  * Message
@@ -12,20 +14,44 @@ public class Message {
     public String content;
     public Point position;
     public int sender;
+    public int duration;
 
     /**
-     * Creat Message
+     * Create Message
      *
      * @param type     Message type
      * @param position position
      */
-    public Message(short type, Point position) {
+    public Message(short type, Point position, int duration) {
         this.type = type;
         this.position = position;
+        this.duration = duration;
+
     }
 
     /**
-     * Creat Message
+     * Create Message
+     */
+    public Message() {
+        this.type = EMPTY;
+        this.position = new Point(0, 0);
+        this.duration = 0;
+    }
+
+    /**
+     * Edit Message
+     *
+     * @param type     Message type
+     * @param position position
+     */
+    public void editMessage(short type, Point position, int duration) {
+        this.type = type;
+        this.position = position;
+        this.duration = duration;
+    }
+
+    /**
+     * Create Message
      *
      * @param type     Message type
      * @param position position
