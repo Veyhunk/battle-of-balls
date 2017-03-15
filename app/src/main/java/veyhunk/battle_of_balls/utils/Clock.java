@@ -1,27 +1,24 @@
 package veyhunk.battle_of_balls.utils;
 
+import static veyhunk.battle_of_balls.constants.Constants.GAME_TIME;
+
 /**
  * Created by Veyhunk on 12/March/2017.
- * Clock
+ * Game Clock
  */
 
-public class Clock {
+public final class Clock {
     // time
     public static Long timeBegin;
     public static int timeMinute;// m
     public static int timeSecond;// s
     public static int timeGame;// total second of time
 
-    //    public static int timeNewRaceRange = 2000;// 开始游戏前的无敌时间（单位：ms）
-    public Clock() {
-
-        timeSecond = 0;
-        timeMinute = 1;
-        timeGame = 320;
-        // Clock Record
+    public static void setTimeBegin() {
         timeBegin = System.currentTimeMillis();
+        timeGame = GAME_TIME;
+        timeRun();
     }
-
 
     public static int getClock() {
         return (int) (System.currentTimeMillis() - timeBegin);
@@ -31,7 +28,7 @@ public class Clock {
         return (int) (System.currentTimeMillis() - timeBegin) - begin <= range;
     }
 
-    public String getTimeStr() {
+    public static String getTimeStr() {
 
         String strTime;
         // 倒计时
@@ -45,5 +42,19 @@ public class Clock {
             strTime = "0" + timeMinute + ":0" + timeSecond;
         }
         return strTime;
+    }
+
+    public static void timeRun() {
+
+        timeSecond = (timeGame - getClock() / 1000) % 60;
+        timeMinute = (timeGame - getClock() / 1000) / 60;
+    }
+
+    public static boolean isGameTimeout() {
+        if (timeSecond < 0) {
+            timeSecond = 0;
+            return true;
+        }
+        return false;
     }
 }

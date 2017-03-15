@@ -57,7 +57,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     final Context context;
     // callback
     protected OnEndOfGameInterface mOnEndOfGame; // callback interface
-    Clock clock;
     // flag
     private boolean flagGameThread;// 线程消亡的标识位
     private int flagButtonIndex;// 线程消亡的标识位
@@ -140,7 +139,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        clock = new Clock();
+
+        Clock.setTimeBegin();
         score = 0;
         // screen size
         screenW = this.getWidth();
@@ -422,10 +422,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             } else {
                 logic();
                 myDraw();
-                clock.timeSecond = (clock.timeGame - clock.getClock() / 1000) % 60;
-                clock.timeMinute = (clock.timeGame - clock.getClock() / 1000) / 60;
-                if (clock.timeSecond < 0) {
-                    clock.timeSecond = 0;
+                Clock.timeRun();
+                if (Clock.isGameTimeout()) {
                     flagGameOver = true;
                 }
             }
@@ -528,7 +526,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawText("Weight:" + myBall.weight, 30, 28 + RANK_LIST_ITEM_HEIGHT,
                         paintFont);
                 // 倒计时
-                canvas.drawText(clock.getTimeStr(),
+                canvas.drawText(Clock.getTimeStr(),
                         screenW / 2 - 25, 28, paintFont);
                 // rank排行榜
                 canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, 5, screenW - 5, 26, paint);
@@ -925,7 +923,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             this.targetX = positionX;
             this.targetY = positionY;
             this.weight = (int) weight;
-            this.timeRandomActionBegin = clock.getClock() + 500;
+            this.timeRandomActionBegin = Clock.getClock() + 500;
         }
 
         // positionX, positionY, colorDraw, size
@@ -971,9 +969,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
         void moveRandom() {
             // action();
-            if (!clock.getClockIsInRange(timeRandomActionBegin,
+            if (!Clock.getClockIsInRange(timeRandomActionBegin,
                     timeRandomActionRang)) {
-                timeRandomActionBegin = clock.getClock();
+                timeRandomActionBegin = Clock.getClock();
                 timeRandomActionRang = (int) (Math.random() * 12000);
                 // directionTarget = (Math.random() * Math.PI * 2) - Math.PI;
                 if (myBall.state != 0 && weight > myBall.weight) {
