@@ -21,18 +21,20 @@ public class BallTeam {
     public String teamName;
 
 
-    public BallTeam(List<Ball> members, int teamColor,String teamName) {
+    public BallTeam(List<Ball> members, int teamColor, String teamName) {
         this.members = members;
         this.teamColor = teamColor;
         this.teamName = teamName;
     }
 
-    public BallTeam( int teamColor,String teamName) {
-        members=new ArrayList<>();
+    public BallTeam(int teamColor, String teamName) {
+        members = new ArrayList<>();
+        message = new Message();
         this.teamColor = teamColor;
         this.teamName = teamName;
     }
-    public void action(){
+
+    public void action() {
         message.work();
     }
 

@@ -2,6 +2,7 @@ package veyhunk.battle_of_balls.model;
 
 import android.graphics.Point;
 
+import veyhunk.battle_of_balls.db.GameParams;
 import veyhunk.battle_of_balls.utils.MathUtils;
 
 import static java.lang.Math.sqrt;
@@ -16,6 +17,8 @@ import static veyhunk.battle_of_balls.constants.Constants.MessageType.AVATAR;
 import static veyhunk.battle_of_balls.constants.Constants.MessageType.BATTLE;
 import static veyhunk.battle_of_balls.constants.Constants.MessageType.DANGED;
 import static veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
+import static veyhunk.battle_of_balls.utils.Clock.getClock;
+import static veyhunk.battle_of_balls.utils.Clock.getClockIsInRange;
 
 /**
  * Ball
@@ -34,33 +37,12 @@ public class Ball {
     //    private
     private BallTeam team;
     private int weight;
-    //    private int timeRandomActionBegin;
-//    private int timeRandomActionRang;
-    private float moveSpeed;
+    private int timeRandomActionBegin;
+    private int timeRandomActionRang;
+    private float moveSpeed = GameParams.ballMoveSpeed/4;
     private Point targetPosition;
     private float acceleratedSpeed = 0;
-    private float inscribedSquareLen_1_2 = 0;
     private Message message;
-
-    /**
-     * Initial new ball
-     *
-     * @param position   position
-     * @param colorDraw  colorDraw
-     * @param nameString nameString
-     * @param team       team
-     */
-//    Ball(Point position, int colorDraw, String nameString, BallTeam team) {
-//        this.state = BALL_STATE_ALIVE;
-//        this.position = position;
-//        this.targetPosition = position;
-//        this.colorDraw = colorDraw;
-//        this.name = nameString;
-//        this.weight = BALL_DEFAULT_WEIGHT;
-//        moveSpeed = GameParams.ballMoveSpeed;
-//        this.team = team;
-//        message = new Message();
-//    }
 
     /**
      * Initial new ball (born)
@@ -78,7 +60,8 @@ public class Ball {
         this.weight = BALL_DEFAULT_WEIGHT;
         this.radius = (int) sqrt(weight);
         this.team = team;
-        message = new Message();
+        this.message = new Message();
+        this.timeRandomActionBegin = getClock() + 500;
     }
 
     /**
@@ -102,6 +85,8 @@ public class Ball {
         grow();
         thinking();
         move();
+//
+//
     }
 
     /**
@@ -151,21 +136,30 @@ public class Ball {
     }
 
     private void thinking() {
-        if (message.type == DANGED) {
-            setTarget(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
-        } else if (message.type == BATTLE) {
-            setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
-        } else {
-            if (team.readMessage().type == DANGED) {
-                setTarget(MathUtils.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
-            } else if (team.readMessage().type == BATTLE) {
-                setTarget(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
+        if (!getClockIsInRange(timeRandomActionBegin,
+                timeRandomActionRang)) {
+            if (message.type == DANGED) {
+                setTarget(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+            } else if (message.type == BATTLE) {
+                setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
             } else {
-                if (message.type == AVATAR) {
-                    avatar(message.position);
-                    setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                if (team.readMessage().type == DANGED) {
+                    setTarget(MathUtils.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
+                } else if (team.readMessage().type == BATTLE) {
+                    setTarget(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
                 } else {
-                    setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                    if (message.type == AVATAR) {
+                        avatar(message.position);
+                        setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                    } else {
+//                    setTarget(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
+
+                        timeRandomActionBegin = getClock();
+                        timeRandomActionRang = (int) (Math.random() * 12000);
+                        directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
+                        acceleratedSpeed = (float) Math.random();
+//        }
+                    }
                 }
             }
         }
@@ -175,14 +169,6 @@ public class Ball {
     private void setTarget(float direction, float acceleratedSpeed) {
         this.directionTarget = direction;
         this.acceleratedSpeed = acceleratedSpeed;
-        // action();
-//        if (!getClockIsInRange(timeRandomActionBegin,
-//                timeRandomActionRang)) {
-//            timeRandomActionBegin = getClock();
-//            timeRandomActionRang = (int) (Math.random() * 12000);
-//            directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
-//            acceleratedSpeed = (float) Math.random();
-//        }
     }
 
 
@@ -218,7 +204,7 @@ public class Ball {
                     * (30 / radius * 1 + 0.6) * acceleratedSpeed;
 
 
-            inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
+            float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
             if (targetPosition.x < 0 + inscribedSquareLen_1_2) {
                 // 边界判断
                 targetPosition.x = (int) inscribedSquareLen_1_2;

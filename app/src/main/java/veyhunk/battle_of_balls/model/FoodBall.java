@@ -1,6 +1,7 @@
 package veyhunk.battle_of_balls.model;
 
 import static veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
+import static veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
 
 /**
  * 定义食物球球
@@ -24,5 +25,12 @@ public class FoodBall {
         this.positionX = positionX;
         this.positionY = positionY;
         this.colorDraw = colorDraw;
+    }
+    /**
+     * basic action : beEat
+     */
+    public float beEat() {
+        state = BALL_STATE_DEAD;
+        return radius;
     }
 }

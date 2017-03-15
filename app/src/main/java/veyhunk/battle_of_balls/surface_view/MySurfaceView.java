@@ -17,6 +17,7 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
 import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.model.Ball;
 import veyhunk.battle_of_balls.model.BallTeam;
 import veyhunk.battle_of_balls.model.FoodBall;
 import veyhunk.battle_of_balls.sounds.GameSounds;
@@ -488,6 +489,34 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         // 绘制名称
                     }
                 }
+
+                for (BallTeam team : teams) {
+                    // 绘制team
+                    paint.setColor(ContextCompat.getColor(context, team.teamColor));
+                    for (Ball member : team.members) {
+                        if(member.state){
+                            // AI皮肤颜色
+                            canvas.drawCircle((float) member.position.x,
+                                    (float) member.position.y, member.radius, paint);
+                            // 绘制AI大球
+                            paintFont
+                                    .setTextSize(member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15
+                                            : member.radius / 6))
+                                            : 23);
+                            // 名称字体大小
+                            canvas.drawText(
+                                    member.name,
+                                    (float) member.position.x
+                                            - paintFont.measureText(member.name)
+                                            / 2,
+                                    (float) member.position.y
+                                            + (member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15
+                                            : member.radius / 6))
+                                            : 23) / 4, paintFont);
+                            // 绘制名称
+                        }
+                    }
+                }
                 if (myBall.state != 0) {
                     // 绘制角色球
                     drawBall(myBall);
@@ -792,18 +821,18 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
             }
 
-            // 排名
-            rank = 0;
-            for (index2 = 0; index2 < AiBallList.length; index2++) {
-                if (AiBallList[index1].weight < AiBallList[index2].weight) {
-                    rank++;
-                }
-            }
-            rankList[rank] = index1;
-            if (aiBall.life == 0) {
-                // 生命值为空
-                continue;
-            }
+//            // 排名
+//            rank = 0;
+//            for (index2 = 0; index2 < AiBallList.length; index2++) {
+//                if (AiBallList[index1].weight < AiBallList[index2].weight) {
+//                    rank++;
+//                }
+//            }
+//            rankList[rank] = index1;
+//            if (aiBall.life == 0) {
+//                // 生命值为空
+//                continue;
+//            }
             if (aiBall.state != 0) {
                 for (ActionBall aiBall2 : AiBallList) {
                     if (aiBall2.equals(aiBall)) {
@@ -843,6 +872,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             }
             aiBall.action();
             aiBall.moveRandom();
+        }
+        for (BallTeam team : teams) {
+            for (Ball member : team.members) {
+                member.action();
+            }
         }
         rank = 0;
         for (ActionBall aAiBallList : AiBallList) {
