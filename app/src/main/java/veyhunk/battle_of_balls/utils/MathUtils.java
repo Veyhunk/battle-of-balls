@@ -2,6 +2,8 @@ package veyhunk.battle_of_balls.utils;
 
 import android.graphics.Point;
 
+import static veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
+import static veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
 import static veyhunk.battle_of_balls.constants.Constants.MAX_ACCELERATED_SPEED;
 
 /**
@@ -26,6 +28,16 @@ public class MathUtils {
         // System.out.println(radian);
         return new Point(a.x + (int) (cutRadius * Math.cos(radian)), a.y
                 + (int) (cutRadius * Math.sin(radian)));
+    }
+
+    /**
+     * getPointRandom
+     *
+     * @return Random Point
+     */
+    public static Point getPointRandom() {
+        return new Point((int) (MAP_WIDTH * Math.random()),
+                (int) (MAP_HEIGHT * Math.random()));
     }
 
     // 获取水平线夹角弧度
@@ -54,8 +66,9 @@ public class MathUtils {
         ang = ang * (y2 < y1 ? -1 : 1);
         return ang;
     }
-    public static float getAcceleratedSpeed(){
-            return (float) Math.random()*MAX_ACCELERATED_SPEED;
+
+    public static float getAcceleratedSpeed() {
+        return (float) Math.random() * MAX_ACCELERATED_SPEED;
     }
 
 }

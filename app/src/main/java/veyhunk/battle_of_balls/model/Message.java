@@ -2,6 +2,7 @@ package veyhunk.battle_of_balls.model;
 
 import android.graphics.Point;
 
+import static veyhunk.battle_of_balls.constants.Constants.MessageDuration;
 import static veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
 
 /**
@@ -15,6 +16,7 @@ public class Message {
     public Point position;
     public int sender;
     public int duration;
+
 
     /**
      * Create Message
@@ -44,10 +46,10 @@ public class Message {
      * @param type     Message type
      * @param position position
      */
-    public void editMessage(short type, Point position, int duration) {
+    public void editMessage(short type, Point position) {
         this.type = type;
         this.position = position;
-        this.duration = duration;
+        this.duration = MessageDuration[type];
     }
 
     /**
@@ -63,5 +65,12 @@ public class Message {
         this.content = content;
         this.position = position;
         this.sender = sender;
+    }
+    public  boolean isCompleted(){
+        return duration>0?false:true;
+    }
+
+    public  void work(){
+         --duration;
     }
 }

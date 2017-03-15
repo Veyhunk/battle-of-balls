@@ -32,6 +32,9 @@ public class BallTeam {
         this.teamColor = teamColor;
         this.teamName = teamName;
     }
+    public void action(){
+        message.work();
+    }
 
     /**
      * send Message

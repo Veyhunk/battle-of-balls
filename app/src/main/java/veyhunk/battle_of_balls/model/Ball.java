@@ -71,7 +71,7 @@ public class Ball {
      */
     Ball(int colorDraw, String nameString, BallTeam team) {
         this.state = BALL_STATE_ALIVE;
-        this.position = new Point(0, 0);
+        this.position = MathUtils.getPointRandom();
         this.targetPosition = position;
         this.colorDraw = colorDraw;
         this.name = nameString;
@@ -125,6 +125,9 @@ public class Ball {
      * @param enemy ball
      */
     public void feeling(Ball enemy) {
+
+        if (!message.isCompleted()) return;
+
         if ((enemy.position.x - position.x)
                 * (enemy.position.x - position.x)
                 + (enemy.position.y - position.y)
@@ -132,16 +135,19 @@ public class Ball {
                 * (radius / 2)) {
             eat(enemy);
         } else {
+//            send message
             if (enemy.radius * 2 < radius) {
+                //avatar
                 message.editMessage(AVATAR, position);
             } else if (enemy.radius / 2 > radius) {
+                //danged
                 message.editMessage(DANGED, enemy.position);
             } else {
 //            battle
                 message.editMessage(BATTLE, enemy.position);
             }
+            team.sendMessage(message);
         }
-        team.sendMessage(message);
     }
 
     private void thinking() {
@@ -163,6 +169,7 @@ public class Ball {
                 }
             }
         }
+        message.work();
     }
 
     private void setTarget(float direction, float acceleratedSpeed) {
