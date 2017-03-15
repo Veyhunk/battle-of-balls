@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,18 +17,19 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
 import veyhunk.battle_of_balls.R;
+import veyhunk.battle_of_balls.model.BallTeam;
 import veyhunk.battle_of_balls.model.FoodBall;
 import veyhunk.battle_of_balls.sounds.GameSounds;
 import veyhunk.battle_of_balls.utils.Clock;
 import veyhunk.battle_of_balls.utils.MathUtils;
 
-import static android.content.ContentValues.TAG;
 import static veyhunk.battle_of_balls.constants.Constants.ACTION_DAMPING;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_AI_COUNT;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_DEFAULT_LIFE;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_DEFAULT_WEIGHT;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_FOOD_COUNT;
 import static veyhunk.battle_of_balls.constants.Constants.BALL_NAMES;
+import static veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
 import static veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
 import static veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
 import static veyhunk.battle_of_balls.constants.Constants.RANK_LIST_ITEM_HEIGHT;
@@ -38,6 +38,7 @@ import static veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTION_RADIUS;
 import static veyhunk.battle_of_balls.constants.Constants.ROCKER_RUDDER_RADIUS;
 import static veyhunk.battle_of_balls.constants.Constants.ROCKER_WHEEL_RADIUS;
 import static veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
+import static veyhunk.battle_of_balls.constants.Constants.TEAM_PARAMS;
 import static veyhunk.battle_of_balls.db.GameParams.aiDifficult;
 import static veyhunk.battle_of_balls.db.GameParams.ballColorIndex;
 import static veyhunk.battle_of_balls.db.GameParams.ballGrowSpeed;
@@ -65,8 +66,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private boolean flagRockerDisplay = false;// 是否显示遥感的标识位
     // variable
     private int screenW, screenH; // Screen_size
-    private int index;
-    private int index2;
+    private static int index1,index2,index3;
     private int[] rankList = new int[11];
     private Point ptRockerPosition;// 摇杆位置
     private Point ptRockerCtrlPoint = new Point(0, 0);// 摇杆起始位置
@@ -78,6 +78,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private MyBall myBall;
     private FoodBall[] FoodBallList = new FoodBall[BALL_FOOD_COUNT];
     private ActionBall[] AiBallList = new ActionBall[BALL_AI_COUNT];
+    private BallTeam[] teams;
     // 位图文件 bitmap
     private Bitmap bmpRank = BitmapFactory.decodeResource(this.getResources(),
             R.drawable.rank);// 排行榜素材
@@ -150,18 +151,27 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 ballName, BALL_DEFAULT_LIFE);
         myBall.ID = 1;
         // initialization food Ball
-        for (index = 0; index < FoodBallList.length; index++) {
-            FoodBallList[index] = new FoodBall((int) (MAP_WIDTH * Math.random()),
+        for (index1 = 0; index1 < FoodBallList.length; index1++) {
+            FoodBallList[index1] = new FoodBall((int) (MAP_WIDTH * Math.random()),
                     (int) (MAP_HEIGHT * Math.random()), getColorRandom());
         }
         // initialization AI Ball
-        for (index = 0; index < AiBallList.length; index++) {
-            AiBallList[index] = new ActionBall(
+        for (index1 = 0; index1 < AiBallList.length; index1++) {
+            AiBallList[index1] = new ActionBall(
                     (int) (MAP_WIDTH * Math.random()),
                     (int) (MAP_HEIGHT * Math.random()),
                     getColorRandom(),
                     (float) (BALL_DEFAULT_WEIGHT * Math.random() + BALL_DEFAULT_WEIGHT),
-                    BALL_NAMES[index], BALL_DEFAULT_LIFE);
+                    BALL_NAMES[index1], BALL_DEFAULT_LIFE);
+        }
+        //team
+        teams = new BallTeam[TEAM_PARAMS.TEAM_AMOUNT];
+        for (index1 = 0; index1 < TEAM_PARAMS.TEAM_AMOUNT; index1++) {
+            BallTeam team = new BallTeam(getColorByIndex(index1), TEAM_PARAMS.TEAM_NAMES[index1]);
+            for (index2 = 0; index2 < TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
+                team.addMember(team.initMember());
+            }
+            teams[index1]=team;
         }
         // 启动线程flag
         flagGameThread = true;
@@ -197,13 +207,13 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         index2 = event.getPointerCount();
         if (index2 > 1) {
-            for (index = 0; index < index2; index++) {
-                if (flagButtonIndex == index
-                        && event.getX(index) > (screenW - bmpBtnLaunch
+            for (index1 = 0; index1 < index2; index1++) {
+                if (flagButtonIndex == index1
+                        && event.getX(index1) > (screenW - bmpBtnLaunch
                         .getWidth() * 2)
-                        && event.getX(index) < (screenW - bmpBtnLaunch
+                        && event.getX(index1) < (screenW - bmpBtnLaunch
                         .getWidth())
-                        && event.getY(index) > (screenH - bmpBtnLaunch
+                        && event.getY(index1) > (screenH - bmpBtnLaunch
                         .getHeight())) {
                     //launch
                 }
@@ -211,24 +221,24 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     case MotionEvent.ACTION_DOWN:
                         // System.out.println("---按下----");
 
-                        if (event.getX(index) > (screenW - bmpBtnLaunch.getWidth() * 2)
-                                && event.getY(index) > (screenH - bmpBtnLaunch
+                        if (event.getX(index1) > (screenW - bmpBtnLaunch.getWidth() * 2)
+                                && event.getY(index1) > (screenH - bmpBtnLaunch
                                 .getHeight())) {
-                            if (event.getX(index) < (screenW - bmpBtnLaunch
+                            if (event.getX(index1) < (screenW - bmpBtnLaunch
                                     .getWidth())) {
                                 gameSounds.starMusic(GameSounds.BUBBLE);
                             } else {
 //                                myBall.avatar();
                                 gameSounds.starMusic(GameSounds.AVATAR);
                             }
-                            flagButtonIndex = index;
+                            flagButtonIndex = index1;
                             break;
                         } else {
                             flagRockerDisplay = true;
-                            ptRockerCtrlPoint.set((int) event.getX(index),
-                                    (int) event.getY(index));
-                            ptRockerPosition.set((int) event.getX(index) + 1,
-                                    (int) event.getY(index));
+                            ptRockerCtrlPoint.set((int) event.getX(index1),
+                                    (int) event.getY(index1));
+                            ptRockerPosition.set((int) event.getX(index1) + 1,
+                                    (int) event.getY(index1));
                         }
                     case MotionEvent.ACTION_UP:
                         // System.out.println("----放开----");
@@ -238,21 +248,21 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         if (flagGameOver) {
                             System.out.println("over");
                         }
-                        if (Math.abs(event.getX(index) - screenW / 2) < 150
-                                && (screenH / 2 - event.getY(index)) < 50) {
+                        if (Math.abs(event.getX(index1) - screenW / 2) < 150
+                                && (screenH / 2 - event.getY(index1)) < 50) {
                             System.out.println("over 2");
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if (flagButtonIndex == index) {
+                        if (flagButtonIndex == index1) {
                             break;
                         }
                         flagRockerDisplay = true;
                         // System.out.println("----移动----");
                         if (event.getPointerCount() == 1) {
                             int len = MathUtils.getLength(ptRockerCtrlPoint.x,
-                                    ptRockerCtrlPoint.y, event.getX(index),
-                                    event.getY(index));
+                                    ptRockerCtrlPoint.y, event.getX(index1),
+                                    event.getY(index1));
                             if (len < 20 && flagIsTouchLongMove) {
                                 // 如果屏幕接触点不在摇杆挥动范围内,则不处理
                                 break;
@@ -260,16 +270,16 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             if (len <= ROCKER_ACTION_RADIUS) {
                                 // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
                                 flagIsTouchLongMove = false;
-                                ptRockerPosition.set((int) event.getX(index),
-                                        (int) event.getY(index));
+                                ptRockerPosition.set((int) event.getX(index1),
+                                        (int) event.getY(index1));
 
                             } else {
                                 // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
                                 flagIsTouchLongMove = false;
                                 ptRockerPosition = MathUtils.getBorderPoint(
                                         ptRockerCtrlPoint,
-                                        new Point((int) event.getX(index),
-                                                (int) event.getY(index)),
+                                        new Point((int) event.getX(index1),
+                                                (int) event.getY(index1)),
                                         ROCKER_ACTION_RADIUS);
                             }
 
@@ -522,31 +532,31 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         screenW / 2 - 25, 28, paintFont);
                 // rank排行榜
                 canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, 5, screenW - 5, 26, paint);
-//                for (index = 0, index2 = 0; index2 < 10; index2++) {
-//                    if (rankList[index] < rankList.length - 1) {
-//                        ActionBall ball = AiBallList[rankList[index]];
+//                for (index1 = 0, index2 = 0; index2 < 10; index2++) {
+//                    if (rankList[index1] < rankList.length - 1) {
+//                        ActionBall ball = AiBallList[rankList[index1]];
 //                        if (ball.life < 1) {
 //                            continue;
 //                        }
 //                        // rank bg Rect
 //                        canvas.drawRect(screenW - RANK_LIST_WIDTH - 5,
-//                                index * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (index + 1)
+//                                index1 * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (index1 + 1)
 //                                        * RANK_LIST_ITEM_HEIGHT + 26, paint);
 //                        // rank text
 //                        canvas.drawText(
 //                                (String) (ball.name.length() > 5 ? ball.name
 //                                        .subSequence(0, 5) : ball.name),
-//                                screenW - RANK_LIST_WIDTH + 50, 50 + index
+//                                screenW - RANK_LIST_WIDTH + 50, 50 + index1
 //                                        * RANK_LIST_ITEM_HEIGHT, paintFont);
 //                        canvas.drawText("" + ball.life, screenW - 35,
-//                                50 + index * RANK_LIST_ITEM_HEIGHT, paintFont);
+//                                50 + index1 * RANK_LIST_ITEM_HEIGHT, paintFont);
 //
-//                        index++;
+//                        index1++;
 //                    } else {
 //                        ActionBall ball = myBall;
 //                        // rank bg Rect
 //                        canvas.drawRect(screenW - RANK_LIST_WIDTH - 5,
-//                                index * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (index + 1)
+//                                index1 * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (index1 + 1)
 //                                        * RANK_LIST_ITEM_HEIGHT + 26, paint);
 //                        // rank text
 //                        paintFont.setColor(ContextCompat.getColor(context,
@@ -554,23 +564,23 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                        canvas.drawText(
 //                                (String) (ball.name.length() > 5 ? ball.name
 //                                        .subSequence(0, 5) : ball.name),
-//                                screenW - RANK_LIST_WIDTH + 50, 50 + index
+//                                screenW - RANK_LIST_WIDTH + 50, 50 + index1
 //                                        * RANK_LIST_ITEM_HEIGHT, paintFont);
 //                        canvas.drawText("" + ball.life, screenW - 35,
-//                                50 + index * RANK_LIST_ITEM_HEIGHT, paintFont);
+//                                50 + index1 * RANK_LIST_ITEM_HEIGHT, paintFont);
 //                        paintFont.setColor(ContextCompat.getColor(context,
 //                                R.color.white_transparent));
 //
-//                        index++;
+//                        index1++;
 //                    }
 //
 //                }
                 // rank Bottom Rect
-                canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, index * RANK_LIST_ITEM_HEIGHT + 26,
-                        screenW - 5, (index + 1) * RANK_LIST_ITEM_HEIGHT, paint);
+                canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, index1 * RANK_LIST_ITEM_HEIGHT + 26,
+                        screenW - 5, (index1 + 1) * RANK_LIST_ITEM_HEIGHT, paint);
                 // bmp Rank ICO
                 canvas.clipRect(screenW - RANK_LIST_WIDTH - 5, 5, screenW - 5,
-                        (index + 1) * RANK_LIST_ITEM_HEIGHT - 7);
+                        (index1 + 1) * RANK_LIST_ITEM_HEIGHT - 7);
                 canvas.drawBitmap(bmpRank, screenW - RANK_LIST_WIDTH, 13, paint);
                 canvas.restore();
 
@@ -722,7 +732,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     * (foodBall.positionY - myBall.positionY) < (myBall.radius)
                     * (myBall.radius)) {
                 // 判断是否被吃
-                foodBall.state = 0;
+                foodBall.state = BALL_STATE_DEAD;
                 myBall.weight += ballGrowSpeed;
                 score += ballGrowSpeed / 10;
             }
@@ -733,20 +743,20 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         + (foodBall.positionY - aiBall2.positionY)
                         * (foodBall.positionY - aiBall2.positionY) < (aiBall2.radius)
                         * (aiBall2.radius)) {
-                    foodBall.state = 0;
+                    foodBall.state = BALL_STATE_DEAD;
                     aiBall2.weight += ballGrowSpeed * aiDifficult;
                 }
             }
-            if (foodBall.state == 0) {
+            if (foodBall.state == BALL_STATE_DEAD) {
                 // 重置
                 foodBall.reSetBall((int) (MAP_WIDTH * Math.random()),
                         (int) (MAP_HEIGHT * Math.random()), getColorRandom());
             }
         }
         int rank;
-        for (index = 0; index < AiBallList.length; index++) {
+        for (index1 = 0; index1 < AiBallList.length; index1++) {
             // AI大球
-            ActionBall aiBall = AiBallList[index];
+            ActionBall aiBall = AiBallList[index1];
             if (aiBall.life > 0
                     && ((aiBall.positionX - myBall.positionX)
                     * (aiBall.positionX - myBall.positionX)
@@ -763,7 +773,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     // 判断是否无敌时间
                     // 主角死亡标记
                     myBall.state = 0;
-                    myBall.eatByID = index;
+                    myBall.eatByID = index1;
                     aiBall.life++;
                     aiBall.weight += myBall.weight;
                     myBall.weight = 0;
@@ -787,11 +797,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             // 排名
             rank = 0;
             for (index2 = 0; index2 < AiBallList.length; index2++) {
-                if (AiBallList[index].weight < AiBallList[index2].weight) {
+                if (AiBallList[index1].weight < AiBallList[index2].weight) {
                     rank++;
                 }
             }
-            rankList[rank] = index;
+            rankList[rank] = index1;
             if (aiBall.life == 0) {
                 // 生命值为空
                 continue;
@@ -859,12 +869,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         canvas.drawRect(0, 0, MAP_WIDTH, MAP_HEIGHT, paint);
         int rowWidth = 5, rowInterval = 40;
         paint.setColor(ContextCompat.getColor(context, R.color.backgroundStripe));
-        for (index = 1; index <= MAP_HEIGHT / (rowWidth + rowInterval); index++) {
-            canvas.drawRect(0, index * (rowWidth + rowInterval), MAP_WIDTH, index
+        for (index1 = 1; index1 <= MAP_HEIGHT / (rowWidth + rowInterval); index1++) {
+            canvas.drawRect(0, index1 * (rowWidth + rowInterval), MAP_WIDTH, index1
                     * (rowWidth + rowInterval) + rowWidth, paint);
         }
-        for (index = 1; index <= MAP_WIDTH / (rowWidth + rowInterval); index++) {
-            canvas.drawRect(index * (rowWidth + rowInterval), 0, index
+        for (index1 = 1; index1 <= MAP_WIDTH / (rowWidth + rowInterval); index1++) {
+            canvas.drawRect(index1 * (rowWidth + rowInterval), 0, index1
                     * (rowWidth + rowInterval) + rowWidth, MAP_HEIGHT, paint);
         }
 
@@ -1035,7 +1045,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
                             ptRockerPosition.y);
                     ptRockerPosition.x = ptRockerCtrlPoint.x;
-                    Log.wtf(TAG, "move1: " + directionTarget);
                     // myBall.targetX = 0;
                     // ptRockerPosition.x = ptRockerCtrlPoint.x;
 
@@ -1047,7 +1056,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
                             ptRockerPosition.y);
                     ptRockerPosition.x = ptRockerCtrlPoint.x;
-                    Log.wtf(TAG, "move2: " + directionTarget);
                     // myBall.targetX = MAP_WIDTH;
                     // ptRockerPosition.x = ptRockerCtrlPoint.x;
                 }
@@ -1058,7 +1066,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             ptRockerPosition.x, ptRockerCtrlPoint.y,
                             ptRockerCtrlPoint.y);
                     ptRockerPosition.y = ptRockerCtrlPoint.y;
-                    Log.wtf(TAG, "move3: " + directionTarget);
                     // myBall.targetY = 0;
                     // ptRockerPosition.y = ptRockerCtrlPoint.y;
                 }
@@ -1069,7 +1076,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             ptRockerPosition.x, ptRockerCtrlPoint.y,
                             ptRockerCtrlPoint.y);
                     ptRockerPosition.y = ptRockerCtrlPoint.y;
-                    Log.wtf(TAG, "move4: " + directionTarget);
                     // // myBall.targetY = MAP_HEIGHT;
                     // ptRockerPosition.y = ptRockerCtrlPoint.y;
                 }
@@ -1088,7 +1094,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 if (targetY < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
                     targetY = inscribedSquareLen_1_2;
-                    Log.wtf(TAG, "move33: " + directionTarget);
                     directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : Math.PI;
                 }
                 if (targetY > MAP_HEIGHT - inscribedSquareLen_1_2) {
