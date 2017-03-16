@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--<string name="app_name">Battle-of-Balls</string>-->
     <string name="app_name">球球大作战</string>
     <string name="gameStart">开始游戏</string>
     <string name="nickName">昵称</string>
@@ -12,5 +13,6 @@
     <string name="growSpeed">发育速度</string>
     <string name="bestScore">最高分</string>
     <string name="version">版本号</string>
-    
+    <string name="default_name">小宝宝</string>
+
 </resources>
