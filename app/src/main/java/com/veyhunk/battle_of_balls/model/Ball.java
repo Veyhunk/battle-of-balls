@@ -30,13 +30,13 @@ public class Ball {
     public boolean state;
     public int colorDraw;
     public float radius;
+    public float weight;
     public Point position;
     public float direction = 0;
     public float directionTarget = 0;
 
     //    private
     private BallTeam team;
-    private int weight;
     private int timeRandomActionBegin;
     private int timeRandomActionRang;
     private float moveSpeed = GameParams.ballMoveSpeed / 4;
@@ -70,7 +70,7 @@ public class Ball {
      * @param position position
      * @param weight   weight
      */
-    public void reSetBall(Point position, int weight) {
+    public void reSetBall(Point position, float weight) {
         this.state = BALL_STATE_ALIVE;// 复活
         this.position = position;
         this.targetPosition = position;
@@ -92,7 +92,7 @@ public class Ball {
     /**
      * basic action : die
      */
-    public int die() {
+    public float die() {
         state = BALL_STATE_DEAD;
         return weight;
     }
@@ -110,6 +110,13 @@ public class Ball {
      * @param enemy ball
      */
     public void feeling(Ball enemy) {
+        float distance, weightCompare, deathDistance;
+        boolean isInSide;
+
+        distance = MathUtils.getDistance(this.position, enemy.position);
+        weightCompare = weight - enemy.weight;
+        deathDistance = MathUtils.getDeathDistance(this, enemy);
+        isInSide = distance > deathDistance ? false : true;
 
         if (!message.isCompleted()) return;
 
@@ -152,17 +159,17 @@ public class Ball {
                         avatar(message.position);
                         setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
                     } else {
-//                    setTarget(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
+                        setTarget(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
 
-                        timeRandomActionBegin = getClock();
-                        timeRandomActionRang = (int) (Math.random() * 12000);
-                        directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
-                        acceleratedSpeed = (float) Math.random();
+//                        directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
+//                        acceleratedSpeed = (float) Math.random();
 //        }
                     }
                 }
             }
         }
+        timeRandomActionBegin = getClock();
+        timeRandomActionRang = (int) (Math.random() * 1000);
         message.work();
     }
 
@@ -240,6 +247,7 @@ public class Ball {
 //            team.addMember(newBall);
 //        }
         // TODO: 15/March/2017  add animate
+        weight = weight / 2;
         team.addMember(target, weight);
     }
 

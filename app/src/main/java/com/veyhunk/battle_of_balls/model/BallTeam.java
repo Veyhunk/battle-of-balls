@@ -82,7 +82,7 @@ public class BallTeam {
         return false;
     }
 
-    public boolean addMember(Point target, int weight) {
+    public boolean addMember(Point target, float weight) {
         Ball newBall = initMember();
         if (newBall != null) {
             weight = weight / 2;

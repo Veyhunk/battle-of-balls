@@ -10,8 +10,8 @@ import com.veyhunk.battle_of_balls.R;
 public class Constants {
     // constant
     public static final float ACTION_DAMPING = 10;// 活动阻尼
-    public static final double SQRT1_2 = 0.7071067812;// 活动阻尼
-    public static final float MAX_ACCELERATED_SPEED = 10;// 活动阻尼
+    public static final double SQRT1_2 = 0.7071067812;// SQRT * 1/2
+    public static final float MAX_ACCELERATED_SPEED = 0.5F;// MAX_ACCELERATED_SPEED
     public static final float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // tab_size
     public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
     public static final int GAME_TIME = 320;// 游戏时长
