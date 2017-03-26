@@ -14,10 +14,10 @@ import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 public class BallTeam {
 
 
-    public List<Ball> members;
+    public List<Ball> members;//团队成员
     public int teamColor;
     public String teamName;
-    private List<Message> CharRoom;
+    private List<Message> CharRoom;//聊天室
     private Message message;
 
 

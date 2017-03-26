@@ -10,10 +10,12 @@ import android.view.WindowManager;
 import com.veyhunk.battle_of_balls.R;
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
 
+/**
+ * Created by Veyhunk on 12/March/2017.
+ * 游戏启动画面
+ * Game Splash Screen
+ */
 public class SplashScreen2 extends Activity {
-    /**
-     * Called when the activity is first created.
-     */
 
     @SuppressWarnings("deprecation")
     @Override
@@ -25,7 +27,6 @@ public class SplashScreen2 extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_screen_2);
-
 
         final GameSounds gameSounds;
         gameSounds = new GameSounds(getApplication());
@@ -39,7 +40,7 @@ public class SplashScreen2 extends Activity {
                 SplashScreen2.this.finish();
                 gameSounds.recycle();
             }
-        }, 2000); // 2900 for release
+        }, 2000); // 2000 for release
 
     }
 }

@@ -2,7 +2,7 @@
 <resources>
 
     <!--<string name="app_name">Battle-of-Balls</string>-->
-    <string name="app_name">球球大作战</string>
+    <string name="app_name">AI大作战</string>
     <string name="gameStart">开始游戏</string>
     <string name="nickName">昵称</string>
     <string name="setting">设置</string>

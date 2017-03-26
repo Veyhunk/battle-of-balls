@@ -19,7 +19,6 @@
                 android:left="10dp"
                 android:right="10dp"
                 android:top="0dp" />
-
         </shape>
     </item>
 </layer-list>

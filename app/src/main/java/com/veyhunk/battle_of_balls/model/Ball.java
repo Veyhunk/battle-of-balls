@@ -239,13 +239,17 @@ public class Ball {
 
     }
 
+    /**
+     *分裂自身
+     * @param target 传入一个目标，作为分裂出新球的方向
+     */
     private void avatar(Point target) {
-//        Ball newBall = team.initMember();
-//        if (newBall != null) {
-//            weight = weight / 2;
-//            newBall.reSetBall(target, weight);
-//            team.addMember(newBall);
-//        }
+        Ball newBall = team.initMember();
+        if (newBall != null) {
+            weight = weight / 2;
+            newBall.reSetBall(target, weight);
+            team.addMember(newBall);
+        }
         // TODO: 15/March/2017  add animate
         weight = weight / 2;
         team.addMember(target, weight);

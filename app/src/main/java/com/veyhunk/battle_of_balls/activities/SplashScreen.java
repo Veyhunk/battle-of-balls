@@ -27,11 +27,12 @@ import com.veyhunk.battle_of_balls.sounds.GameSounds;
  *          Add char system
  */
 
+/**
+ * Created by Veyhunk on 12/March/2017.
+ * 游戏启动画面
+ * Game Splash Screen
+ */
 public class SplashScreen extends Activity {
-    /**
-     * Called when the activity is first created.
-     */
-
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle icicle) {
@@ -42,7 +43,6 @@ public class SplashScreen extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_screen);
-
 
         final GameSounds gameSounds;
         gameSounds = new GameSounds(getApplication());
@@ -56,7 +56,7 @@ public class SplashScreen extends Activity {
                 SplashScreen.this.finish();
                 gameSounds.recycle();
             }
-        }, 1200); // 2900 for release
+        }, 1200); // 1200 for release
 
     }
 }
