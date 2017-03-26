@@ -5,6 +5,7 @@ import android.graphics.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 
@@ -72,6 +73,17 @@ public class BallTeam {
         }
         return new Ball(teamColor, getName(), this);
     }
+
+    public float getScore() {
+        float score=0;
+        for (Ball member : members) {
+            if (member.state == BALL_STATE_ALIVE) {
+                score+=member.weight;
+            }
+        }
+        return score;
+    }
+
 
     public boolean addMember(Ball member) {
         try {
