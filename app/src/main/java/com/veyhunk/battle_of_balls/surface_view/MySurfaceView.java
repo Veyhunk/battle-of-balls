@@ -93,8 +93,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     // button
     private Bitmap bmpBtnAvatar = BitmapFactory.decodeResource(
             this.getResources(), R.mipmap.button_avetar);// 分身按钮
-    private Bitmap bmpBtnLaunch = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.button_launch);// 发射按钮
+    private Bitmap bmpBtnDanger = BitmapFactory.decodeResource(
+            this.getResources(), R.mipmap.button_danger);// 发射按钮
+    private Bitmap bmpBtnBattle = BitmapFactory.decodeResource(
+            this.getResources(), R.mipmap.button_battle);// 发射按钮
     // Music
     private GameSounds gameSounds;
 
@@ -200,165 +202,169 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         index2 = event.getPointerCount();
-        if (index2 > 1) {
-            for (index1 = 0; index1 < index2; index1++) {
-                if (flagButtonIndex == index1
-                        && event.getX(index1) > (screenW - bmpBtnLaunch
-                        .getWidth() * 2)
-                        && event.getX(index1) < (screenW - bmpBtnLaunch
-                        .getWidth())
-                        && event.getY(index1) > (screenH - bmpBtnLaunch
-                        .getHeight())) {
-                    //launch
-                }
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // System.out.println("---按下----");
+//        if (index2 > 1) {
+//            for (index1 = 0; index1 < index2; index1++) {
+//                if (flagButtonIndex == index1
+//                        && event.getX(index1) > (screenW - bmpBtnAvatar
+//                        .getWidth() * 2)
+//                        && event.getX(index1) < (screenW - bmpBtnAvatar
+//                        .getWidth())
+//                        && event.getY(index1) > (screenH - bmpBtnAvatar
+//                        .getHeight())) {
+//                    //launch
+//                }
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        // System.out.println("---按下----");
+//
+//                        if (event.getX(index1) > (screenW - bmpBtnAvatar.getWidth() * 2)
+//                                && event.getY(index1) > (screenH - bmpBtnAvatar
+//                                .getHeight())) {
+//                            if (event.getX(index1) < (screenW - bmpBtnAvatar
+//                                    .getWidth())) {
+//                                gameSounds.starMusic(GameSounds.BUBBLE);
+//                            } else {
+////                                myBall.avatar();
+//                                gameSounds.starMusic(GameSounds.AVATAR);
+//                            }
+//                            flagButtonIndex = index1;
+//                            break;
+//                        } else {
+//                            flagRockerDisplay = true;
+//                            ptRockerCtrlPoint.set((int) event.getX(index1),
+//                                    (int) event.getY(index1));
+//                            ptRockerPosition.set((int) event.getX(index1) + 1,
+//                                    (int) event.getY(index1));
+//                        }
+//                    case MotionEvent.ACTION_UP:
+//                        // System.out.println("----放开----");
+//                        flagIsTouchLongMove = true;
+////                        flagRockerDisplay = false;
+//                        flagButtonIndex = -1;
+//                        if (flagGameOver) {
+//                            System.out.println("over");
+//                        }
+//                        if (Math.abs(event.getX(index1) - screenW / 2) < 150
+//                                && (screenH / 2 - event.getY(index1)) < 50) {
+//                            System.out.println("over 2");
+//                        }
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        if (flagButtonIndex == index1) {
+//                            break;
+//                        }
+//                        flagRockerDisplay = true;
+//                        // System.out.println("----移动----");
+//                        if (event.getPointerCount() == 1) {
+//                            int len = MathUtils.getLength(ptRockerCtrlPoint.x,
+//                                    ptRockerCtrlPoint.y, event.getX(index1),
+//                                    event.getY(index1));
+//                            if (len < 20 && flagIsTouchLongMove) {
+//                                // 如果屏幕接触点不在摇杆挥动范围内,则不处理
+//                                break;
+//                            }
+//                            if (len <= ROCKER_ACTION_RADIUS) {
+//                                // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
+//                                flagIsTouchLongMove = false;
+//                                ptRockerPosition.set((int) event.getX(index1),
+//                                        (int) event.getY(index1));
+//
+//                            } else {
+//                                // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
+//                                flagIsTouchLongMove = false;
+//                                ptRockerPosition = MathUtils.getBorderPoint(
+//                                        ptRockerCtrlPoint,
+//                                        new Point((int) event.getX(index1),
+//                                                (int) event.getY(index1)),
+//                                        ROCKER_ACTION_RADIUS);
+//                            }
+//
+//                            myBall.directionTarget = MathUtils.getRadian(
+//                                    ptRockerCtrlPoint, ptRockerPosition);
+//
+//                        }
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//            }
 
-                        if (event.getX(index1) > (screenW - bmpBtnLaunch.getWidth() * 2)
-                                && event.getY(index1) > (screenH - bmpBtnLaunch
-                                .getHeight())) {
-                            if (event.getX(index1) < (screenW - bmpBtnLaunch
-                                    .getWidth())) {
-                                gameSounds.starMusic(GameSounds.BUBBLE);
-                            } else {
-//                                myBall.avatar();
-                                gameSounds.starMusic(GameSounds.AVATAR);
-                            }
-                            flagButtonIndex = index1;
-                            break;
-                        } else {
-                            flagRockerDisplay = true;
-                            ptRockerCtrlPoint.set((int) event.getX(index1),
-                                    (int) event.getY(index1));
-                            ptRockerPosition.set((int) event.getX(index1) + 1,
-                                    (int) event.getY(index1));
-                        }
-                    case MotionEvent.ACTION_UP:
-                        // System.out.println("----放开----");
-                        flagIsTouchLongMove = true;
-//                        flagRockerDisplay = false;
-                        flagButtonIndex = -1;
-                        if (flagGameOver) {
-                            System.out.println("over");
-                        }
-                        if (Math.abs(event.getX(index1) - screenW / 2) < 150
-                                && (screenH / 2 - event.getY(index1)) < 50) {
-                            System.out.println("over 2");
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (flagButtonIndex == index1) {
-                            break;
-                        }
-                        flagRockerDisplay = true;
-                        // System.out.println("----移动----");
-                        if (event.getPointerCount() == 1) {
-                            int len = MathUtils.getLength(ptRockerCtrlPoint.x,
-                                    ptRockerCtrlPoint.y, event.getX(index1),
-                                    event.getY(index1));
-                            if (len < 20 && flagIsTouchLongMove) {
-                                // 如果屏幕接触点不在摇杆挥动范围内,则不处理
-                                break;
-                            }
-                            if (len <= ROCKER_ACTION_RADIUS) {
-                                // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
-                                flagIsTouchLongMove = false;
-                                ptRockerPosition.set((int) event.getX(index1),
-                                        (int) event.getY(index1));
-
-                            } else {
-                                // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
-                                flagIsTouchLongMove = false;
-                                ptRockerPosition = MathUtils.getBorderPoint(
-                                        ptRockerCtrlPoint,
-                                        new Point((int) event.getX(index1),
-                                                (int) event.getY(index1)),
-                                        ROCKER_ACTION_RADIUS);
-                            }
-
-                            myBall.directionTarget = MathUtils.getRadian(
-                                    ptRockerCtrlPoint, ptRockerPosition);
-
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-        } else {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    // System.out.println("---按下----");
-                    if (event.getX() > (screenW - bmpBtnLaunch.getWidth() * 2)
-                            && event.getY() > (screenH - bmpBtnLaunch.getHeight())) {
-                        if (event.getX() < (screenW - bmpBtnLaunch.getWidth())) {
-                            gameSounds.starMusic(GameSounds.BUBBLE);
-                        } else {
-//                            myBall.avatar();
-                            gameSounds.starMusic(GameSounds.AVATAR);
-                        }
-                        flagButtonIndex = 1;
-                        break;
+//        } else {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                // System.out.println("---按下----");
+                if (event.getX() > (screenW - bmpBtnAvatar.getWidth() * 3)
+                        && event.getY() > (screenH - bmpBtnAvatar.getHeight())) {
+                    if (event.getX() < (screenW - bmpBtnAvatar.getWidth()) * 2) {
+                        //danger
+                        gameSounds.starMusic(GameSounds.BUBBLE);
+                    } else if (event.getX() < (screenW - bmpBtnAvatar.getWidth())) {
+//                        battle
+                        gameSounds.starMusic(GameSounds.BATTLE);
                     } else {
-                        flagRockerDisplay = true;
-                        ptRockerCtrlPoint.set((int) event.getX(),
-                                (int) event.getY());
-                        ptRockerPosition.set((int) event.getX() + 1,
-                                (int) event.getY());
+//                        avatar
+//                            myBall.avatar();
+                        gameSounds.starMusic(GameSounds.AVATAR);
                     }
-                case MotionEvent.ACTION_UP:
-                    // System.out.println("----放开----");
-                    flagIsTouchLongMove = true;
-//                    flagRockerDisplay = false;
-                    flagButtonIndex = -1;
-                    if (flagGameOver) {
-                        System.out.println("over");
-                    }
-                    if (Math.abs(event.getX() - screenW / 2) < 150
-                            && (screenH / 2 - event.getY()) < 50) {
-                        System.out.println("over 2");
-                    }
+                    flagButtonIndex = 1;
                     break;
-                case MotionEvent.ACTION_MOVE:
-                    if (flagButtonIndex == 1) {
+                } else {
+                    flagRockerDisplay = true;
+                    ptRockerCtrlPoint.set((int) event.getX(),
+                            (int) event.getY());
+                    ptRockerPosition.set((int) event.getX() + 1,
+                            (int) event.getY());
+                }
+            case MotionEvent.ACTION_UP:
+                // System.out.println("----放开----");
+                flagIsTouchLongMove = true;
+//                    flagRockerDisplay = false;
+                flagButtonIndex = -1;
+                if (flagGameOver) {
+                    System.out.println("over");
+                }
+                if (Math.abs(event.getX() - screenW / 2) < 150
+                        && (screenH / 2 - event.getY()) < 50) {
+                    System.out.println("over 2");
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (flagButtonIndex == 1) {
+                    break;
+                }
+                flagRockerDisplay = true;
+                // System.out.println("----移动----");
+                if (event.getPointerCount() == 1) {
+                    int len = MathUtils.getLength(ptRockerCtrlPoint.x,
+                            ptRockerCtrlPoint.y, event.getX(), event.getY());
+                    if (len < 20 && flagIsTouchLongMove) {
+                        // 如果屏幕接触点不在摇杆挥动范围内,则不处理
                         break;
                     }
-                    flagRockerDisplay = true;
-                    // System.out.println("----移动----");
-                    if (event.getPointerCount() == 1) {
-                        int len = MathUtils.getLength(ptRockerCtrlPoint.x,
-                                ptRockerCtrlPoint.y, event.getX(), event.getY());
-                        if (len < 20 && flagIsTouchLongMove) {
-                            // 如果屏幕接触点不在摇杆挥动范围内,则不处理
-                            break;
-                        }
-                        if (len <= ROCKER_ACTION_RADIUS) {
-                            // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
-                            flagIsTouchLongMove = false;
-                            ptRockerPosition.set((int) event.getX(),
-                                    (int) event.getY());
+                    if (len <= ROCKER_ACTION_RADIUS) {
+                        // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
+                        flagIsTouchLongMove = false;
+                        ptRockerPosition.set((int) event.getX(),
+                                (int) event.getY());
 
-                        } else {
-                            // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
-                            flagIsTouchLongMove = false;
-                            ptRockerPosition = MathUtils.getBorderPoint(
-                                    ptRockerCtrlPoint,
-                                    new Point((int) event.getX(), (int) event
-                                            .getY()), ROCKER_ACTION_RADIUS);
-                        }
-
-                        myBall.directionTarget = MathUtils.getRadian(
-                                ptRockerCtrlPoint, ptRockerPosition);
-
+                    } else {
+                        // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
+                        flagIsTouchLongMove = false;
+                        ptRockerPosition = MathUtils.getBorderPoint(
+                                ptRockerCtrlPoint,
+                                new Point((int) event.getX(), (int) event
+                                        .getY()), ROCKER_ACTION_RADIUS);
                     }
-                    break;
 
-                default:
-                    break;
-            }
+                    myBall.directionTarget = MathUtils.getRadian(
+                            ptRockerCtrlPoint, ptRockerPosition);
+
+                }
+                break;
+
+            default:
+                break;
         }
         return true;
 
@@ -518,14 +524,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             ROCKER_RUDDER_RADIUS, paint);// 绘制摇杆
                 }
                 // button
-                canvas.drawBitmap(bmpBtnAvatar,
-                        screenW - bmpBtnAvatar.getWidth(),
-                        screenH - bmpBtnAvatar.getHeight(), paint);
-                canvas.drawBitmap(
-                        bmpBtnLaunch,
-                        screenW - bmpBtnAvatar.getWidth()
-                                - bmpBtnAvatar.getWidth(),
-                        screenH - bmpBtnAvatar.getHeight(), paint);
+                canvas.drawBitmap(bmpBtnAvatar, screenW - bmpBtnAvatar.getWidth(), screenH - bmpBtnAvatar.getHeight(), paint);
+                canvas.drawBitmap(bmpBtnBattle, screenW - bmpBtnAvatar.getWidth() - bmpBtnBattle.getWidth(), screenH - bmpBtnBattle.getHeight(), paint);
+                canvas.drawBitmap(bmpBtnDanger, screenW - bmpBtnAvatar.getWidth() - bmpBtnBattle.getWidth() - bmpBtnDanger.getWidth(), screenH - bmpBtnDanger.getHeight(), paint);
 
                 // score计分板
                 paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));

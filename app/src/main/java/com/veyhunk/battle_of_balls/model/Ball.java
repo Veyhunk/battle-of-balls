@@ -110,22 +110,20 @@ public class Ball {
      * @param enemy ball
      */
     public void feeling(Ball enemy) {
+        if (!message.isCompleted()) return;
         float distance, weightCompare, deathDistance;
         boolean isInSide;
-
-        distance = MathUtils.getDistance(this.position, enemy.position);
         weightCompare = weight - enemy.weight;
+        distance = MathUtils.getDistance(this.position, enemy.position);
         deathDistance = MathUtils.getDeathDistance(this, enemy);
         isInSide = distance > deathDistance ? false : true;
-
-        if (!message.isCompleted()) return;
-
-        if ((enemy.position.x - position.x)
-                * (enemy.position.x - position.x)
-                + (enemy.position.y - position.y)
-                * (enemy.position.y - position.y) < (radius / 2)
-                * (radius / 2)) {
-            eat(enemy);
+        if (isInSide) {
+//            die or live
+            if (weightCompare > 0) {
+                eat(enemy);
+            } else if (weightCompare < 0) {
+                message.editMessage(DANGED, enemy.position);
+            }
         } else {
 //            send message
             if (enemy.radius * 2 < radius) {
@@ -240,7 +238,8 @@ public class Ball {
     }
 
     /**
-     *分裂自身
+     * 分裂自身
+     *
      * @param target 传入一个目标，作为分裂出新球的方向
      */
     private void avatar(Point target) {
