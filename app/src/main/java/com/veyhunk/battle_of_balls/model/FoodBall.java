@@ -28,9 +28,9 @@ public class FoodBall {
     }
 
     /**
-     * basic action : beEat
+     * basic action : be Eat
      */
-    public float beEat() {
+    public float die() {
         state = BALL_STATE_DEAD;
         return radius;
     }

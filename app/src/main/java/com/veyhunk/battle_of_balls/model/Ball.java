@@ -25,7 +25,7 @@ import static java.lang.Math.sqrt;
  */
 public class Ball {
     //    public
-    public int ID;
+//    public int ID;
     public String name;
     public boolean state;
     public int colorDraw;

@@ -10,22 +10,6 @@ import android.view.WindowManager;
 import com.veyhunk.battle_of_balls.R;
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
 
-/**
- * @version v4.1
- *          <p>
- *          Code refactor
- *          Removed bubble system
- *          Refactored Colors & Clock
- *          Remove avatar system
- *          <p>
- *          v4.x
- *          TODO list
- *          Code refactoring
- *          Remove bubble system
- *          Remove avatar system
- *          Add team system
- *          Add char system
- */
 
 /**
  * Created by Veyhunk on 12/March/2017.
@@ -33,6 +17,23 @@ import com.veyhunk.battle_of_balls.sounds.GameSounds;
  * Game Splash Screen
  */
 public class SplashScreen extends Activity {
+/**
+ *          TODO list
+ *          Add Sting system
+ *          Fix rank system
+ *          Add battle system
+ *          Add new avatar system
+ *          Add communication system
+ *
+ * @version v4.2
+ *
+ * @version v4.1
+ *          Code refactor
+ *          Removed bubble system
+ *          Refactored Colors & Clock
+ *          Remove avatar system
+ *          Add team system
+ */
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle icicle) {

@@ -74,13 +74,14 @@ public class BallTeam {
         return new Ball(teamColor, getName(), this);
     }
 
-    public float getScore() {
-        float score=0;
+    public int getScore() {
+        int score=0;
         for (Ball member : members) {
             if (member.state == BALL_STATE_ALIVE) {
                 score+=member.weight;
             }
         }
+        score/=10;
         return score;
     }
 
