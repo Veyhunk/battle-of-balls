@@ -20,7 +20,7 @@ import com.veyhunk.battle_of_balls.R;
 import com.veyhunk.battle_of_balls.model.Ball;
 import com.veyhunk.battle_of_balls.model.BallTeam;
 import com.veyhunk.battle_of_balls.model.FoodBall;
-import com.veyhunk.battle_of_balls.model.TeamsManage;
+import com.veyhunk.battle_of_balls.model.TeamsManager;
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
 import com.veyhunk.battle_of_balls.utils.Clock;
 import com.veyhunk.battle_of_balls.utils.MathUtils;
@@ -78,7 +78,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private FoodBall[] FoodBallList = new FoodBall[BALL_FOOD_COUNT];
     private ActionBall[] AiBallList = new ActionBall[BALL_AI_COUNT];
     private BallTeam[] teams;
-    private TeamsManage teamsManage;
+    private TeamsManager teamsManager;
     // 位图文件 bitmap
     private Bitmap bmpRank = BitmapFactory.decodeResource(this.getResources(),
             R.mipmap.rank);// 排行榜素材
@@ -165,8 +165,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     (float) (BALL_DEFAULT_WEIGHT * Math.random() + BALL_DEFAULT_WEIGHT),
                     BALL_NAMES[index1], BALL_DEFAULT_LIFE);
         }
-        teamsManage=new TeamsManage();
-        teams=teamsManage.getTeams();
+        teamsManager = new TeamsManager();
+        teams = teamsManager.getTeams();
         // 启动线程flag
         flagGameThread = true;
         // 实例线程
@@ -836,12 +836,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             aiBall.action();
             aiBall.moveRandom();
         }
+//基本活动
         for (BallTeam team : teams) {
             for (Ball member : team.members) {
                 member.action();
             }
         }
-teamsManage.sorl();
+        //排序
+        teamsManager.sorl();
     }
 
     /**
