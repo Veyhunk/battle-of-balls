@@ -311,10 +311,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     break;
                 } else {
                     flagRockerDisplay = true;
-                    ptRockerCtrlPoint.set((int) event.getX(),
-                            (int) event.getY());
-                    ptRockerPosition.set((int) event.getX() + 1,
-                            (int) event.getY());
+                    ptRockerCtrlPoint.set((int) event.getX(), (int) event.getY());
+                    ptRockerPosition.set((int) event.getX() + 1, (int) event.getY());
                 }
             case MotionEvent.ACTION_UP:
                 // System.out.println("----放开----");
@@ -324,8 +322,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 if (flagGameOver) {
                     System.out.println("over");
                 }
-                if (Math.abs(event.getX() - screenW / 2) < 150
-                        && (screenH / 2 - event.getY()) < 50) {
+                if (Math.abs(event.getX() - screenW / 2) < 150 && (screenH / 2 - event.getY()) < 50) {
                     System.out.println("over 2");
                 }
                 break;
@@ -336,8 +333,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 flagRockerDisplay = true;
                 // System.out.println("----移动----");
                 if (event.getPointerCount() == 1) {
-                    int len = MathUtils.getLength(ptRockerCtrlPoint.x,
-                            ptRockerCtrlPoint.y, event.getX(), event.getY());
+                    int len = MathUtils.getLength(ptRockerCtrlPoint.x, ptRockerCtrlPoint.y, event.getX(), event.getY());
                     if (len < 20 && flagIsTouchLongMove) {
                         // 如果屏幕接触点不在摇杆挥动范围内,则不处理
                         break;
@@ -345,21 +341,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     if (len <= ROCKER_ACTION_RADIUS) {
                         // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
                         flagIsTouchLongMove = false;
-                        ptRockerPosition.set((int) event.getX(),
-                                (int) event.getY());
+                        ptRockerPosition.set((int) event.getX(), (int) event.getY());
 
                     } else {
                         // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
                         flagIsTouchLongMove = false;
-                        ptRockerPosition = MathUtils.getBorderPoint(
-                                ptRockerCtrlPoint,
-                                new Point((int) event.getX(), (int) event
-                                        .getY()), ROCKER_ACTION_RADIUS);
+                        ptRockerPosition = MathUtils.getBorderPoint(ptRockerCtrlPoint, new Point((int) event.getX(), (int) event.getY()), ROCKER_ACTION_RADIUS);
                     }
-
-                    myBall.directionTarget = MathUtils.getRadian(
-                            ptRockerCtrlPoint, ptRockerPosition);
-
+                    myBall.directionTarget = MathUtils.getRadian(ptRockerCtrlPoint, ptRockerPosition);
                 }
                 break;
 
@@ -442,12 +431,17 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             if (canvas != null) {
                 canvas.save();
                 // 视野调整
-                canvas.translate((float) (0 - myBall.positionX + screenW / 2),
-                        (float) (0 - myBall.positionY + screenH / 2));
+//                canvas.translate((float) (0 - myBall.positionX + screenW / 2),
+//                        (float) (0 - myBall.positionY + screenH / 2));
+//                // 以玩家为中心
+//                canvas.scale((3 / (myBall.radius / 15) + 0.4F),
+//                        (3 / (myBall.radius / 15) + 0.4F),
+//                        (float) myBall.positionX, (float) myBall.positionY);
+                canvas.translate(0,0);
                 // 以玩家为中心
-                canvas.scale((3 / (myBall.radius / 15) + 0.4F),
-                        (3 / (myBall.radius / 15) + 0.4F),
-                        (float) myBall.positionX, (float) myBall.positionY);
+                canvas.scale(0.2F,
+                        0.2F,
+                        0,0);
                 // 适应性的缩放
                 DrawBackground();
                 // 绘制背景
@@ -728,7 +722,20 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //            ptRockerPosition.y = ptRockerCtrlPoint.y;
 //            ptRockerPosition.x = ptRockerCtrlPoint.x;
 //            flagRockerDisplay = false;
+
+
+        for (BallTeam team : teams) {
+            for (Ball member : team.members) {
+                if (!member.state)continue;
+                member.action();
+            }
+        }
         for (FoodBall foodBall : FoodBallList) {
+            if (!foodBall.state) {
+                // 重置
+                foodBall.reSetBall((int) (MAP_WIDTH * Math.random()), (int) (MAP_HEIGHT * Math.random()), getColorRandom());
+                continue;
+            }
             // 食物小球
             if ((foodBall.positionX - myBall.positionX)
                     * (foodBall.positionX - myBall.positionX)
@@ -739,117 +746,59 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 foodBall.state = BALL_STATE_DEAD;
                 myBall.weight += ballGrowSpeed;
                 score += ballGrowSpeed / 10;
+                continue;
             }
-            for (ActionBall aiBall2 : AiBallList) {
-                // 判断是否被吃
-                if ((foodBall.positionX - aiBall2.positionX)
-                        * (foodBall.positionX - aiBall2.positionX)
-                        + (foodBall.positionY - aiBall2.positionY)
-                        * (foodBall.positionY - aiBall2.positionY) < (aiBall2.radius)
-                        * (aiBall2.radius)) {
-                    foodBall.state = BALL_STATE_DEAD;
-                    aiBall2.weight += ballGrowSpeed * aiDifficult;
-                }
-            }
-            if (foodBall.state == BALL_STATE_DEAD) {
-                // 重置
-                foodBall.reSetBall((int) (MAP_WIDTH * Math.random()),
-                        (int) (MAP_HEIGHT * Math.random()), getColorRandom());
-            }
-        }
-        int rank;
-        for (index1 = 0; index1 < AiBallList.length; index1++) {
-            // AI大球
-            ActionBall aiBall = AiBallList[index1];
-            if (aiBall.life > 0
-                    && ((aiBall.positionX - myBall.positionX)
-                    * (aiBall.positionX - myBall.positionX)
-                    + (aiBall.positionY - myBall.positionY)
-                    * (aiBall.positionY - myBall.positionY) < (myBall.radius)
-                    * (myBall.radius) || (aiBall.positionX - myBall.positionX)
-                    * (aiBall.positionX - myBall.positionX)
-                    + (aiBall.positionY - myBall.positionY)
-                    * (aiBall.positionY - myBall.positionY) < (aiBall.radius)
-                    * (aiBall.radius))) {
-                // AI吃主角
-                if (aiBall.radius > (myBall.radius + myBall.radius / 10)) {
-                    // AI吃主角
-                    // 判断是否无敌时间
-                    // 主角死亡标记
-                    myBall.state = 0;
-                    myBall.eatByID = index1;
-                    aiBall.life++;
-                    aiBall.weight += myBall.weight;
-                    myBall.weight = 0;
-                    aiBall.eatCount++;
-                    gameSounds.starMusic(GameSounds.EAT_DEFAULT);
 
-                } else if (myBall.radius > (aiBall.radius + aiBall.radius / 10)
-                        ) {
-                    // 主角吃AI
-                    aiBall.state = 0;
-                    myBall.eatCount++;
-                    myBall.life++;
-                    myBall.weight += aiBall.weight;
-                    aiBall.weight = 0;
-                    score += aiBall.weight / 10;
-                    gameSounds.starMusic(GameSounds.EAT_3);
-                }
-
-            }
-            if (aiBall.state != 0) {
-                for (ActionBall aiBall2 : AiBallList) {
-                    if (aiBall2.equals(aiBall)) {
-                        // 是否同一个AI
-                        continue;
-                    }
+            for (BallTeam team : teams) {
+                if (!foodBall.state) break;
+                for (Ball member : team.members) {
+                    if (!foodBall.state) break;
                     // 判断是否被吃
-                    if (aiBall.life > 0
-                            && aiBall2.life > 0
-                            && ((aiBall.positionX - aiBall2.positionX)
-                            * (aiBall.positionX - aiBall2.positionX)
-                            + (aiBall.positionY - aiBall2.positionY)
-                            * (aiBall.positionY - aiBall2.positionY) < (aiBall.radius)
-                            * (aiBall.radius) || (aiBall.positionX - aiBall2.positionX)
-                            * (aiBall.positionX - aiBall2.positionX)
-                            + (aiBall.positionY - aiBall2.positionY)
-                            * (aiBall.positionY - aiBall2.positionY) < (aiBall2.radius)
-                            * (aiBall2.radius))) {
-                        // 是否满足吃球的距离
-                        if (aiBall.radius > (aiBall2.radius + aiBall2.radius / 10)) {
-                            // 判断是否被吃
-                            aiBall2.state = 0;
-                            // 启动保护罩
-                            aiBall.life++;
-                            aiBall.weight += aiBall2.weight;
-                            aiBall.eatCount++;
-                        } else if ((aiBall.radius + aiBall.radius / 10) < aiBall2.radius) {
-                            // 判断是否被吃
-                            aiBall.state = 0;
-                            // 启动保护罩
-                            aiBall2.eatCount++;
-                            aiBall2.life++;
-                            aiBall2.weight += aiBall.weight;
-                        }
+                    if ((foodBall.positionX - member.position.x)
+                            * (foodBall.positionX - member.position.x)
+                            + (foodBall.positionY - member.position.y)
+                            * (foodBall.positionY - member.position.y) < (member.radius - foodBall.radius)
+                            * (member.radius - foodBall.radius)) {
+                        member.weight += foodBall.die() * ballGrowSpeed * aiDifficult;
                     }
                 }
             }
-            aiBall.action();
-            aiBall.moveRandom();
         }
 //基本活动
         for (BallTeam team : teams) {
             for (Ball member : team.members) {
-                member.action();
+
+                if (!member.state) break;
+
+//                gameSounds.starMusic(GameSounds.EAT_3);
+//                gameSounds.starMusic(GameSounds.EAT_DEFAULT);
+                if (member.state) {
+                    for (BallTeam team2 : teams) {
+                        if (!member.state) break;
+                        if (team2.equals(team)) {
+                            // 是否同一个队伍
+                            continue;
+                        }
+                        for (Ball member2 : team.members) {
+                            if (!member.state) break;
+                            // 判断是否被吃
+                            member.feeling(member2);
+                        }
+                    }
+
+                    member.action();
+
+                }
             }
+            //排序
+            teamsManager.sorl();
         }
-        //排序
-        teamsManager.sorl();
     }
 
     /**
      * 绘制背景
      */
+
     private void DrawBackground() {
         // -----------利用填充画布，刷屏
         canvas.drawColor(ContextCompat.getColor(context, R.color.background) + 5);

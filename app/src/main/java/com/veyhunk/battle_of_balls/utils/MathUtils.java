@@ -3,6 +3,7 @@ package com.veyhunk.battle_of_balls.utils;
 import android.graphics.Point;
 
 import com.veyhunk.battle_of_balls.model.Ball;
+import com.veyhunk.battle_of_balls.model.FoodBall;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
@@ -63,6 +64,15 @@ public class MathUtils {
             return 0;
         }
         return (float) Math.sqrt(lenA*lenA+lenB*lenB);
+    }
+    // 获取两点的距离
+    public static boolean isCollisionForFood(Ball ball, FoodBall foodBall) {
+        float lenA = (float) (ball.position.x - foodBall.positionX);
+        float lenB = (float) (ball.position.y - foodBall.positionY);
+        if (lenA == 0 && lenB == 0) {
+            return true;
+        }
+        return (float) Math.sqrt(lenA*lenA+lenB*lenB)<(ball.radius-foodBall.radius*2)*(ball.radius-foodBall.radius*2);
     }
     // 获取两点的距离
     public static float getDistance(float lenA, float lenB ) {
