@@ -65,6 +65,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private boolean flagGameOver;// 线程消亡的标识位
     private boolean flagIsTouchLongMove;// 是否长按的标识位
     private boolean flagRockerDisplay = false;// 是否显示遥感的标识位
+    private int keyCheck;
     // variable
     private int screenW, screenH; // Screen_size
     private Point ptRockerPosition;// 摇杆位置
@@ -375,6 +376,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        flagRockerDisplay = true;
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {//up >> right
             ptRockerCtrlPoint.x = 100;
             ptRockerCtrlPoint.y = screenH - 100;
