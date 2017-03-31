@@ -100,7 +100,7 @@ public class Ball {
     /**
      * basic action : eat
      */
-    public void eat(Ball enemy) {
+    private void eat(Ball enemy) {
         weight = enemy.die();
     }
 
@@ -116,7 +116,7 @@ public class Ball {
         weightCompare = weight - enemy.weight;
         distance = MathUtils.getDistance(this.position, enemy.position);
         deathDistance = MathUtils.getDeathDistance(this, enemy);
-        isInSide = distance > deathDistance ? false : true;
+        isInSide = distance <= deathDistance;
         if (isInSide) {
 //            die or live
             if (weightCompare > 0) {
@@ -133,7 +133,7 @@ public class Ball {
                 //danged
                 message.editMessage(DANGED, enemy.position);
             } else {
-//            battle
+//battle
                 message.editMessage(BATTLE, enemy.position);
             }
             team.sendMessage(message);
@@ -189,10 +189,10 @@ public class Ball {
 //        weight -= (int) radius / 100 * 5;
 //        // 损耗减重
 
-//        if (radius > 400) {
-//            // 角色球尺寸限制，重置尺寸
-//            weight = BALL_DEFAULT_WEIGHT;
-//        }
+        if (radius > 400) {
+            // 角色球尺寸限制，重置尺寸
+            weight = BALL_DEFAULT_WEIGHT;
+        }
     }
 
     private void move() {
