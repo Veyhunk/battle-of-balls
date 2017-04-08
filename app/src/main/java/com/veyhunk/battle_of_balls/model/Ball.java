@@ -34,7 +34,6 @@ public class Ball {
     public Point position;
     public float direction = 0;
     public float directionTarget = 0;
-
     //    private
     private BallTeam team;
     private int timeRandomActionBegin;
@@ -51,7 +50,7 @@ public class Ball {
      * @param nameString nameString
      * @param team       team
      */
-    Ball(int colorDraw, String nameString, BallTeam team) {
+    public Ball(int colorDraw, String nameString, BallTeam team) {
         this.state = BALL_STATE_ALIVE;
         this.position = MathUtils.getPointRandom();
         this.targetPosition = position;
@@ -63,6 +62,7 @@ public class Ball {
         this.message = new Message();
         this.timeRandomActionBegin = getClock() + 500;
     }
+
 
     /**
      * Initial new ball by avatar
@@ -85,8 +85,6 @@ public class Ball {
         grow();
         thinking();
         move();
-//
-//
     }
 
     /**
@@ -100,8 +98,8 @@ public class Ball {
     /**
      * basic action : eat
      */
-    private void eat(Ball enemy) {
-        weight = enemy.die();
+    public void eat(Ball enemy) {
+        weight += enemy.die();
     }
 
     /**
@@ -110,7 +108,11 @@ public class Ball {
      * @param enemy ball
      */
     public void feeling(Ball enemy) {
-        if (!message.isCompleted()) return;
+
+//        if (!message.isCompleted()) {
+//            message.work();
+//            return;
+//        }
         float distance, weightCompare, deathDistance;
         boolean isInSide;
         weightCompare = weight - enemy.weight;
@@ -140,7 +142,7 @@ public class Ball {
         }
     }
 
-    private void thinking() {
+    public void thinking() {
         if (!getClockIsInRange(timeRandomActionBegin,
                 timeRandomActionRang)) {
             if (message.type == DANGED) {
@@ -154,7 +156,7 @@ public class Ball {
                     setTarget(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
                 } else {
                     if (message.type == AVATAR) {
-                        avatar(message.position);
+                        avatar(direction);
                         setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
                     } else {
                         setTarget(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
@@ -168,16 +170,15 @@ public class Ball {
         }
         timeRandomActionBegin = getClock();
         timeRandomActionRang = (int) (Math.random() * 1000);
-        message.work();
     }
 
-    private void setTarget(float direction, float acceleratedSpeed) {
+    public void setTarget(float direction, float acceleratedSpeed) {
         this.directionTarget = direction;
         this.acceleratedSpeed = acceleratedSpeed;
     }
 
 
-    private void grow() {
+    public void grow() {
         if ((int) radius < (int) sqrt(weight)) {
             // 阻尼增重
             radius += (sqrt(weight) - radius) / ACTION_DAMPING;
@@ -195,12 +196,12 @@ public class Ball {
         }
     }
 
-    private void move() {
+    public void move() {
         if (directionTarget != 404) {
-            direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / ACTION_DAMPING))
+            direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2)))
                     : ((directionTarget - direction) > 0 ? -(Math
-                    .abs((directionTarget - direction - 2 * Math.PI)) / ACTION_DAMPING)
-                    : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / ACTION_DAMPING));
+                    .abs((directionTarget - direction - 2 * Math.PI)) / (ACTION_DAMPING / 2))
+                    : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / (ACTION_DAMPING / 2)));
             direction += (direction >= Math.PI) ? (-2 * Math.PI)
                     : ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
             targetPosition.x += moveSpeed * Math.cos(directionTarget)
@@ -240,22 +241,29 @@ public class Ball {
     /**
      * 分裂自身
      *
-     * @param target 传入一个目标，作为分裂出新球的方向
+     * @param direction 传入一个目标，作为分裂出新球的方向
      */
-    private void avatar(Point target) {
+    public void avatar(float direction) {
+        Point target = new Point();
+        target.x += moveSpeed * Math.cos(direction)
+                * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+        target.y += moveSpeed * Math.sin(direction)
+                * (30 / radius * 1 + 0.6) * acceleratedSpeed;
         Ball newBall = team.initMember();
         if (newBall != null) {
-            weight = weight / 2;
+            weight /=  2;
             newBall.reSetBall(target, weight);
             team.addMember(newBall);
         }
-        // TODO: 15/March/2017  add animate
-        weight = weight / 2;
-        team.addMember(target, weight);
     }
 
 //    private void escape(Point position) {
 //
 //    }
+
+
+    public BallTeam getTeam() {
+        return team;
+    }
 
 }

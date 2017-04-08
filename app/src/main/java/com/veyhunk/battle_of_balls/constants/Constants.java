@@ -48,7 +48,7 @@ public class Constants {
     }
 
     public static final class TEAM_PARAMS {
-        public static final int TEAM_AMOUNT = 4;
+        public static final int TEAM_AMOUNT = 2;
         public static final String[] TEAM_NAMES = new String[]{"SSS战队", "吞噬军团",
                 "START", "人帅手速快", "浪够了回家", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
                 "超萌的一天"};

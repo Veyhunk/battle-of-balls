@@ -2,6 +2,7 @@ package com.veyhunk.battle_of_balls.model;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
+import static com.veyhunk.battle_of_balls.db.GameParams.aiDifficult;
 
 /**
  * 定义食物球球
@@ -32,6 +33,6 @@ public class FoodBall {
      */
     public float die() {
         state = BALL_STATE_DEAD;
-        return radius;
+        return radius*aiDifficult/10;
     }
 }
