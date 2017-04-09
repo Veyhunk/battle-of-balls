@@ -19,6 +19,7 @@ import android.view.SurfaceView;
 import com.veyhunk.battle_of_balls.R;
 import com.veyhunk.battle_of_balls.model.Ball;
 import com.veyhunk.battle_of_balls.model.BallTeam;
+import com.veyhunk.battle_of_balls.model.Camera;
 import com.veyhunk.battle_of_balls.model.FoodBall;
 import com.veyhunk.battle_of_balls.model.MyBall;
 import com.veyhunk.battle_of_balls.model.TeamsManager;
@@ -65,7 +66,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private boolean flagGameOver;// 线程消亡的标识位
     private boolean flagIsTouchLongMove;// 是否长按的标识位
     private boolean flagRockerDisplay = false;// 是否显示遥感的标识位
-    private boolean isPlayerCamera = true;
     private int keyCheck;
     // variable
     private int screenW, screenH; // Screen_size
@@ -75,6 +75,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private Paint paint;// 声明一个画笔
     private Paint paintFont;// 声明一个画笔
     private Canvas canvas;// 声明一个画布
+    private Camera camera;
+    private Camera cameraGlobal;
+    private Camera cameraPlayer;
     // 声明Ball
     private MyBall myBall;
     private FoodBall[] FoodBallList = new FoodBall[BALL_FOOD_COUNT];
@@ -111,6 +114,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         mOnEndOfGame = (OnEndOfGameInterface) context;
         gameSounds = new GameSounds(context);
         gameSounds.starMusic(BGM);
+        camera=new Camera();
+        cameraGlobal=new Camera();
+        cameraPlayer=new Camera();
         // 实例SurfaceHolder
         sfh = this.getHolder();
         // 为SurfaceView添加状态监听
@@ -149,6 +155,13 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         // screen size
         screenW = this.getWidth();
         screenH = this.getHeight();
+        cameraGlobal.Focus.x = -MAP_WIDTH / 2 + screenW / 2;
+        cameraGlobal.Focus.y = -MAP_HEIGHT / 2 + screenH / 2;
+        cameraGlobal.Scale.x = 0.3F;
+        cameraGlobal.Scale.y = 0.3F;
+        cameraGlobal.ScalePosition.x = MAP_WIDTH / 2;
+        cameraGlobal.ScalePosition.y = MAP_HEIGHT / 2;
+
         // initialization food Ball
         for (index1 = 0; index1 < FoodBallList.length; index1++) {
             FoodBallList[index1] = new FoodBall((int) (MAP_WIDTH * Math.random()),
@@ -305,7 +318,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     flagButtonIndex = 1;
                     break;
                 } else if (event.getX() < 30 && event.getY() < 30) {
-                    isPlayerCamera = !isPlayerCamera;
+                    camera.isPlayerCamera = !camera.isPlayerCamera;
                 } else {
                     flagRockerDisplay = true;
                     ptRockerCtrlPoint.set((int) event.getX(), (int) event.getY());
@@ -333,7 +346,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     int len = MathUtils.getLength(ptRockerCtrlPoint.x, ptRockerCtrlPoint.y, event.getX(), event.getY());
                     if (len < 20 && flagIsTouchLongMove) {
                         // 如果屏幕接触点不在摇杆挥动范围内,则不处理
-                        break;
+                        return true;
                     }
                     if (len <= ROCKER_ACTION_RADIUS) {
                         // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
@@ -345,13 +358,13 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         flagIsTouchLongMove = false;
                         ptRockerPosition = MathUtils.getBorderPoint(ptRockerCtrlPoint, new Point((int) event.getX(), (int) event.getY()), ROCKER_ACTION_RADIUS);
                     }
+                    myBall.setTarget(MathUtils.getRadian(ptRockerCtrlPoint, ptRockerPosition), (float) Math.sqrt((ptRockerPosition.x - ptRockerCtrlPoint.x) * (ptRockerPosition.x - ptRockerCtrlPoint.x) + (ptRockerPosition.y - ptRockerCtrlPoint.y) * (ptRockerPosition.y - ptRockerCtrlPoint.y)) / ROCKER_ACTION_RADIUS);
                 }
                 break;
 
             default:
                 break;
         }
-        myBall.setTarget(MathUtils.getRadian(ptRockerCtrlPoint, ptRockerPosition), (float) Math.sqrt((ptRockerPosition.x - ptRockerCtrlPoint.x) * (ptRockerPosition.x - ptRockerCtrlPoint.x) + (ptRockerPosition.y - ptRockerCtrlPoint.y) * (ptRockerPosition.y - ptRockerCtrlPoint.y)) / ROCKER_ACTION_RADIUS);
         return true;
 
     }
@@ -431,16 +444,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             // 名称颜色
             if (canvas != null) {
                 canvas.save();
-//                 视野调整
-                if (isPlayerCamera) {
-                    canvas.translate((float) (0 - myBall.position.x + screenW / 2), (float) (0 - myBall.position.y + screenH / 2));
-                    // 以玩家为中心
-                    canvas.scale((3 / (myBall.radius / 15) + 0.4F), (3 / (myBall.radius / 15) + 0.4F), (float) myBall.position.x, (float) myBall.position.y);
-                } else {
-                    canvas.translate((float) (0 - MAP_WIDTH / 2 + screenW / 2), (float) (0 - MAP_HEIGHT / 2 + screenH / 2));
-                    // 以玩家为中心
-                    canvas.scale(0.3F, 0.3F, MAP_WIDTH / 2, MAP_HEIGHT / 2);
-                }// 适应性的缩放
+                // 摄像头适应性的缩放
+                canvas.translate(camera.Focus.x, camera.Focus.y);
+                canvas.scale(camera.Scale.x, camera.Scale.y, camera.ScalePosition.x, camera.ScalePosition.y);
+
                 DrawBackground();
                 // 绘制背景
                 for (FoodBall foodBall : FoodBallList) {
@@ -652,6 +659,29 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     }
 
     /**
+     * 绘制背景
+     */
+
+    private void DrawBackground() {
+        // -----------利用填充画布，刷屏
+        canvas.drawColor(ContextCompat.getColor(context, R.color.background) + 5);
+        // //绘制矩形
+        paint.setColor(ContextCompat.getColor(context, R.color.background));
+        canvas.drawRect(0, 0, MAP_WIDTH, MAP_HEIGHT, paint);
+        int rowWidth = 5, rowInterval = 40;
+        paint.setColor(ContextCompat.getColor(context, R.color.backgroundStripe));
+        for (index1 = 1; index1 <= MAP_HEIGHT / (rowWidth + rowInterval); index1++) {
+            canvas.drawRect(0, index1 * (rowWidth + rowInterval), MAP_WIDTH, index1
+                    * (rowWidth + rowInterval) + rowWidth, paint);
+        }
+        for (index1 = 1; index1 <= MAP_WIDTH / (rowWidth + rowInterval); index1++) {
+            canvas.drawRect(index1 * (rowWidth + rowInterval), 0, index1
+                    * (rowWidth + rowInterval) + rowWidth, MAP_HEIGHT, paint);
+        }
+
+    }
+
+    /**
      * 游戏逻辑
      */
     private void logic() {
@@ -736,29 +766,22 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         }
         //排序
         teamsManager.sorl();
-    }
+        //摄像机视野调整
 
-    /**
-     * 绘制背景
-     */
 
-    private void DrawBackground() {
-        // -----------利用填充画布，刷屏
-        canvas.drawColor(ContextCompat.getColor(context, R.color.background) + 5);
-        // //绘制矩形
-        paint.setColor(ContextCompat.getColor(context, R.color.background));
-        canvas.drawRect(0, 0, MAP_WIDTH, MAP_HEIGHT, paint);
-        int rowWidth = 5, rowInterval = 40;
-        paint.setColor(ContextCompat.getColor(context, R.color.backgroundStripe));
-        for (index1 = 1; index1 <= MAP_HEIGHT / (rowWidth + rowInterval); index1++) {
-            canvas.drawRect(0, index1 * (rowWidth + rowInterval), MAP_WIDTH, index1
-                    * (rowWidth + rowInterval) + rowWidth, paint);
+        if (camera.isPlayerCamera) {
+            // 以玩家为中心
+            camera=cameraPlayer;
+            cameraPlayer.Focus.x = -myBall.position.x + screenW / 2;
+            cameraPlayer.Focus.y = -myBall.position.y + screenH / 2;
+            cameraPlayer.Scale.x = (3 / (myBall.radius / 15) + 0.4F);
+            cameraPlayer.Scale.y = (3 / (myBall.radius / 15) + 0.4F);
+            cameraPlayer.ScalePosition.x = myBall.position.x;
+            cameraPlayer.ScalePosition.y = myBall.position.y;
+        } else {
+            //全局视野
+            camera=cameraGlobal;
         }
-        for (index1 = 1; index1 <= MAP_WIDTH / (rowWidth + rowInterval); index1++) {
-            canvas.drawRect(index1 * (rowWidth + rowInterval), 0, index1
-                    * (rowWidth + rowInterval) + rowWidth, MAP_HEIGHT, paint);
-        }
-
     }
 
     /**
