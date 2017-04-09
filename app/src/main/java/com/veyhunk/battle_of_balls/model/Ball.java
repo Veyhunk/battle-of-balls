@@ -17,7 +17,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.BATTLE
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGED;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.utils.Clock.getClock;
-import static com.veyhunk.battle_of_balls.utils.Clock.getClockIsInRange;
+import static com.veyhunk.battle_of_balls.utils.Clock.isTimeOver;
 import static java.lang.Math.sqrt;
 
 /**
@@ -143,7 +143,7 @@ public class Ball {
     }
 
     public void thinking() {
-        if (!getClockIsInRange(timeRandomActionBegin,
+        if (isTimeOver(timeRandomActionBegin,
                 timeRandomActionRang)) {
             if (message.type == DANGED) {
                 setTarget(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);

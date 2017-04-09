@@ -10,12 +10,13 @@ import static com.veyhunk.battle_of_balls.utils.Colors.getColorByIndex;
 
 public class TeamsManager {
     //team
+
+    //    ArrayList teams = new ArrayList() ;
     private BallTeam[] teams = new BallTeam[Constants.TEAM_PARAMS.TEAM_AMOUNT];
 
     public TeamsManager() {
         int index1, index2;
         //team
-        teams = new BallTeam[Constants.TEAM_PARAMS.TEAM_AMOUNT];
         for (index1 = 0; index1 < Constants.TEAM_PARAMS.TEAM_AMOUNT; index1++) {
             BallTeam team = new BallTeam(getColorByIndex(index1), Constants.TEAM_PARAMS.TEAM_NAMES[index1]);
             for (index2 = 0; index2 < Constants.TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
@@ -29,19 +30,23 @@ public class TeamsManager {
         return teams;
     }
 
-    public void sort(){
-        BallTeam max;
-        for (BallTeam team : teams) {
-            max=team;
-            for (BallTeam team2 : teams) {
-                if (team.getScore()<team2.getScore()) {
-                    max=team2;
+    public void sort() {
+//Collections.sort(teams, teamRank) ;
+        refresh();
+        int length = teams.length;
+        int index1, index2;
+        for (index1 = 0; index1 < length - 1; index1++) {
+            for (index2 = 0; index2 < length - 1; index2++) {
+                if (teams[index2].getScore() < teams[index2 + 1].getScore()) {
+                    BallTeam temp = teams[index2];
+                    teams[index2] = teams[index2 + 1];
+                    teams[index2 + 1] = temp;
                 }
             }
         }
     }
 
-    public void refresh(){
+    private void refresh() {
         for (BallTeam team : teams) {
             team.countScore();
         }

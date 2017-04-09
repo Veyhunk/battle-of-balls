@@ -777,8 +777,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             e.printStackTrace();
         }
         //排序
-        teamsManager.refresh();
-        teamsManager.sort();
+        if(Clock.isSort()) {
+            teamsManager.sort();
+        }
 
 
         //摄像机视野调整
@@ -888,7 +889,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
         void moveRandom() {
             // action();
-            if (!Clock.getClockIsInRange(timeRandomActionBegin,
+            if (Clock.isTimeOver(timeRandomActionBegin,
                     timeRandomActionRang)) {
                 timeRandomActionBegin = Clock.getClock();
                 timeRandomActionRang = (int) (Math.random() * 12000);

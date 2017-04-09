@@ -13,19 +13,31 @@ public final class Clock {
     public static int timeMinute;// m
     public static int timeSecond;// s
     public static int timeGame;// total second of time
+    private static int sortBegin;
+    private static int sortRang = 500;
 
     public static void setTimeBegin() {
         timeBegin = System.currentTimeMillis();
         timeGame = GAME_TIME;
         timeRun();
+        sortBegin = getClock()-sortRang;
+    }
+
+    public static boolean isSort() {
+        if (isTimeOver(sortBegin, sortRang)) {
+            sortBegin = getClock();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static int getClock() {
         return (int) (System.currentTimeMillis() - timeBegin);
     }
 
-    public static boolean getClockIsInRange(int begin, int range) {
-        return (int) (System.currentTimeMillis() - timeBegin) - begin <= range;
+    public static boolean isTimeOver(int begin, int range) {
+        return (int) (System.currentTimeMillis() - timeBegin) - begin > range;
     }
 
     public static String getTimeStr() {
