@@ -504,6 +504,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawBitmap(bmpBtnDanger, screenW - bmpBtnAvatar.getWidth() - bmpBtnBattle.getWidth() - bmpBtnDanger.getWidth(), screenH - bmpBtnDanger.getHeight(), paint);
 
                 // camera
+                if(camera.isPlayerCamera)paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
                 canvas.drawBitmap(bmpCamera, RANK_LIST_WIDTH+5, 5, paint);
 
                 // score计分板
@@ -776,10 +777,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             e.printStackTrace();
         }
         //排序
-        teamsManager.sorl();
+        teamsManager.refresh();
+        teamsManager.sort();
+
+
         //摄像机视野调整
-
-
         if (camera.isPlayerCamera) {
             // 以玩家为中心
             camera=cameraPlayer;

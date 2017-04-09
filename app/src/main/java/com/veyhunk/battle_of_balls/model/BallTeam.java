@@ -20,6 +20,7 @@ public class BallTeam {
     public String teamName;
     private List<Message> CharRoom;//聊天室
     private Message message;
+    private int score=0;
 
 
     public BallTeam(List<Ball> members, int teamColor, String teamName) {
@@ -75,14 +76,16 @@ public class BallTeam {
     }
 
     public int getScore() {
-        int score=0;
+        return score;
+    }
+    public void countScore() {
+        score=0;
         for (Ball member : members) {
             if (member.state == BALL_STATE_ALIVE) {
                 score+=member.weight;
             }
         }
-        score/=10;
-        return score;
+        score/=20;
     }
 
 

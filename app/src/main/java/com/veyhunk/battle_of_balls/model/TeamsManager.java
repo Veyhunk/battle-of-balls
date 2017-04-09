@@ -28,7 +28,22 @@ public class TeamsManager {
     public BallTeam[] getTeams() {
         return teams;
     }
-    public void sorl(){
 
+    public void sort(){
+        BallTeam max;
+        for (BallTeam team : teams) {
+            max=team;
+            for (BallTeam team2 : teams) {
+                if (team.getScore()<team2.getScore()) {
+                    max=team2;
+                }
+            }
+        }
+    }
+
+    public void refresh(){
+        for (BallTeam team : teams) {
+            team.countScore();
+        }
     }
 }

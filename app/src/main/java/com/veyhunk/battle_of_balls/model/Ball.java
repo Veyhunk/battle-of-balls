@@ -25,7 +25,7 @@ import static java.lang.Math.sqrt;
  */
 public class Ball {
     //    public
-//    public int ID;
+    // public int ID;
     public String name;
     public boolean state;
     public int colorDraw;
@@ -187,8 +187,8 @@ public class Ball {
             // 阻尼减重
             radius -= (radius - sqrt(weight)) / ACTION_DAMPING;
         }
-//        weight -= (int) radius / 100 * 5;
-//        // 损耗减重
+        // 损耗减重
+        weight -= (int) radius / 100 * 5;
 
         if (radius > 400) {
             // 角色球尺寸限制，重置尺寸
