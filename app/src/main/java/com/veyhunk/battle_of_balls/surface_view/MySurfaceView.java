@@ -48,6 +48,7 @@ import static com.veyhunk.battle_of_balls.sounds.GameSounds.AVATAR;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.BATTLE;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.BGM;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.BUBBLE;
+import static com.veyhunk.battle_of_balls.sounds.GameSounds.CLICK;
 import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
 
 /**
@@ -98,9 +99,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private Bitmap bmpBtnAvatar = BitmapFactory.decodeResource(
             this.getResources(), R.mipmap.button_avetar);// 分身按钮
     private Bitmap bmpBtnDanger = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.button_danger);// 发射按钮
+            this.getResources(), R.mipmap.button_danger);// 危险按钮
     private Bitmap bmpBtnBattle = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.button_battle);// 发射按钮
+            this.getResources(), R.mipmap.button_battle);// 召唤按钮
+    private Bitmap bmpCamera = BitmapFactory.decodeResource(
+            this.getResources(), R.mipmap.camera);// 摄像机
     // Music
     private GameSounds gameSounds;
 
@@ -316,9 +319,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         gameSounds.starMusic(AVATAR);
                     }
                     flagButtonIndex = 1;
-                    break;
-                } else if (event.getX() < 30 && event.getY() < 30) {
+                    return true;
+                } else if (event.getX() > RANK_LIST_WIDTH && event.getX() < RANK_LIST_WIDTH+bmpCamera.getWidth()&&event.getY()<bmpCamera.getHeight()+5) {
                     camera.isPlayerCamera = !camera.isPlayerCamera;
+                    gameSounds.starMusic(CLICK);
+                    flagButtonIndex = 1;
+                    return true;
                 } else {
                     flagRockerDisplay = true;
                     ptRockerCtrlPoint.set((int) event.getX(), (int) event.getY());
@@ -338,6 +344,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (flagButtonIndex == 1) {
+                    flagRockerDisplay = false;
                     break;
                 }
                 flagRockerDisplay = true;
@@ -448,17 +455,17 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.translate(camera.Focus.x, camera.Focus.y);
                 canvas.scale(camera.Scale.x, camera.Scale.y, camera.ScalePosition.x, camera.ScalePosition.y);
 
-                DrawBackground();
                 // 绘制背景
+                DrawBackground();
+                // 绘制食物小球
                 for (FoodBall foodBall : FoodBallList) {
-                    // 绘制食物小球
                     paint.setColor(ContextCompat.getColor(context, foodBall.colorDraw));
                     canvas.drawCircle((float) foodBall.positionX,
                             (float) foodBall.positionY, foodBall.radius, paint);
                 }
 
+                // 绘制team
                 for (BallTeam team : teams) {
-                    // 绘制team
                     paint.setColor(ContextCompat.getColor(context, team.teamColor));
                     for (Ball member : team.members) {
                         if (member.state) {
@@ -474,8 +481,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         }
                     }
                 }
+                // 绘制角色球
                 if (myBall.state) {
-                    // 绘制角色球
                     drawBall(myBall);
                 }
                 canvas.restore();
@@ -496,6 +503,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawBitmap(bmpBtnBattle, screenW - bmpBtnAvatar.getWidth() - bmpBtnBattle.getWidth(), screenH - bmpBtnBattle.getHeight(), paint);
                 canvas.drawBitmap(bmpBtnDanger, screenW - bmpBtnAvatar.getWidth() - bmpBtnBattle.getWidth() - bmpBtnDanger.getWidth(), screenH - bmpBtnDanger.getHeight(), paint);
 
+                // camera
+                canvas.drawBitmap(bmpCamera, RANK_LIST_WIDTH+5, 5, paint);
+
                 // score计分板
                 paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
                 paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
@@ -506,6 +516,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawRect(5, RANK_LIST_ITEM_HEIGHT + 5, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + RANK_LIST_ITEM_HEIGHT + 5, paint);
                 canvas.drawText("Weight:" + myBall.weight, 30, 28 + RANK_LIST_ITEM_HEIGHT,
                         paintFont);
+
                 // 倒计时
                 canvas.drawText(Clock.getTimeStr(),
                         screenW / 2 - 25, 28, paintFont);
