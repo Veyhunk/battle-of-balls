@@ -67,7 +67,7 @@ public class Ball {
     /**
      * Initial new ball by avatar
      *
-     * @param position position
+     * @param position basePosition
      * @param weight   weight
      */
     public void reSetBall(Point position, float weight) {
@@ -257,7 +257,7 @@ public class Ball {
         }
     }
 
-//    private void escape(Point position) {
+//    private void escape(Point basePosition) {
 //
 //    }
 

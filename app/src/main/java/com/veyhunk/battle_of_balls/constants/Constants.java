@@ -23,6 +23,7 @@ public class Constants {
     public static final int ROCKER_RUDDER_RADIUS = 30;// 摇杆半径
     public static final int ROCKER_ACTION_RADIUS = 75;// 摇杆活动范围半径
     public static final int ROCKER_WHEEL_RADIUS = 60;// 摇杆底座范围半径
+    public static final int ROCKER_ACTIVITY_RADIUS = 30;// 摇杆活动范围半径
     public static final int[] BALL_COLORS = new int[]{R.color.color0,
             R.color.color1, R.color.color2, R.color.color3, R.color.color4,
             R.color.color5, R.color.color6};// 颜色表
@@ -55,14 +56,14 @@ public class Constants {
         public static final int TEAM_MEMBER_AMOUNT = 5;
     }
 //    public static class MoveTarget {
-//        public Point position;
+//        public Point basePosition;
 //        public double direction;
 //
 //        public MoveTarget() {
 //        }
 //
-//        public void setTarget(Point position, double direction) {
-//            this.position = position;
+//        public void setTarget(Point basePosition, double direction) {
+//            this.basePosition = basePosition;
 //            this.direction = direction;
 //        }
 //    }

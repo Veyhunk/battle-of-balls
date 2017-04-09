@@ -1,9 +1,10 @@
-package com.veyhunk.battle_of_balls.model;
+package com.veyhunk.battle_of_balls.utils;
 
 import android.graphics.PointF;
 
 /**
  * Created by Veyhunk on 08/April/2017.
+ * Game camera
  */
 
 public class Camera {

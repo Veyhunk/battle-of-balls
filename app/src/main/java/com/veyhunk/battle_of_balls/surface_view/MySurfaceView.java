@@ -19,9 +19,10 @@ import android.view.SurfaceView;
 import com.veyhunk.battle_of_balls.R;
 import com.veyhunk.battle_of_balls.model.Ball;
 import com.veyhunk.battle_of_balls.model.BallTeam;
-import com.veyhunk.battle_of_balls.model.Camera;
+import com.veyhunk.battle_of_balls.utils.Camera;
 import com.veyhunk.battle_of_balls.model.FoodBall;
 import com.veyhunk.battle_of_balls.model.MyBall;
+import com.veyhunk.battle_of_balls.utils.Rocker;
 import com.veyhunk.battle_of_balls.model.TeamsManager;
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
 import com.veyhunk.battle_of_balls.utils.Clock;
@@ -35,6 +36,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_ITEM_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_WIDTH;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTION_RADIUS;
+import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTIVITY_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_RUDDER_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_WHEEL_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
@@ -66,12 +68,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private int flagButtonIndex;// 线程消亡的标识位
     private boolean flagGameOver;// 线程消亡的标识位
     private boolean flagIsTouchLongMove;// 是否长按的标识位
-    private boolean flagRockerDisplay = false;// 是否显示遥感的标识位
     private int keyCheck;
     // variable
     private int screenW, screenH; // Screen_size
-    private Point ptRockerPosition;// 摇杆位置
-    private Point ptRockerCtrlPoint = new Point(0, 0);// 摇杆起始位置
     private SurfaceHolder sfh; // 用于控制SurfaceView
     private Paint paint;// 声明一个画笔
     private Paint paintFont;// 声明一个画笔
@@ -117,16 +116,16 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         mOnEndOfGame = (OnEndOfGameInterface) context;
         gameSounds = new GameSounds(context);
         gameSounds.starMusic(BGM);
-        camera=new Camera();
-        cameraGlobal=new Camera();
-        cameraPlayer=new Camera();
+        camera = new Camera();
+        cameraGlobal = new Camera();
+        cameraPlayer = new Camera();
         // 实例SurfaceHolder
         sfh = this.getHolder();
         // 为SurfaceView添加状态监听
         sfh.addCallback(this);
         // 实例一个画笔
         paint = new Paint();
-        ptRockerPosition = new Point(ptRockerCtrlPoint);
+        Rocker.basePosition = new Point(Rocker.rockerPosition);
         // 设置消除锯齿
         paint.setAntiAlias(true);
         // 实例一个画笔
@@ -239,16 +238,16 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                            flagButtonIndex = index1;
 //                            break;
 //                        } else {
-//                            flagRockerDisplay = true;
-//                            ptRockerCtrlPoint.set((int) event.getX(index1),
+//                            Rocker.isShow = true;
+//                            Rocker.rockerPosition.set((int) event.getX(index1),
 //                                    (int) event.getY(index1));
-//                            ptRockerPosition.set((int) event.getX(index1) + 1,
+//                            Rocker.basePosition.set((int) event.getX(index1) + 1,
 //                                    (int) event.getY(index1));
 //                        }
 //                    case MotionEvent.ACTION_UP:
 //                        // System.out.println("----放开----");
 //                        flagIsTouchLongMove = true;
-////                        flagRockerDisplay = false;
+////                        Rocker.isShow = false;
 //                        flagButtonIndex = -1;
 //                        if (flagGameOver) {
 //                            System.out.println("over");
@@ -262,11 +261,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                        if (flagButtonIndex == index1) {
 //                            break;
 //                        }
-//                        flagRockerDisplay = true;
+//                        Rocker.isShow = true;
 //                        // System.out.println("----移动----");
 //                        if (event.getPointerCount() == 1) {
-//                            int len = MathUtils.getLength(ptRockerCtrlPoint.x,
-//                                    ptRockerCtrlPoint.y, event.getX(index1),
+//                            int len = MathUtils.getLength(Rocker.rockerPosition.x,
+//                                    Rocker.rockerPosition.y, event.getX(index1),
 //                                    event.getY(index1));
 //                            if (len < 20 && flagIsTouchLongMove) {
 //                                // 如果屏幕接触点不在摇杆挥动范围内,则不处理
@@ -275,21 +274,21 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                            if (len <= ROCKER_ACTION_RADIUS) {
 //                                // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
 //                                flagIsTouchLongMove = false;
-//                                ptRockerPosition.set((int) event.getX(index1),
+//                                Rocker.basePosition.set((int) event.getX(index1),
 //                                        (int) event.getY(index1));
 //
 //                            } else {
 //                                // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
 //                                flagIsTouchLongMove = false;
-//                                ptRockerPosition = MathUtils.getBorderPoint(
-//                                        ptRockerCtrlPoint,
+//                                Rocker.basePosition = MathUtils.getBorderPoint(
+//                                        Rocker.rockerPosition,
 //                                        new Point((int) event.getX(index1),
 //                                                (int) event.getY(index1)),
 //                                        ROCKER_ACTION_RADIUS);
 //                            }
 //
 //                            myBall.directionTarget = MathUtils.getRadian(
-//                                    ptRockerCtrlPoint, ptRockerPosition);
+//                                    Rocker.rockerPosition, Rocker.basePosition);
 //
 //                        }
 //                        break;
@@ -320,20 +319,20 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     }
                     flagButtonIndex = 1;
                     return true;
-                } else if (event.getX() > RANK_LIST_WIDTH && event.getX() < RANK_LIST_WIDTH+bmpCamera.getWidth()&&event.getY()<bmpCamera.getHeight()+5) {
-                    camera.isPlayerCamera = !camera.isPlayerCamera;
+                } else if (event.getX() > RANK_LIST_WIDTH && event.getX() < RANK_LIST_WIDTH + bmpCamera.getWidth() && event.getY() < bmpCamera.getHeight() + 5) {
+                    Camera.isPlayerCamera = !Camera.isPlayerCamera;
                     gameSounds.starMusic(CLICK);
                     flagButtonIndex = 1;
                     return true;
                 } else {
-                    flagRockerDisplay = true;
-                    ptRockerCtrlPoint.set((int) event.getX(), (int) event.getY());
-                    ptRockerPosition.set((int) event.getX() + 1, (int) event.getY());
+                    Rocker.isShow = true;
+                    Rocker.rockerPosition.set((int) event.getX(), (int) event.getY());
+                    Rocker.basePosition.set((int) event.getX() + 1, (int) event.getY());
                 }
             case MotionEvent.ACTION_UP:
                 // System.out.println("----放开----");
                 flagIsTouchLongMove = true;
-//                    flagRockerDisplay = false;
+//                    Rocker.isShow = false;
                 flagButtonIndex = -1;
                 if (flagGameOver) {
                     System.out.println("over");
@@ -344,28 +343,28 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (flagButtonIndex == 1) {
-                    flagRockerDisplay = false;
+                    Rocker.isShow = false;
                     break;
                 }
-                flagRockerDisplay = true;
+                Rocker.isShow = true;
                 // System.out.println("----移动----");
                 if (event.getPointerCount() == 1) {
-                    int len = MathUtils.getLength(ptRockerCtrlPoint.x, ptRockerCtrlPoint.y, event.getX(), event.getY());
-                    if (len < 20 && flagIsTouchLongMove) {
+                    int len = MathUtils.getLength(Rocker.rockerPosition.x, Rocker.rockerPosition.y, event.getX(), event.getY());
+                    if (len < ROCKER_ACTIVITY_RADIUS && flagIsTouchLongMove) {
                         // 如果屏幕接触点不在摇杆挥动范围内,则不处理
                         return true;
                     }
                     if (len <= ROCKER_ACTION_RADIUS) {
                         // 如果手指在摇杆活动范围内，则摇杆处于手指触摸位置
                         flagIsTouchLongMove = false;
-                        ptRockerPosition.set((int) event.getX(), (int) event.getY());
+                        Rocker.basePosition.set((int) event.getX(), (int) event.getY());
 
                     } else {
                         // 设置摇杆位置，使其处于手指触摸方向的 摇杆活动范围边缘
                         flagIsTouchLongMove = false;
-                        ptRockerPosition = MathUtils.getBorderPoint(ptRockerCtrlPoint, new Point((int) event.getX(), (int) event.getY()), ROCKER_ACTION_RADIUS);
+                        Rocker.basePosition = MathUtils.getBorderPoint(Rocker.rockerPosition, new Point((int) event.getX(), (int) event.getY()), ROCKER_ACTION_RADIUS);
                     }
-                    myBall.setTarget(MathUtils.getRadian(ptRockerCtrlPoint, ptRockerPosition), (float) Math.sqrt((ptRockerPosition.x - ptRockerCtrlPoint.x) * (ptRockerPosition.x - ptRockerCtrlPoint.x) + (ptRockerPosition.y - ptRockerCtrlPoint.y) * (ptRockerPosition.y - ptRockerCtrlPoint.y)) / ROCKER_ACTION_RADIUS);
+                    myBall.setTarget(MathUtils.getRadian(Rocker.rockerPosition, Rocker.basePosition), (float) Math.sqrt((Rocker.basePosition.x - Rocker.rockerPosition.x) * (Rocker.basePosition.x - Rocker.rockerPosition.x) + (Rocker.basePosition.y - Rocker.rockerPosition.y) * (Rocker.basePosition.y - Rocker.rockerPosition.y)) / ROCKER_ACTION_RADIUS);
                 }
                 break;
 
@@ -381,32 +380,32 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        flagRockerDisplay = true;
+        Rocker.isShow = true;
         if (keyCheck != keyCode) {
             keyCheck = keyCode;
             if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {//up >> right
-                ptRockerCtrlPoint.x = 100;
-                ptRockerCtrlPoint.y = screenH - 100;
-                ptRockerPosition.x = 100 + 65;
-                ptRockerPosition.y = screenH - 100;
+                Rocker.rockerPosition.x = 100;
+                Rocker.rockerPosition.y = screenH - 100;
+                Rocker.basePosition.x = 100 + 65;
+                Rocker.basePosition.y = screenH - 100;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {// down >> left
-                ptRockerCtrlPoint.x = 100;
-                ptRockerCtrlPoint.y = screenH - 100;
-                ptRockerPosition.x = 100 - 65;
-                ptRockerPosition.y = screenH - 100;
+                Rocker.rockerPosition.x = 100;
+                Rocker.rockerPosition.y = screenH - 100;
+                Rocker.basePosition.x = 100 - 65;
+                Rocker.basePosition.y = screenH - 100;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {// left >> up
-                ptRockerCtrlPoint.x = 100;
-                ptRockerCtrlPoint.y = screenH - 100;
-                ptRockerPosition.x = 100;
-                ptRockerPosition.y = screenH - 100 - 65;
+                Rocker.rockerPosition.x = 100;
+                Rocker.rockerPosition.y = screenH - 100;
+                Rocker.basePosition.x = 100;
+                Rocker.basePosition.y = screenH - 100 - 65;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {// right >> down
-                ptRockerCtrlPoint.x = 100;
-                ptRockerCtrlPoint.y = screenH - 100;
-                ptRockerPosition.x = 100;
-                ptRockerPosition.y = screenH - 100 + 65;
+                Rocker.rockerPosition.x = 100;
+                Rocker.rockerPosition.y = screenH - 100;
+                Rocker.basePosition.x = 100;
+                Rocker.basePosition.y = screenH - 100 + 65;
             }
-            myBall.directionTarget = MathUtils.getRadian(ptRockerCtrlPoint,
-                    ptRockerPosition);
+            myBall.directionTarget = MathUtils.getRadian(Rocker.rockerPosition,
+                    Rocker.basePosition);
         }
 
         return super.onKeyDown(keyCode, event);
@@ -490,12 +489,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.save();
 
                 // 摇杆
-                if (flagRockerDisplay) {
+                if (Rocker.isShow) {
                     paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
-                    canvas.drawCircle(ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
+                    canvas.drawCircle(Rocker.rockerPosition.x, Rocker.rockerPosition.y,
                             ROCKER_WHEEL_RADIUS, paint);// 绘制范围
                     paint.setColor(ContextCompat.getColor(context, R.color.rocker));
-                    canvas.drawCircle(ptRockerPosition.x, ptRockerPosition.y,
+                    canvas.drawCircle(Rocker.basePosition.x, Rocker.basePosition.y,
                             ROCKER_RUDDER_RADIUS, paint);// 绘制摇杆
                 }
                 // button
@@ -504,8 +503,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawBitmap(bmpBtnDanger, screenW - bmpBtnAvatar.getWidth() - bmpBtnBattle.getWidth() - bmpBtnDanger.getWidth(), screenH - bmpBtnDanger.getHeight(), paint);
 
                 // camera
-                if(camera.isPlayerCamera)paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
-                canvas.drawBitmap(bmpCamera, RANK_LIST_WIDTH+5, 5, paint);
+                if (Camera.isPlayerCamera)
+                    paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
+                canvas.drawBitmap(bmpCamera, RANK_LIST_WIDTH + 5, 5, paint);
 
                 // score计分板
                 paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
@@ -531,7 +531,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             index1 * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (index1 + 1)
                                     * RANK_LIST_ITEM_HEIGHT + 26, paint);
 
-                    if (team.teamName != myBall.getTeam().teamName) {
+                    if (team != myBall.getTeam()) {
                         // rank text
                         canvas.drawText((String) (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + 50, 50 + index1 * RANK_LIST_ITEM_HEIGHT, paintFont);
                         canvas.drawText("" + team.getScore(), screenW - 65, 50 + index1 * RANK_LIST_ITEM_HEIGHT, paintFont);
@@ -697,9 +697,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      * 游戏逻辑
      */
     private void logic() {
-        if (ptRockerCtrlPoint.equals(ptRockerPosition)) {
-//            flagRockerDisplay = false;
-        }
         if (!myBall.state) {
             if (myBall.getTeam().members.size() > 1) {
                 myBall.getTeam().members.get(myBall.getTeam().members.size() - 1);
@@ -708,10 +705,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             }
         }
 //        myBall.move((float) Math
-//                .sqrt((ptRockerPosition.x - ptRockerCtrlPoint.x)
-//                        * (ptRockerPosition.x - ptRockerCtrlPoint.x)
-//                        + (ptRockerPosition.y - ptRockerCtrlPoint.y)
-//                        * (ptRockerPosition.y - ptRockerCtrlPoint.y))
+//                .sqrt((Rocker.basePosition.x - Rocker.rockerPosition.x)
+//                        * (Rocker.basePosition.x - Rocker.rockerPosition.x)
+//                        + (Rocker.basePosition.y - Rocker.rockerPosition.y)
+//                        * (Rocker.basePosition.y - Rocker.rockerPosition.y))
 //                / ROCKER_ACTION_RADIUS);
 //        if (myBall.life == 0
 //                || myBall.life == (BALL_AI_COUNT + 1) * BALL_DEFAULT_LIFE) {
@@ -719,9 +716,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //        }
 
 //            // 锁定遥感
-//            ptRockerPosition.y = ptRockerCtrlPoint.y;
-//            ptRockerPosition.x = ptRockerCtrlPoint.x;
-//            flagRockerDisplay = false;
+//            Rocker.basePosition.y = Rocker.rockerPosition.y;
+//            Rocker.basePosition.x = Rocker.rockerPosition.x;
+//            Rocker.isShow = false;
 
         try {
             for (BallTeam team : teams) {
@@ -777,15 +774,15 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             e.printStackTrace();
         }
         //排序
-        if(Clock.isSort()) {
+        if (Clock.isSort()) {
             teamsManager.sort();
         }
 
 
         //摄像机视野调整
-        if (camera.isPlayerCamera) {
+        if (Camera.isPlayerCamera) {
             // 以玩家为中心
-            camera=cameraPlayer;
+            camera = cameraPlayer;
             cameraPlayer.Focus.x = -myBall.position.x + screenW / 2;
             cameraPlayer.Focus.y = -myBall.position.y + screenH / 2;
             cameraPlayer.Scale.x = (3 / (myBall.radius / 15) + 0.4F);
@@ -794,7 +791,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             cameraPlayer.ScalePosition.y = myBall.position.y;
         } else {
             //全局视野
-            camera=cameraGlobal;
+            camera = cameraGlobal;
         }
     }
 
@@ -917,26 +914,26 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     // 边界判断
                     targetX = 0;
                     // myBall.targetX = 0;
-                    // ptRockerPosition.x = ptRockerCtrlPoint.x;
+                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
 
                 }
                 if (targetX > MAP_WIDTH) {
                     // 边界判断
                     targetX = MAP_WIDTH;
                     // myBall.targetX = MAP_WIDTH;
-                    // ptRockerPosition.x = ptRockerCtrlPoint.x;
+                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
                 }
                 if (targetY < 0) {
                     // 边界判断
                     targetY = 0;
                     // myBall.targetY = 0;
-                    // ptRockerPosition.y = ptRockerCtrlPoint.y;
+                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
                 }
                 if (targetY > MAP_HEIGHT) {
                     // 边界判断
                     targetY = MAP_HEIGHT;
                     // // myBall.targetY = MAP_HEIGHT;
-                    // ptRockerPosition.y = ptRockerCtrlPoint.y;
+                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
                 }
                 positionX += (targetX - positionX) / ACTION_DAMPING;
                 positionY += (targetY - positionY) / ACTION_DAMPING;
@@ -959,43 +956,43 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 if (targetX < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetX = 0;
-                    directionTarget = getRadian(ptRockerCtrlPoint.x,
-                            ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
-                            ptRockerPosition.y);
-                    ptRockerPosition.x = ptRockerCtrlPoint.x;
+                    directionTarget = getRadian(Rocker.rockerPosition.x,
+                            Rocker.rockerPosition.x, Rocker.rockerPosition.y,
+                            Rocker.basePosition.y);
+                    Rocker.basePosition.x = Rocker.rockerPosition.x;
                     // myBall.targetX = 0;
-                    // ptRockerPosition.x = ptRockerCtrlPoint.x;
+                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
 
                 }
                 if (targetX > MAP_WIDTH - inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetX = MAP_WIDTH;
-                    directionTarget = getRadian(ptRockerCtrlPoint.x,
-                            ptRockerCtrlPoint.x, ptRockerCtrlPoint.y,
-                            ptRockerPosition.y);
-                    ptRockerPosition.x = ptRockerCtrlPoint.x;
+                    directionTarget = getRadian(Rocker.rockerPosition.x,
+                            Rocker.rockerPosition.x, Rocker.rockerPosition.y,
+                            Rocker.basePosition.y);
+                    Rocker.basePosition.x = Rocker.rockerPosition.x;
                     // myBall.targetX = MAP_WIDTH;
-                    // ptRockerPosition.x = ptRockerCtrlPoint.x;
+                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
                 }
                 if (targetY < 0 + inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetY = 0;
-                    directionTarget = getRadian(ptRockerCtrlPoint.x,
-                            ptRockerPosition.x, ptRockerCtrlPoint.y,
-                            ptRockerCtrlPoint.y);
-                    ptRockerPosition.y = ptRockerCtrlPoint.y;
+                    directionTarget = getRadian(Rocker.rockerPosition.x,
+                            Rocker.basePosition.x, Rocker.rockerPosition.y,
+                            Rocker.rockerPosition.y);
+                    Rocker.basePosition.y = Rocker.rockerPosition.y;
                     // myBall.targetY = 0;
-                    // ptRockerPosition.y = ptRockerCtrlPoint.y;
+                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
                 }
                 if (targetY > MAP_HEIGHT - inscribedSquareLen_1_2) {
                     // 边界判断
 //                    targetY = MAP_HEIGHT;
-                    directionTarget = getRadian(ptRockerCtrlPoint.x,
-                            ptRockerPosition.x, ptRockerCtrlPoint.y,
-                            ptRockerCtrlPoint.y);
-                    ptRockerPosition.y = ptRockerCtrlPoint.y;
+                    directionTarget = getRadian(Rocker.rockerPosition.x,
+                            Rocker.basePosition.x, Rocker.rockerPosition.y,
+                            Rocker.rockerPosition.y);
+                    Rocker.basePosition.y = Rocker.rockerPosition.y;
                     // // myBall.targetY = MAP_HEIGHT;
-                    // ptRockerPosition.y = ptRockerCtrlPoint.y;
+                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
                 }
 
                 if (targetX < 0 + inscribedSquareLen_1_2) {

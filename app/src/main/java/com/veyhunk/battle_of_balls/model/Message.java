@@ -22,7 +22,7 @@ public class Message {
      * Create Message
      *
      * @param type     Message type
-     * @param position position
+     * @param position basePosition
      */
     public Message(short type, Point position, int duration) {
         this.type = type;
@@ -44,7 +44,7 @@ public class Message {
      * Create Message
      *
      * @param type     Message type
-     * @param position position
+     * @param position basePosition
      * @param content  content
      * @param sender   sender
      */
@@ -59,7 +59,7 @@ public class Message {
      * Edit Message
      *
      * @param type     Message type
-     * @param position position
+     * @param position basePosition
      */
     public void editMessage(short type, Point position) {
         this.type = type;
