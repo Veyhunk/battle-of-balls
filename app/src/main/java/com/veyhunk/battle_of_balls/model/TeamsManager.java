@@ -5,6 +5,7 @@ import com.veyhunk.battle_of_balls.constants.Constants;
 import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
 
 /**
+ * TeamsManager
  * Created by Veyhunk on 27/March/2017.
  */
 

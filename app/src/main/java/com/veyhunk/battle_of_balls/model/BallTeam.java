@@ -33,7 +33,6 @@ public class BallTeam {
     }
 
 
-
     /**
      * send Message
      *
@@ -61,13 +60,14 @@ public class BallTeam {
 
 
     Ball initMember() {
-        if (members.size() > MAX_TEAM_AMOUNT) return null;
-        for (Ball member : members) {
-            if (member.state == BALL_STATE_DEAD) {
-                return member;
-            }
-        }
-        return new Ball(this, getName());
+        Ball newMember = null;
+        int size = 0;
+        for (Ball member : members)
+            if (member.state == BALL_STATE_DEAD) newMember = member;
+            else ++size;
+        if (size > MAX_TEAM_AMOUNT) newMember = null;
+        else if (newMember == null) newMember = new Ball(this, getName());
+        return newMember;
     }
 
     public PlayerBall resetPlayer(PlayerBall deadPlayer) {
