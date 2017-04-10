@@ -9,12 +9,13 @@ import static com.veyhunk.battle_of_balls.sounds.GameSounds.EAT_DEFAULT;
 /**
  * 定义角色球球的类，即角色球
  */
-public class MyBall extends Ball {
-    GameSounds gameSounds;
+public class PlayerBall extends Ball {
+    private GameSounds gameSounds;
 
-    public MyBall(Ball ball) {
-        super(ball.colorDraw, ballName, ball.getTeam());
+    public PlayerBall(Ball ball) {
+        super(ball.getTeam(), ballName);
     }
+
     public void setGameSounds(GameSounds gameSounds) {
         this.gameSounds = gameSounds;
     }
@@ -38,7 +39,7 @@ public class MyBall extends Ball {
     }
 
     @Override
-    public void setTarget(float direction, float acceleratedSpeed) {
-        super.setTarget(direction, acceleratedSpeed);
+    public void setVector(float direction, float acceleratedSpeed) {
+        super.setVector(direction, acceleratedSpeed);
     }
 }

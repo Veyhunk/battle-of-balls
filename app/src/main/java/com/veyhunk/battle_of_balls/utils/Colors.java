@@ -16,8 +16,4 @@ public class Colors {
         return BALL_COLORS[(int) (Math.random() * BALL_COLORS.length)];
     }
 
-    public static int getColorByIndex(int colorIndex) {
-        return BALL_COLORS[colorIndex > 7 ? ((int) (Math.random() * BALL_COLORS.length))
-                : (colorIndex)];
-    }
 }

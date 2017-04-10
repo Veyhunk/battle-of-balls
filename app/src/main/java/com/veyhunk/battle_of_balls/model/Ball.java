@@ -46,19 +46,18 @@ public class Ball {
     /**
      * Initial new ball (born)
      *
-     * @param colorDraw  colorDraw
-     * @param nameString nameString
      * @param team       team
+     * @param nameString nameString
      */
-    public Ball(int colorDraw, String nameString, BallTeam team) {
+    public Ball(BallTeam team,String nameString) {
+        this.team = team;
+        this.name = nameString;
+        this.colorDraw = team.teamColor;
         this.state = BALL_STATE_ALIVE;
         this.position = MathUtils.getPointRandom();
         this.targetPosition = position;
-        this.colorDraw = colorDraw;
-        this.name = nameString;
         this.weight = BALL_DEFAULT_WEIGHT;
         this.radius = (int) sqrt(weight);
-        this.team = team;
         this.message = new Message();
         this.timeRandomActionBegin = getClock() + 500;
     }
@@ -70,7 +69,7 @@ public class Ball {
      * @param position basePosition
      * @param weight   weight
      */
-    public void reSetBall(Point position, float weight) {
+    private void reSetBall(Point position, float weight) {
         this.state = BALL_STATE_ALIVE;// 复活
         this.position = position;
         this.targetPosition = position;
@@ -84,6 +83,7 @@ public class Ball {
     public void action() {
         grow();
         thinking();
+
         move();
     }
 
@@ -142,24 +142,24 @@ public class Ball {
         }
     }
 
-    public void thinking() {
+    private void thinking() {
         if (isTimeOver(timeRandomActionBegin,
                 timeRandomActionRang)) {
             if (message.type == DANGED) {
-                setTarget(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+                setVector(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
             } else if (message.type == BATTLE) {
-                setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                setVector(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
             } else {
                 if (team.readMessage().type == DANGED) {
-                    setTarget(MathUtils.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
+                    setVector(MathUtils.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
                 } else if (team.readMessage().type == BATTLE) {
-                    setTarget(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
+                    setVector(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
                 } else {
                     if (message.type == AVATAR) {
                         avatar(direction);
-                        setTarget(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
+                        setVector(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
                     } else {
-                        setTarget(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
+                        setVector(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
 
 //                        directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
 //                        acceleratedSpeed = (float) Math.random();
@@ -172,7 +172,7 @@ public class Ball {
         timeRandomActionRang = (int) (Math.random() * 1000);
     }
 
-    public void setTarget(float direction, float acceleratedSpeed) {
+    public void setVector(float direction, float acceleratedSpeed) {
         this.directionTarget = direction;
         this.acceleratedSpeed = acceleratedSpeed;
     }
@@ -211,23 +211,24 @@ public class Ball {
 
 
             float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
-            if (targetPosition.x < 0 + inscribedSquareLen_1_2) {
+            if (position.x < 0 + inscribedSquareLen_1_2) {
                 // 边界判断
                 targetPosition.x = (int) inscribedSquareLen_1_2;
+                acceleratedSpeed*=(float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2)/ directionTarget;
                 directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
 
             }
-            if (targetPosition.x > MAP_WIDTH - inscribedSquareLen_1_2) {
+            if (position.x > MAP_WIDTH - inscribedSquareLen_1_2) {
                 // 边界判断
                 targetPosition.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
                 directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
             }
-            if (targetPosition.y < 0 + inscribedSquareLen_1_2) {
+            if (position.y < 0 + inscribedSquareLen_1_2) {
                 // 边界判断
                 targetPosition.y = (int) inscribedSquareLen_1_2;
                 directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : (float) Math.PI;
             }
-            if (targetPosition.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
+            if (position.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
                 // 边界判断
                 targetPosition.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
                 directionTarget = directionTarget > Math.PI / 2 ? (float) Math.PI : 0;
@@ -239,11 +240,48 @@ public class Ball {
     }
 
     /**
+     * moveForAvatar
+     */
+    private void moveForAvatar() {
+        if (directionTarget != 404) {
+            targetPosition.x += moveSpeed * Math.cos(directionTarget)
+                    * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+            targetPosition.y += moveSpeed * Math.sin(directionTarget)
+                    * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+            float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
+            if (position.x < 0 + inscribedSquareLen_1_2) {
+                // 边界判断
+                targetPosition.x = (int) inscribedSquareLen_1_2;
+                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
+
+            }
+            if (position.x > MAP_WIDTH - inscribedSquareLen_1_2) {
+                // 边界判断
+                targetPosition.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
+                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
+            }
+            if (position.y < 0 + inscribedSquareLen_1_2) {
+                // 边界判断
+                targetPosition.y = (int) inscribedSquareLen_1_2;
+                directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : (float) Math.PI;
+            }
+            if (position.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
+                // 边界判断
+                targetPosition.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
+                directionTarget = directionTarget > Math.PI / 2 ? (float) Math.PI : 0;
+            }
+            position.x += (targetPosition.x - position.x) / ACTION_DAMPING;
+            position.y += (targetPosition.y - position.y) / ACTION_DAMPING;
+        }
+    }
+
+    /**
      * 分裂自身
      *
      * @param direction 传入一个目标，作为分裂出新球的方向
      */
     public void avatar(float direction) {
+        if (weight < BALL_DEFAULT_WEIGHT) return;
         Point target = new Point();
         target.x += moveSpeed * Math.cos(direction)
                 * (30 / radius * 1 + 0.6) * acceleratedSpeed;
@@ -251,15 +289,12 @@ public class Ball {
                 * (30 / radius * 1 + 0.6) * acceleratedSpeed;
         Ball newBall = team.initMember();
         if (newBall != null) {
-            weight /=  2;
+            weight /= 2;
+            newBall.position=position;
             newBall.reSetBall(target, weight);
             team.addMember(newBall);
         }
     }
-
-//    private void escape(Point basePosition) {
-//
-//    }
 
 
     public BallTeam getTeam() {

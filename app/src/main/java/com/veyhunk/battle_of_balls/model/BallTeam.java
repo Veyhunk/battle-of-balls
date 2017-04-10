@@ -1,12 +1,11 @@
 package com.veyhunk.battle_of_balls.model;
 
-import android.graphics.Point;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
+import static com.veyhunk.battle_of_balls.constants.Constants.TEAM_PARAMS.MAX_TEAM_AMOUNT;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 
 /**
@@ -14,22 +13,15 @@ import static com.veyhunk.battle_of_balls.constants.Constants.getName;
  */
 public class BallTeam {
 
-
     public List<Ball> members;//团队成员
     public int teamColor;
     public String teamName;
     private List<Message> CharRoom;//聊天室
     private Message message;
-    private int score=0;
+    private int score = 0;
 
 
-    public BallTeam(List<Ball> members, int teamColor, String teamName) {
-        this.members = members;
-        this.teamColor = teamColor;
-        this.teamName = teamName;
-    }
-
-    public BallTeam(int teamColor, String teamName) {
+    BallTeam(int teamColor, String teamName) {
         members = new ArrayList<>();
         message = new Message();
         this.teamColor = teamColor;
@@ -40,13 +32,15 @@ public class BallTeam {
         message.work();
     }
 
+
+
     /**
      * send Message
      *
-     * @param message
+     * @param message Message
      * @return boolean
      */
-    public boolean sendMessage(Message message) {
+    boolean sendMessage(Message message) {
         try {
 //            CharRoom.add(message);
             this.message = message;
@@ -61,55 +55,54 @@ public class BallTeam {
      *
      * @return message
      */
-    public Message readMessage() {
+    Message readMessage() {
         return message;
     }
 
 
-    public Ball initMember() {
+    Ball initMember() {
+        if (members.size() > MAX_TEAM_AMOUNT) return null;
         for (Ball member : members) {
             if (member.state == BALL_STATE_DEAD) {
                 return member;
             }
         }
-        return new Ball(teamColor, getName(), this);
+        return new Ball(this, getName());
+    }
+
+    public PlayerBall resetPlayer(PlayerBall deadPlayer) {
+        PlayerBall newPlayer;
+        for (int i = 0; i < members.size(); i++) {
+            Ball member = members.get(i);
+            if (member.state == BALL_STATE_ALIVE) {
+                newPlayer = new PlayerBall(member);
+                members.remove(i);
+                members.add(newPlayer);
+                return newPlayer;
+            }
+        }
+        return deadPlayer;
     }
 
     public int getScore() {
         return score;
     }
-    public void countScore() {
-        score=0;
+
+    void countScore() {
+        score = 0;
         for (Ball member : members) {
             if (member.state == BALL_STATE_ALIVE) {
-                score+=member.weight;
+                score += member.weight;
             }
         }
-        score/=20;
+        score /= 20;
     }
-
 
     public boolean addMember(Ball member) {
         try {
             members.add(member);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean addMember(Point target, float weight) {
-        Ball newBall = initMember();
-        if (newBall != null) {
-            weight = weight / 2;
-            newBall.reSetBall(target, weight);
-
-            try {
-                members.add(newBall);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return true;
         }
         return false;
     }

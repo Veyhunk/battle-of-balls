@@ -1,5 +1,7 @@
 package com.veyhunk.battle_of_balls.constants;
 
+import android.graphics.Point;
+
 import com.veyhunk.battle_of_balls.R;
 
 /**
@@ -19,7 +21,9 @@ public class Constants {
     public static final int BALL_AI_COUNT = 1;// BALL_AI_COUNT
     public static final int BALL_FOOD_COUNT = 600;// BALL_FOOD_COUNT
     public static final int BALL_DEFAULT_WEIGHT = 1600;// ballDefaultSize
-    public static final int MAP_WIDTH = 3000, MAP_HEIGHT = 2000; // Map_size
+    public static final int MAP_WIDTH = 3200, MAP_HEIGHT = 1800; // Map_size
+    public static final int MAP_MARGIN_H = 160; // Map_MARGIN
+    public static final int MAP_MARGIN_W = 90; // Map_MARGIN
     public static final int ROCKER_RUDDER_RADIUS = 30;// 摇杆半径
     public static final int ROCKER_ACTION_RADIUS = 75;// 摇杆活动范围半径
     public static final int ROCKER_WHEEL_RADIUS = 60;// 摇杆底座范围半径
@@ -27,15 +31,15 @@ public class Constants {
     public static final int[] BALL_COLORS = new int[]{R.color.color0,
             R.color.color1, R.color.color2, R.color.color3, R.color.color4,
             R.color.color5, R.color.color6};// 颜色表
-    public static final String[] BALL_NAMES = new String[]{"触手TV大白",
-            "董大鹏", "关注我带团", "孙红雷", "北丘", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
-            "超萌的一天"};
     public static final boolean BALL_STATE_DEAD = false;
     public static final boolean BALL_STATE_ALIVE = true;
     //Message Duration (util:second)
     private static int util = 1;
     public static final int[] MessageDuration = new int[]{0 * util, 1 * util, 1 * util, 5 * util, 5 * util};
 
+    private static final String[] BALL_NAMES = new String[]{"触手TV大白",
+            "董大鹏", "关注我带团", "孙红雷", "北丘", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
+            "超萌的一天"};
     public static String getName() {
         return BALL_NAMES[(int) (Math.random() * 100 % BALL_NAMES.length)];
     }
@@ -50,21 +54,22 @@ public class Constants {
 
     public static final class TEAM_PARAMS {
         public static final int TEAM_AMOUNT = 2;
+        public static final int TEAM_MEMBER_AMOUNT = 5;
+        public static final int MAX_TEAM_AMOUNT = 16;
         public static final String[] TEAM_NAMES = new String[]{"SSS战队", "吞噬军团",
                 "START", "人帅手速快", "浪够了回家", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
                 "超萌的一天"};
-        public static final int TEAM_MEMBER_AMOUNT = 5;
     }
-//    public static class MoveTarget {
-//        public Point basePosition;
-//        public double direction;
-//
-//        public MoveTarget() {
-//        }
-//
-//        public void setTarget(Point basePosition, double direction) {
-//            this.basePosition = basePosition;
-//            this.direction = direction;
-//        }
-//    }
+    public class MoveTarget {
+        public Point basePosition;
+        public double direction;
+
+        public MoveTarget() {
+        }
+
+        public void setTarget(Point basePosition, double direction) {
+            this.basePosition = basePosition;
+            this.direction = direction;
+        }
+    }
 }

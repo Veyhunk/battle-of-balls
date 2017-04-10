@@ -19,19 +19,19 @@ import android.view.SurfaceView;
 import com.veyhunk.battle_of_balls.R;
 import com.veyhunk.battle_of_balls.model.Ball;
 import com.veyhunk.battle_of_balls.model.BallTeam;
-import com.veyhunk.battle_of_balls.utils.Camera;
 import com.veyhunk.battle_of_balls.model.FoodBall;
-import com.veyhunk.battle_of_balls.model.MyBall;
-import com.veyhunk.battle_of_balls.utils.Rocker;
+import com.veyhunk.battle_of_balls.model.PlayerBall;
 import com.veyhunk.battle_of_balls.model.TeamsManager;
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
+import com.veyhunk.battle_of_balls.utils.Camera;
 import com.veyhunk.battle_of_balls.utils.Clock;
 import com.veyhunk.battle_of_balls.utils.MathUtils;
+import com.veyhunk.battle_of_balls.utils.Rocker;
 
-import static com.veyhunk.battle_of_balls.constants.Constants.ACTION_DAMPING;
-import static com.veyhunk.battle_of_balls.constants.Constants.BALL_DEFAULT_WEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_FOOD_COUNT;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
+import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN_H;
+import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN_W;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_ITEM_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_WIDTH;
@@ -39,11 +39,9 @@ import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTION_RADI
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTIVITY_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_RUDDER_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_WHEEL_RADIUS;
-import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.db.GameParams.aiDifficult;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballColorIndex;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballGrowSpeed;
-import static com.veyhunk.battle_of_balls.db.GameParams.ballMoveSpeed;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballName;
 import static com.veyhunk.battle_of_balls.db.GameParams.bestScore;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.AVATAR;
@@ -79,7 +77,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private Camera cameraGlobal;
     private Camera cameraPlayer;
     // 声明Ball
-    private MyBall myBall;
+    private PlayerBall playerBall;
     private FoodBall[] FoodBallList = new FoodBall[BALL_FOOD_COUNT];
     private BallTeam[] teams;
     private TeamsManager teamsManager;
@@ -157,12 +155,17 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         // screen size
         screenW = this.getWidth();
         screenH = this.getHeight();
-        cameraGlobal.Focus.x = -MAP_WIDTH / 2 + screenW / 2;
-        cameraGlobal.Focus.y = -MAP_HEIGHT / 2 + screenH / 2;
-        cameraGlobal.Scale.x = 0.3F;
-        cameraGlobal.Scale.y = 0.3F;
-        cameraGlobal.ScalePosition.x = MAP_WIDTH / 2;
-        cameraGlobal.ScalePosition.y = MAP_HEIGHT / 2;
+
+        //camera global
+        Point map =new Point(MAP_WIDTH+MAP_MARGIN_W,MAP_HEIGHT+MAP_MARGIN_H);
+        float sx = (float) screenW / map.x;
+        float sy = (float) screenH / map.y;
+        cameraGlobal.Focus.x = -map.x / 2 + screenW / 2;
+        cameraGlobal.Focus.y = -map.y / 2 + screenH / 2;
+        cameraGlobal.Scale.y = cameraGlobal.Scale.x = sx > sy ? sy : sx;
+        cameraGlobal.ScalePosition.x = map.x / 2;
+        cameraGlobal.ScalePosition.y = map.y / 2;
+        System.out.println(sx + "y" + sy + "\n" + cameraGlobal.Scale.x + "\n" + cameraGlobal.Scale.y);
 
         // initialization food Ball
         for (index1 = 0; index1 < FoodBallList.length; index1++) {
@@ -173,10 +176,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         teams = teamsManager.getTeams();
 
         // initialization player aiBall
-        myBall = new MyBall(teams[0].members.get(0));
-        myBall.setGameSounds(gameSounds);
+        playerBall = new PlayerBall(teams[0].members.get(0));
+        playerBall.setGameSounds(gameSounds);
         teams[0].members.remove(0);
-        teams[0].addMember(myBall);
+        teams[0].addMember(playerBall);
         // 启动线程flag
         flagGameThread = true;
         // 实例线程
@@ -232,7 +235,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                                    .getWidth())) {
 //                                gameSounds.starMusic(GameSounds.BUBBLE);
 //                            } else {
-////                                myBall.avatar();
+////                                playerBall.avatar();
 //                                gameSounds.starMusic(GameSounds.AVATAR);
 //                            }
 //                            flagButtonIndex = index1;
@@ -287,7 +290,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                                        ROCKER_ACTION_RADIUS);
 //                            }
 //
-//                            myBall.directionTarget = MathUtils.getRadian(
+//                            playerBall.directionTarget = MathUtils.getRadian(
 //                                    Rocker.rockerPosition, Rocker.basePosition);
 //
 //                        }
@@ -314,7 +317,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     } else {
 //                        avatar
                         System.out.print("avatar");
-                        myBall.avatar(myBall.direction);
+                        playerBall.avatar(playerBall.direction);
                         gameSounds.starMusic(AVATAR);
                     }
                     flagButtonIndex = 1;
@@ -364,7 +367,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         flagIsTouchLongMove = false;
                         Rocker.basePosition = MathUtils.getBorderPoint(Rocker.rockerPosition, new Point((int) event.getX(), (int) event.getY()), ROCKER_ACTION_RADIUS);
                     }
-                    myBall.setTarget(MathUtils.getRadian(Rocker.rockerPosition, Rocker.basePosition), (float) Math.sqrt((Rocker.basePosition.x - Rocker.rockerPosition.x) * (Rocker.basePosition.x - Rocker.rockerPosition.x) + (Rocker.basePosition.y - Rocker.rockerPosition.y) * (Rocker.basePosition.y - Rocker.rockerPosition.y)) / ROCKER_ACTION_RADIUS);
+                    playerBall.setVector(MathUtils.getRadian(Rocker.rockerPosition, Rocker.basePosition), (float) Math.sqrt((Rocker.basePosition.x - Rocker.rockerPosition.x) * (Rocker.basePosition.x - Rocker.rockerPosition.x) + (Rocker.basePosition.y - Rocker.rockerPosition.y) * (Rocker.basePosition.y - Rocker.rockerPosition.y)) / ROCKER_ACTION_RADIUS);
                 }
                 break;
 
@@ -404,7 +407,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 Rocker.basePosition.x = 100;
                 Rocker.basePosition.y = screenH - 100 + 65;
             }
-            myBall.directionTarget = MathUtils.getRadian(Rocker.rockerPosition,
+            playerBall.directionTarget = MathUtils.getRadian(Rocker.rockerPosition,
                     Rocker.basePosition);
         }
 
@@ -481,8 +484,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     }
                 }
                 // 绘制角色球
-                if (myBall.state) {
-                    drawBall(myBall);
+                if (playerBall.state) {
+                    drawBall(playerBall);
                 }
                 canvas.restore();
 
@@ -515,7 +518,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawRect(5, 5, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + 5, paint);
                 canvas.drawText("score:" + score, 30, 28, paintFont);
                 canvas.drawRect(5, RANK_LIST_ITEM_HEIGHT + 5, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + RANK_LIST_ITEM_HEIGHT + 5, paint);
-                canvas.drawText("Weight:" + myBall.weight, 30, 28 + RANK_LIST_ITEM_HEIGHT,
+                canvas.drawText("Weight:" + playerBall.weight, 30, 28 + RANK_LIST_ITEM_HEIGHT,
                         paintFont);
 
                 // 倒计时
@@ -531,7 +534,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             index1 * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (index1 + 1)
                                     * RANK_LIST_ITEM_HEIGHT + 26, paint);
 
-                    if (team != myBall.getTeam()) {
+                    if (team != playerBall.getTeam()) {
                         // rank text
                         canvas.drawText((String) (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + 50, 50 + index1 * RANK_LIST_ITEM_HEIGHT, paintFont);
                         canvas.drawText("" + team.getScore(), screenW - 65, 50 + index1 * RANK_LIST_ITEM_HEIGHT, paintFont);
@@ -562,13 +565,13 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 // bmpBadges & bmpInfo
                 if (flagGameOver) {
                     // 游戏结束
-//                    if (myBall.life < 2) {
+//                    if (playerBall.life < 2) {
 //                        paint.setColor(ContextCompat.getColor(context,
 //                                R.color.rockerRudder));
 //                        canvas.drawRect(0, 0, screenW, screenH, paint);
 //                        paint.setColor(0xffffffff);
 //                        canvas.drawBitmap(bmpBadgesDefeat, 0, 0, paint);
-//                    } else if (myBall.life == (BALL_AI_COUNT + 1)
+//                    } else if (playerBall.life == (BALL_AI_COUNT + 1)
 //                            * BALL_DEFAULT_LIFE) {
 //                        paint.setColor(ContextCompat.getColor(context,
 //                                R.color.black_win));
@@ -587,7 +590,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                    paintFont.setTextSize(40);
 //                    float len = paintFont.measureText("你被")
 //                            + paintFont
-//                            .measureText(AiBallList[myBall.eatByID].name)
+//                            .measureText(AiBallList[playerBall.eatByID].name)
 //                            + paintFont.measureText("吃掉了");
 //                    paint.setColor(0xffffffff);
 //                    canvas.drawBitmap(bmpInfo,
@@ -603,12 +606,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //                                    - (len / 2)
 //                                    + paintFont.measureText("你被")
 //                                    + paintFont
-//                                    .measureText(AiBallList[myBall.eatByID].name),
+//                                    .measureText(AiBallList[playerBall.eatByID].name),
 //                            screenH / 2 - bmpInfo.getHeight() + 70,
 //                            paintFont);
 //                    paintFont.setColor(0xff6b543a);
 //                    canvas.drawText(
-//                            AiBallList[myBall.eatByID].name,
+//                            AiBallList[playerBall.eatByID].name,
 //                            screenW / 2 - len / 2
 //                                    + paintFont.measureText("你被"), screenH
 //                                    / 2 - bmpInfo.getHeight() + 70,
@@ -697,21 +700,21 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      * 游戏逻辑
      */
     private void logic() {
-        if (!myBall.state) {
-            if (myBall.getTeam().members.size() > 1) {
-                myBall.getTeam().members.get(myBall.getTeam().members.size() - 1);
+        if (!playerBall.state) {
+            if (playerBall.getTeam().members.size() > 1) {
+                playerBall =playerBall.getTeam().resetPlayer(playerBall);
             } else {
                 flagGameOver = true;
             }
         }
-//        myBall.move((float) Math
+//        playerBall.move((float) Math
 //                .sqrt((Rocker.basePosition.x - Rocker.rockerPosition.x)
 //                        * (Rocker.basePosition.x - Rocker.rockerPosition.x)
 //                        + (Rocker.basePosition.y - Rocker.rockerPosition.y)
 //                        * (Rocker.basePosition.y - Rocker.rockerPosition.y))
 //                / ROCKER_ACTION_RADIUS);
-//        if (myBall.life == 0
-//                || myBall.life == (BALL_AI_COUNT + 1) * BALL_DEFAULT_LIFE) {
+//        if (playerBall.life == 0
+//                || playerBall.life == (BALL_AI_COUNT + 1) * BALL_DEFAULT_LIFE) {
 //            flagGameOver = true;
 //        }
 
@@ -720,17 +723,13 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 //            Rocker.basePosition.x = Rocker.rockerPosition.x;
 //            Rocker.isShow = false;
 
+
         try {
             for (BallTeam team : teams) {
                 for (Ball member : team.members) {
-
                     if (!member.state) continue;
-
                     //基本活动
                     member.action();
-
-//                gameSounds.starMusic(GameSounds.EAT_3);
-//                gameSounds.starMusic(GameSounds.EAT_DEFAULT);
                     if (member.state) {
                         for (BallTeam team2 : teams) {
                             if (!member.state) break;
@@ -748,7 +747,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     }
                 }
             }
-
+            //食物
             for (FoodBall foodBall : FoodBallList) {
                 if (!foodBall.state) {
                     // 重置
@@ -773,6 +772,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         //排序
         if (Clock.isSort()) {
             teamsManager.sort();
@@ -783,12 +783,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         if (Camera.isPlayerCamera) {
             // 以玩家为中心
             camera = cameraPlayer;
-            cameraPlayer.Focus.x = -myBall.position.x + screenW / 2;
-            cameraPlayer.Focus.y = -myBall.position.y + screenH / 2;
-            cameraPlayer.Scale.x = (3 / (myBall.radius / 15) + 0.4F);
-            cameraPlayer.Scale.y = (3 / (myBall.radius / 15) + 0.4F);
-            cameraPlayer.ScalePosition.x = myBall.position.x;
-            cameraPlayer.ScalePosition.y = myBall.position.y;
+            cameraPlayer.Focus.x = -playerBall.position.x + screenW / 2;
+            cameraPlayer.Focus.y = -playerBall.position.y + screenH / 2;
+            cameraPlayer.Scale.x = (3 / (playerBall.radius / 15) + 0.4F);
+            cameraPlayer.Scale.y = (3 / (playerBall.radius / 15) + 0.4F);
+            cameraPlayer.ScalePosition.x = playerBall.position.x;
+            cameraPlayer.ScalePosition.y = playerBall.position.y;
         } else {
             //全局视野
             camera = cameraGlobal;
@@ -800,239 +800,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
      */
     public interface OnEndOfGameInterface {
         void onEndOfGame();
-    }
-
-    /**
-     * 定义活动球球的类，即角色球
-     */
-    private class ActionBall {
-        int ID;
-        int eatByID;
-        int life;
-        int state;
-        int weight;
-        int eatCount;
-        int colorDraw;
-        int timeRandomActionBegin;
-        int timeRandomActionRang;
-        float moveSpeed;
-        float moveSpeedRandom;
-        float radius;
-        double positionX;
-        double positionY;
-        double targetX;
-        double targetY;
-        double direction = 0;
-        double directionTarget = 0;
-        double inscribedSquareLen_1_2;
-        String name;
-
-        ActionBall(double positionX, double positionY, int colorDraw,
-                   float weight, String nameString, int life) {
-            this.state = 1;// 未被吃
-            this.positionX = positionX;
-            this.positionY = positionY;
-            this.colorDraw = colorDraw;
-            this.eatCount = 0;
-            this.life = life;
-            this.moveSpeed = ballMoveSpeed;
-            this.name = nameString;
-            this.targetX = positionX;
-            this.targetY = positionY;
-            this.weight = (int) weight;
-            this.timeRandomActionBegin = Clock.getClock() + 500;
-        }
-
-        // positionX, positionY, colorDraw, size
-        void reSetBall(double positionX, double positionY, int colorDraw) {
-            if (life > 0) {
-                this.state = 1;// 复活
-                this.weight = BALL_DEFAULT_WEIGHT;
-                this.positionX = positionX;
-                this.positionY = positionY;
-                this.colorDraw = colorDraw;
-                this.targetX = positionX;
-                this.targetY = positionY;
-                this.radius = 0;
-            } else {
-                this.weight = 0;
-                this.radius = 0;
-            }
-        }
-
-        public void action() {
-            if (state == 0) {
-                // 死亡判断
-                life--;
-                reSetBall((int) (MAP_WIDTH * Math.random()),
-                        (int) (MAP_HEIGHT * Math.random()), getColorRandom());
-            }
-            if ((int) radius < (int) Math.sqrt(weight)) {
-                // 阻尼增重
-                radius += (Math.sqrt(weight) - radius) / ACTION_DAMPING;
-            }
-            if ((int) radius > (int) Math.sqrt(weight)) {
-                // 阻尼减重
-                radius -= (radius - Math.sqrt(weight)) / ACTION_DAMPING;
-            }
-            weight -= (int) radius / 100 * 5;
-            // 损耗减重
-
-            if (radius > 400) {
-                // 角色球尺寸限制，重置尺寸
-                weight = BALL_DEFAULT_WEIGHT;
-            }
-        }
-
-        void moveRandom() {
-            // action();
-            if (Clock.isTimeOver(timeRandomActionBegin,
-                    timeRandomActionRang)) {
-                timeRandomActionBegin = Clock.getClock();
-                timeRandomActionRang = (int) (Math.random() * 12000);
-                // directionTarget = (Math.random() * Math.PI * 2) - Math.PI;
-                if (myBall.state && weight > myBall.weight) {
-                    directionTarget = getRadian((float) positionX,
-                            (float) myBall.position.x, (float) positionY,
-                            (float) myBall.position.y);
-                } else {
-                    directionTarget = (Math.random() * Math.PI * 2) - Math.PI;
-                }
-                moveSpeedRandom = (float) Math.random();
-            } else {
-                direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / ACTION_DAMPING))
-                        : ((directionTarget - direction) > 0 ? -(Math
-                        .abs((directionTarget - direction - 2 * Math.PI)) / ACTION_DAMPING)
-                        : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / ACTION_DAMPING));
-                direction += (direction >= Math.PI) ? (-2 * Math.PI)
-                        : ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
-                targetX += moveSpeed * Math.cos(directionTarget)
-                        * (30 / radius * 1 + 0.6) * moveSpeedRandom;
-                targetY += moveSpeed * Math.sin(directionTarget)
-                        * (30 / radius * 1 + 0.6) * moveSpeedRandom;
-                if (targetX < 0) {
-                    // 边界判断
-                    targetX = 0;
-                    // myBall.targetX = 0;
-                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
-
-                }
-                if (targetX > MAP_WIDTH) {
-                    // 边界判断
-                    targetX = MAP_WIDTH;
-                    // myBall.targetX = MAP_WIDTH;
-                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
-                }
-                if (targetY < 0) {
-                    // 边界判断
-                    targetY = 0;
-                    // myBall.targetY = 0;
-                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
-                }
-                if (targetY > MAP_HEIGHT) {
-                    // 边界判断
-                    targetY = MAP_HEIGHT;
-                    // // myBall.targetY = MAP_HEIGHT;
-                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
-                }
-                positionX += (targetX - positionX) / ACTION_DAMPING;
-                positionY += (targetY - positionY) / ACTION_DAMPING;
-            }
-        }
-
-        public void move(float rocker) {
-            if (directionTarget != 404) {
-                direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / ACTION_DAMPING))
-                        : ((directionTarget - direction) > 0 ? -(Math
-                        .abs((directionTarget - direction - 2 * Math.PI)) / ACTION_DAMPING)
-                        : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / ACTION_DAMPING));
-                direction += (direction >= Math.PI) ? (-2 * Math.PI)
-                        : ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
-                targetX += moveSpeed * Math.cos(directionTarget)
-                        * (30 / radius * 1 + 0.6) * rocker;
-                targetY += moveSpeed * Math.sin(directionTarget)
-                        * (30 / radius * 1 + 0.6) * rocker;
-                inscribedSquareLen_1_2 = radius * SQRT1_2;
-                if (targetX < 0 + inscribedSquareLen_1_2) {
-                    // 边界判断
-//                    targetX = 0;
-                    directionTarget = getRadian(Rocker.rockerPosition.x,
-                            Rocker.rockerPosition.x, Rocker.rockerPosition.y,
-                            Rocker.basePosition.y);
-                    Rocker.basePosition.x = Rocker.rockerPosition.x;
-                    // myBall.targetX = 0;
-                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
-
-                }
-                if (targetX > MAP_WIDTH - inscribedSquareLen_1_2) {
-                    // 边界判断
-//                    targetX = MAP_WIDTH;
-                    directionTarget = getRadian(Rocker.rockerPosition.x,
-                            Rocker.rockerPosition.x, Rocker.rockerPosition.y,
-                            Rocker.basePosition.y);
-                    Rocker.basePosition.x = Rocker.rockerPosition.x;
-                    // myBall.targetX = MAP_WIDTH;
-                    // Rocker.basePosition.x = Rocker.rockerPosition.x;
-                }
-                if (targetY < 0 + inscribedSquareLen_1_2) {
-                    // 边界判断
-//                    targetY = 0;
-                    directionTarget = getRadian(Rocker.rockerPosition.x,
-                            Rocker.basePosition.x, Rocker.rockerPosition.y,
-                            Rocker.rockerPosition.y);
-                    Rocker.basePosition.y = Rocker.rockerPosition.y;
-                    // myBall.targetY = 0;
-                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
-                }
-                if (targetY > MAP_HEIGHT - inscribedSquareLen_1_2) {
-                    // 边界判断
-//                    targetY = MAP_HEIGHT;
-                    directionTarget = getRadian(Rocker.rockerPosition.x,
-                            Rocker.basePosition.x, Rocker.rockerPosition.y,
-                            Rocker.rockerPosition.y);
-                    Rocker.basePosition.y = Rocker.rockerPosition.y;
-                    // // myBall.targetY = MAP_HEIGHT;
-                    // Rocker.basePosition.y = Rocker.rockerPosition.y;
-                }
-
-                if (targetX < 0 + inscribedSquareLen_1_2) {
-                    // 边界判断
-                    targetX = inscribedSquareLen_1_2;
-                    directionTarget = directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2;
-
-                }
-                if (targetX > MAP_WIDTH - inscribedSquareLen_1_2) {
-                    // 边界判断
-                    targetX = MAP_WIDTH - inscribedSquareLen_1_2;
-                    directionTarget = directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2;
-                }
-                if (targetY < 0 + inscribedSquareLen_1_2) {
-                    // 边界判断
-                    targetY = inscribedSquareLen_1_2;
-                    directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : Math.PI;
-                }
-                if (targetY > MAP_HEIGHT - inscribedSquareLen_1_2) {
-                    // 边界判断
-                    targetY = MAP_HEIGHT - inscribedSquareLen_1_2;
-                    directionTarget = directionTarget > Math.PI / 2 ? Math.PI : 0;
-                }
-                positionX += (targetX - positionX) / ACTION_DAMPING;
-                positionY += (targetY - positionY) / ACTION_DAMPING;
-            }
-
-        }
-
-        float getRadian(float x1, float x2, float y1, float y2) {
-            float lenA = x2 - x1;
-            float lenB = y2 - y1;
-            if (lenA == 0 && lenB == 0) {
-                return 404;
-            }
-            float lenC = (float) Math.sqrt(lenA * lenA + lenB * lenB);
-            float ang = (float) Math.acos(lenA / lenC);
-            ang = ang * (y2 < y1 ? -1 : 1);
-            return ang;
-        }
     }
 
 
