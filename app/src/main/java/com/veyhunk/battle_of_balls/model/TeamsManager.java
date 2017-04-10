@@ -2,6 +2,9 @@ package com.veyhunk.battle_of_balls.model;
 
 import com.veyhunk.battle_of_balls.constants.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
 
 /**
@@ -11,10 +14,6 @@ import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
 
 public class TeamsManager {
     //team
-
-    //    ArrayList teams = new ArrayList() ;
-    private BallTeam[] teams = new BallTeam[Constants.TEAM_PARAMS.TEAM_AMOUNT];
-
     public TeamsManager() {
         int index1, index2;
         //team
@@ -25,14 +24,26 @@ public class TeamsManager {
             }
             teams[index1] = team;
         }
+        allBalls=new ArrayList<>();
     }
 
     public BallTeam[] getTeams() {
         return teams;
     }
 
+
+    public List<Ball> getAllBalls() {
+
+            allBalls.clear();
+        for (BallTeam team : teams) {
+            for (Ball ball : team.members) {
+                if(ball.state)allBalls.add(ball);
+            }
+        }
+        return allBalls;
+    }
+
     public void sort() {
-//Collections.sort(teams, teamRank) ;
         refresh();
         int length = teams.length;
         int index1, index2;
@@ -52,4 +63,10 @@ public class TeamsManager {
             team.countScore();
         }
     }
+
+    private BallTeam[] teams = new BallTeam[Constants.TEAM_PARAMS.TEAM_AMOUNT];
+
+
+    private List<Ball> allBalls;//全部成员
+
 }

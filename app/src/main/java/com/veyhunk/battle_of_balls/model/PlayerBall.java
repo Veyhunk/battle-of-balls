@@ -10,14 +10,17 @@ import static com.veyhunk.battle_of_balls.sounds.GameSounds.EAT_DEFAULT;
  * 定义角色球球的类，即角色球
  */
 public class PlayerBall extends Ball {
+
     private GameSounds gameSounds;
 
-    public PlayerBall(Ball ball) {
+    public PlayerBall(Ball ball,GameSounds gameSounds) {
         super(ball.getTeam(), ballName);
-    }
-
-    public void setGameSounds(GameSounds gameSounds) {
         this.gameSounds = gameSounds;
+    }
+    public void resetBall(Ball ballMate){
+        super.resetBall(ballMate.position,ballMate.die());
+
+
     }
 
     @Override
@@ -33,9 +36,12 @@ public class PlayerBall extends Ball {
     }
 
     @Override
-    public void eat(Ball enemy) {
-        gameSounds.starMusic(EAT_3);
-        super.eat(enemy);
+    public boolean eat(Ball enemy) {
+       if (super.eat(enemy)){
+            gameSounds.starMusic(EAT_3);
+           return true;
+        }
+        return false;
     }
 
     @Override

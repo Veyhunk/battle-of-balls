@@ -5,7 +5,7 @@ import java.util.List;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
-import static com.veyhunk.battle_of_balls.constants.Constants.TEAM_PARAMS.MAX_TEAM_AMOUNT;
+import static com.veyhunk.battle_of_balls.constants.Constants.TEAM_PARAMS.TEAM_MEMBER_MAX;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 
 /**
@@ -65,23 +65,20 @@ public class BallTeam {
         for (Ball member : members)
             if (member.state == BALL_STATE_DEAD) newMember = member;
             else ++size;
-        if (size > MAX_TEAM_AMOUNT) newMember = null;
+        if (size > TEAM_MEMBER_MAX) newMember = null;
         else if (newMember == null) newMember = new Ball(this, getName());
         return newMember;
     }
 
-    public PlayerBall resetPlayer(PlayerBall deadPlayer) {
-        PlayerBall newPlayer;
+    public boolean resetPlayer(PlayerBall deadPlayer) {
         for (int i = 0; i < members.size(); i++) {
             Ball member = members.get(i);
             if (member.state == BALL_STATE_ALIVE) {
-                newPlayer = new PlayerBall(member);
-                members.remove(i);
-                members.add(newPlayer);
-                return newPlayer;
+                deadPlayer.resetBall(member);
+                return true;
             }
         }
-        return deadPlayer;
+        return false;
     }
 
     public int getScore() {

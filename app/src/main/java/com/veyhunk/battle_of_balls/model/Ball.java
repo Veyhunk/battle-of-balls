@@ -14,7 +14,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAX_ACCELERATED_SPEED;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.AVATAR;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.BATTLE;
-import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGED;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGER;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.utils.Clock.getClock;
 import static com.veyhunk.battle_of_balls.utils.Clock.isTimeOver;
@@ -24,7 +24,7 @@ import static java.lang.Math.sqrt;
  * Ball
  */
 public class Ball {
-    //    public
+    // public
     // public int ID;
     public String name;
     public boolean state;
@@ -34,7 +34,7 @@ public class Ball {
     public Point position;
     public float direction = 0;
     public float directionTarget = 0;
-    //    private
+    // private
     private BallTeam team;
     private int timeRandomActionBegin;
     private int timeRandomActionRang;
@@ -49,7 +49,7 @@ public class Ball {
      * @param team       team
      * @param nameString nameString
      */
-    public Ball(BallTeam team,String nameString) {
+    public Ball(BallTeam team, String nameString) {
         this.team = team;
         this.name = nameString;
         this.colorDraw = team.teamColor;
@@ -69,7 +69,7 @@ public class Ball {
      * @param position basePosition
      * @param weight   weight
      */
-    private void reSetBall(Point position, float weight) {
+    void resetBall(Point position, float weight) {
         this.state = BALL_STATE_ALIVE;// 复活
         this.position = position;
         this.targetPosition = position;
@@ -98,8 +98,13 @@ public class Ball {
     /**
      * basic action : eat
      */
-    public void eat(Ball enemy) {
-        weight += enemy.die();
+    public boolean eat(Ball ball) {
+        if (team.equals(ball.getTeam())) {
+            // 是否同一个队伍
+            if (message.type != BATTLE) return false;
+        }
+        weight += ball.die();
+        return true;
     }
 
     /**
@@ -107,50 +112,42 @@ public class Ball {
      *
      * @param enemy ball
      */
-    public void feeling(Ball enemy) {
+    public void feeling(Ball enemy, boolean isBigger) {
+        if (isBigger) {
+            //send message
+            if (enemy.radius * 2 < radius) {
+                //avatar
+                message.editMessage(AVATAR, enemy.position);
+            } else {
+                //battle
+                message.editMessage(BATTLE, enemy.position);
+            }
+        } else {
+            if (enemy.radius / 2 > radius) {
+                //danger
+                message.editMessage(DANGER, enemy.position);
+            } else {
+                //battle
+                message.editMessage(BATTLE, enemy.position);
+            }
+        }
+        team.sendMessage(message);
+    }
+
+    private void thinking() {
 
 //        if (!message.isCompleted()) {
 //            message.work();
 //            return;
 //        }
-        float distance, weightCompare, deathDistance;
-        boolean isInSide;
-        weightCompare = weight - enemy.weight;
-        distance = MathUtils.getDistance(this.position, enemy.position);
-        deathDistance = MathUtils.getDeathDistance(this, enemy);
-        isInSide = distance <= deathDistance;
-        if (isInSide) {
-//            die or live
-            if (weightCompare > 0) {
-                eat(enemy);
-            } else if (weightCompare < 0) {
-                message.editMessage(DANGED, enemy.position);
-            }
-        } else {
-//            send message
-            if (enemy.radius * 2 < radius) {
-                //avatar
-                message.editMessage(AVATAR, position);
-            } else if (enemy.radius / 2 > radius) {
-                //danged
-                message.editMessage(DANGED, enemy.position);
-            } else {
-//battle
-                message.editMessage(BATTLE, enemy.position);
-            }
-            team.sendMessage(message);
-        }
-    }
-
-    private void thinking() {
         if (isTimeOver(timeRandomActionBegin,
                 timeRandomActionRang)) {
-            if (message.type == DANGED) {
+            if (message.type == DANGER) {
                 setVector(MathUtils.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
             } else if (message.type == BATTLE) {
                 setVector(MathUtils.getRadian(position, message.position), MathUtils.getAcceleratedSpeed());
             } else {
-                if (team.readMessage().type == DANGED) {
+                if (team.readMessage().type == DANGER) {
                     setVector(MathUtils.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
                 } else if (team.readMessage().type == BATTLE) {
                     setVector(MathUtils.getRadian(position, team.readMessage().position), MathUtils.getAcceleratedSpeed());
@@ -173,6 +170,7 @@ public class Ball {
     }
 
     public void setVector(float direction, float acceleratedSpeed) {
+        System.out.println(name+":"+acceleratedSpeed+"-"+direction);
         this.directionTarget = direction;
         this.acceleratedSpeed = acceleratedSpeed;
     }
@@ -214,7 +212,7 @@ public class Ball {
             if (position.x < 0 + inscribedSquareLen_1_2) {
                 // 边界判断
                 targetPosition.x = (int) inscribedSquareLen_1_2;
-                acceleratedSpeed*=(float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2)/ directionTarget;
+                acceleratedSpeed *= (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2) / directionTarget;
                 directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
 
             }
@@ -235,6 +233,11 @@ public class Ball {
             }
             position.x += (targetPosition.x - position.x) / ACTION_DAMPING;
             position.y += (targetPosition.y - position.y) / ACTION_DAMPING;
+        }else {
+
+            setVector(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
+
+            System.out.println(name+"2:"+acceleratedSpeed+"-"+direction);
         }
 
     }
@@ -281,21 +284,31 @@ public class Ball {
      * @param direction 传入一个目标，作为分裂出新球的方向
      */
     public void avatar(float direction) {
+        message.editMessage(AVATAR, position);
         if (weight < BALL_DEFAULT_WEIGHT) return;
         Point target = new Point();
-        target.x += moveSpeed * Math.cos(direction)
-                * (30 / radius * 1 + 0.6) * acceleratedSpeed;
-        target.y += moveSpeed * Math.sin(direction)
-                * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+        target.x += moveSpeed * Math.cos(direction) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+        target.y += moveSpeed * Math.sin(direction) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
         Ball newBall = team.initMember();
         if (newBall != null) {
             weight /= 2;
-            newBall.position=position;
-            newBall.reSetBall(target, weight);
+            newBall.position = position;
+            newBall.resetBall(target, weight);
             team.addMember(newBall);
         }
     }
 
+    public void battle() {
+        //battle
+        message.editMessage(BATTLE, position);
+        team.sendMessage(message);
+    }
+
+    public void danger() {
+        //danger
+        message.editMessage(DANGER, position);
+        team.sendMessage(message);
+    }
 
     public BallTeam getTeam() {
         return team;

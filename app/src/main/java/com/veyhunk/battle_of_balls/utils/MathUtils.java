@@ -56,6 +56,7 @@ public class MathUtils {
         ang = ang * (end.y < start.y ? -1 : 1);
         return ang;
     }
+
     // 获取两点的距离
     public static float getDistance(Point start, Point end) {
         float lenA = end.x - start.x;
@@ -63,8 +64,9 @@ public class MathUtils {
         if (lenA == 0 && lenB == 0) {
             return 0;
         }
-        return (float) Math.sqrt(lenA*lenA+lenB*lenB);
+        return (float) Math.sqrt(lenA * lenA + lenB * lenB);
     }
+
     // 获取两点的距离
     public static boolean isCollisionForFood(Ball ball, FoodBall foodBall) {
         float lenA = (float) (ball.position.x - foodBall.positionX);
@@ -72,15 +74,15 @@ public class MathUtils {
         if (lenA == 0 && lenB == 0) {
             return true;
         }
-        return (float) Math.sqrt(lenA*lenA+lenB*lenB)<(ball.radius-foodBall.radius*2)*(ball.radius-foodBall.radius*2);
+        return (float) Math.sqrt(lenA * lenA + lenB * lenB) < (ball.radius - foodBall.radius * 2) * (ball.radius - foodBall.radius * 2);
     }
     // 获取两点的距离
-    public static float getDistance(float lenA, float lenB ) {
-        if (lenA == 0 && lenB == 0) {
-            return 0;
-        }
-        return (float) Math.sqrt(lenA*lenA+lenB*lenB);
-    }
+//    public static float getDistance(float lenA, float lenB ) {
+//        if (lenA == 0 && lenB == 0) {
+//            return 0;
+//        }
+//        return (float) Math.sqrt(lenA*lenA+lenB*lenB);
+//    }
 
     //	计算角度
     public static float getRadian(float x1, float x2, float y1, float y2) {
@@ -99,7 +101,7 @@ public class MathUtils {
         return (float) Math.random() * MAX_ACCELERATED_SPEED;
     }
 
-    public static float getDeathDistance(Ball ball, Ball enemy) {
-       return ball.radius>enemy.radius?getDistance(ball.radius,enemy.radius):getDistance(enemy.radius,ball.radius);
-    }
+//    public static float getDeathDistance(Ball ball1, Ball ball2) {
+//        return ball1.radius > ball2.radius ? (float) Math.sqrt(ball1.radius * ball1.radius - ball1.radius * ball1.radius) : (float) Math.sqrt(ball1.radius * ball1.radius - ball1.radius * ball1.radius);
+//    }
 }
