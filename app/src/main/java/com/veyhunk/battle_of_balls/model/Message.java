@@ -68,7 +68,7 @@ public class Message {
     }
 
     public boolean isCompleted() {
-        return duration > 0 ? false : true;
+        return duration <= 0;
     }
 
     public void work() {

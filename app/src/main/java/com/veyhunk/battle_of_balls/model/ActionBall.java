@@ -10,7 +10,7 @@ import com.veyhunk.battle_of_balls.utils.Clock;
 import com.veyhunk.battle_of_balls.utils.Rocker;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.ACTION_DAMPING;
-import static com.veyhunk.battle_of_balls.constants.Constants.BALL_DEFAULT_WEIGHT;
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_WEIGHT_DEFAULT;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
@@ -62,7 +62,7 @@ public class ActionBall {
     void reSetBall(double positionX, double positionY, int colorDraw) {
         if (life > 0) {
             this.state = 1;// 复活
-            this.weight = BALL_DEFAULT_WEIGHT;
+            this.weight = BALL_WEIGHT_DEFAULT;
             this.positionX = positionX;
             this.positionY = positionY;
             this.colorDraw = colorDraw;
@@ -95,7 +95,7 @@ public class ActionBall {
 
         if (radius > 400) {
             // 角色球尺寸限制，重置尺寸
-            weight = BALL_DEFAULT_WEIGHT;
+            weight = BALL_WEIGHT_DEFAULT;
         }
     }
 

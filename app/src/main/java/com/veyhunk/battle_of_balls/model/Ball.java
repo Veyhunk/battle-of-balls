@@ -6,7 +6,8 @@ import com.veyhunk.battle_of_balls.db.GameParams;
 import com.veyhunk.battle_of_balls.utils.MathUtils;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.ACTION_DAMPING;
-import static com.veyhunk.battle_of_balls.constants.Constants.BALL_DEFAULT_WEIGHT;
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_WEIGHT_DEFAULT;
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_WEIGHT_MAX;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
@@ -56,7 +57,7 @@ public class Ball {
         this.state = BALL_STATE_ALIVE;
         this.position = MathUtils.getPointRandom();
         this.targetPosition = position;
-        this.weight = BALL_DEFAULT_WEIGHT;
+        this.weight = BALL_WEIGHT_DEFAULT;
         this.radius = (int) sqrt(weight);
         this.message = new Message();
         this.timeRandomActionBegin = getClock() + 500;
@@ -170,13 +171,14 @@ public class Ball {
     }
 
     public void setVector(float direction, float acceleratedSpeed) {
-        System.out.println(name+":"+acceleratedSpeed+"-"+direction);
+//        System.out.println(name+":"+acceleratedSpeed+"-"+direction);
         this.directionTarget = direction;
         this.acceleratedSpeed = acceleratedSpeed;
     }
 
 
     public void grow() {
+        System.out.println(name+":"+radius+"-"+weight+ " - "+sqrt(weight));
         if ((int) radius < (int) sqrt(weight)) {
             // 阻尼增重
             radius += (sqrt(weight) - radius) / ACTION_DAMPING;
@@ -188,9 +190,9 @@ public class Ball {
         // 损耗减重
         weight -= (int) radius / 100 * 5;
 
-        if (radius > 400) {
+        if (weight > BALL_WEIGHT_MAX) {
             // 角色球尺寸限制，重置尺寸
-            weight = BALL_DEFAULT_WEIGHT;
+            weight = BALL_WEIGHT_DEFAULT;
         }
     }
 
@@ -237,7 +239,7 @@ public class Ball {
 
             setVector(MathUtils.getRadian(position, MathUtils.getPointRandom()), MathUtils.getAcceleratedSpeed());
 
-            System.out.println(name+"2:"+acceleratedSpeed+"-"+direction);
+//            System.out.println(name+"2:"+acceleratedSpeed+"-"+direction);
         }
 
     }
@@ -285,7 +287,7 @@ public class Ball {
      */
     public void avatar(float direction) {
         message.editMessage(AVATAR, position);
-        if (weight < BALL_DEFAULT_WEIGHT) return;
+        if (weight < BALL_WEIGHT_DEFAULT) return;
         Point target = new Point();
         target.x += moveSpeed * Math.cos(direction) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
         target.y += moveSpeed * Math.sin(direction) * (30 / radius * 1 + 0.6) * acceleratedSpeed;

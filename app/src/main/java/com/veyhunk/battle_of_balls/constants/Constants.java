@@ -16,11 +16,12 @@ public class Constants {
     public static final float MAX_ACCELERATED_SPEED = 0.5F;// MAX_ACCELERATED_SPEED
     public static final float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // tab_size
     public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
-    public static final int GAME_TIME = 320;// 游戏时长
+    public static final int GAME_TIME = 320;// 游戏时长（单位：s）
     public static final int BALL_DEFAULT_LIFE = 3;// BALL_DEFAULT_LIFE
     public static final int BALL_AI_COUNT = 1;// BALL_AI_COUNT
     public static final int BALL_FOOD_COUNT = 600;// BALL_FOOD_COUNT
-    public static final int BALL_DEFAULT_WEIGHT = 1600;// ballDefaultSize
+    public static final int BALL_WEIGHT_MAX = 200000;// ballDefaultSize
+    public static final int BALL_WEIGHT_DEFAULT = 1600;// ballDefaultSize
     public static final int MAP_WIDTH = 3200, MAP_HEIGHT = 1800; // Map_size
     public static final int MAP_MARGIN_H = 160; // Map_MARGIN
     public static final int MAP_MARGIN_W = 90; // Map_MARGIN
