@@ -19,6 +19,7 @@ public class BallTeam {
     private List<Message> CharRoom;//聊天室
     private Message message;
     private int score = 0;
+    int aliveSize;
 
 
     BallTeam(int teamColor, String teamName) {
@@ -61,19 +62,24 @@ public class BallTeam {
 
     Ball initMember() {
         Ball newMember = null;
-        int size = 0;
+        aliveSize = 0;
+        if (aliveSize > 0) return null;
         for (Ball member : members) {
             if (member.state == BALL_STATE_DEAD) {
                 newMember = member;
                 break;
             } else {
-                ++size;
+                ++aliveSize;
             }
+            System.out.println();
         }
 
-        System.out.println("size" + size);
-        if (size > TEAM_MEMBER_MAX) newMember = null;
-        else if (newMember == null) newMember = new Ball(this, getName());
+        System.out.println("aliveSize" + aliveSize);
+        if (aliveSize >= TEAM_MEMBER_MAX) newMember = null;
+        else if (newMember == null) {
+            newMember = new Ball(this, getName());
+            addMember(newMember);
+        };
         return newMember;
     }
 

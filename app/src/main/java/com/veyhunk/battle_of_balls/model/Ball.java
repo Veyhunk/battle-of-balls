@@ -17,6 +17,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MAX_ACCELERATED_SP
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.AVATAR;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.BATTLE;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGER;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.utils.Clock.getClock;
 import static com.veyhunk.battle_of_balls.utils.Clock.isTimeOver;
@@ -30,7 +31,6 @@ public class Ball {
     // public int ID;
     public String name;
     public boolean state;
-    public boolean isAvatar = false;
     public int colorDraw;
     public float radius;
     public float weight;
@@ -47,6 +47,7 @@ public class Ball {
     //    private PointF positionTarget;
     private float acceleratedSpeed = 0;
     private Message message;
+    private boolean isAvatar = false;
 
     /**
      * Initial new ball (born)
@@ -54,7 +55,7 @@ public class Ball {
      * @param team       team
      * @param nameString nameString
      */
-    public Ball(BallTeam team, String nameString) {
+    Ball(BallTeam team, String nameString) {
         this.team = team;
         this.name = nameString;
         this.colorDraw = team.teamColor;
@@ -83,21 +84,21 @@ public class Ball {
     }
 
 
-    /**
-     * Initial new ball by avatar
-     *
-     * @param directionAvatar PointF
-     */
-    void resetBallForAvatar(PointF position, float weight, float directionAvatar) {
-        this.state = BALL_STATE_ALIVE;// 复活
-        this.position = GameMath.getTarget(position, directionAvatar, radius * 1.5F);
-        this.positionTarget = this.position;
-        this.weight = weight;
-        this.radius = (int) sqrt(weight);
-//        avatar
-        isAvatar = true;
-        this.positionAvatar = GameMath.getTarget(position, directionAvatar, radius * 2 + BALL_AVATAR_DISTANCE);
-    }
+//    /**
+//     * Initial new ball by avatar
+//     *
+//     * @param directionAvatar PointF
+//     */
+//    void resetBallForAvatar(PointF position, float weight, float directionAvatar) {
+//        this.state = BALL_STATE_ALIVE;// 复活
+//        this.position = GameMath.getTarget(position, directionAvatar, radius * 1.5F);
+//        this.weight = weight;
+//        this.radius = (int) sqrt(weight);
+////        avatar
+//        isAvatar = true;
+//        this.positionAvatar = GameMath.getTarget(position, directionAvatar, radius * 2 + BALL_AVATAR_DISTANCE);
+//        this.positionTarget = this.positionAvatar;
+//    }
 
     /**
      * basic action
@@ -150,7 +151,7 @@ public class Ball {
                 message.editMessage(DANGER, enemy.position);
             } else {
                 //battle
-                message.editMessage(BATTLE, enemy.position);
+                message.editMessage(SAFE, enemy.position);
             }
         }
         team.sendMessage(message);
@@ -166,24 +167,24 @@ public class Ball {
                 timeRandomActionRang)) {
             if (message.type == DANGER) {
                 setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+                avatar(GameMath.getRadian(message.position, position));
             } else if (message.type == BATTLE) {
                 setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
+            } else if (message.type == SAFE) {
+                setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+            } else if (message.type == AVATAR) {
+                setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
+                avatar(GameMath.getRadian(position, message.position));
             } else {
                 if (team.readMessage().type == DANGER) {
                     setVector(GameMath.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
                 } else if (team.readMessage().type == BATTLE) {
                     setVector(GameMath.getRadian(position, team.readMessage().position), GameMath.getAcceleratedSpeed());
                 } else {
-                    if (message.type == AVATAR) {
-                        avatar(direction);
-                        setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
-                    } else {
-                        setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
-
+                    setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
 //                        directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
 //                        acceleratedSpeed = (float) Math.random();
 //        }
-                    }
                 }
             }
         }
@@ -284,14 +285,19 @@ public class Ball {
     public void avatar(float direction) {
         System.out.println("avatar22222222");
         message.editMessage(AVATAR, position);
-        if (weight < BALL_WEIGHT_DEFAULT/2) return;
+        if (weight < BALL_WEIGHT_DEFAULT / 2) return;
         System.out.println("avatar222222221111111111");
         Ball newBall = team.initMember();
         if (newBall != null) {
             weight /= 2;
-            newBall.resetBallForAvatar(position, weight, direction);
-
-            team.addMember(newBall);
+            newBall.resetBall(position, weight);
+//        avatar
+            isAvatar = true;
+            radius = (int) sqrt(weight);
+            position = GameMath.getTarget(position, direction, radius);
+            positionAvatar = GameMath.getTarget(position, direction, radius * 2 + BALL_AVATAR_DISTANCE);
+            positionTarget = positionAvatar;
+//            team.addMember(newBall);
             System.out.println("avatar3333333");
         }
     }

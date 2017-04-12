@@ -5,7 +5,8 @@ import com.veyhunk.battle_of_balls.constants.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_COLORS;
+import static com.veyhunk.battle_of_balls.utils.Colors.getColorByIndex;
 
 /**
  * TeamsManager
@@ -15,16 +16,17 @@ import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
 public class TeamsManager {
     //team
     public TeamsManager() {
-        int index1, index2;
+        int index1, index2,randColor=(int)(Math.random() * BALL_COLORS.length);
+
         //team
         for (index1 = 0; index1 < Constants.TEAM_PARAMS.TEAM_AMOUNT; index1++) {
-            BallTeam team = new BallTeam(getColorRandom(), Constants.TEAM_PARAMS.TEAM_NAMES[index1]);
+            BallTeam team = new BallTeam(getColorByIndex(index1+randColor), Constants.TEAM_PARAMS.TEAM_NAMES[index1]);
             for (index2 = 0; index2 < Constants.TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
                 team.addMember(team.initMember());
             }
             teams[index1] = team;
         }
-        allBalls=new ArrayList<>();
+        allBalls = new ArrayList<>();
     }
 
     public BallTeam[] getTeams() {
@@ -33,11 +35,10 @@ public class TeamsManager {
 
 
     public List<Ball> getAllBalls() {
-
-            allBalls.clear();
+        allBalls.clear();
         for (BallTeam team : teams) {
             for (Ball ball : team.members) {
-                if(ball.state)allBalls.add(ball);
+                if (ball.state) allBalls.add(ball);
             }
         }
         return allBalls;

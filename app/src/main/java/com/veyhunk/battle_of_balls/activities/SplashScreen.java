@@ -18,21 +18,15 @@ import com.veyhunk.battle_of_balls.sounds.GameSounds;
  */
 public class SplashScreen extends Activity {
 /**
- *          TODO list
+ *          V4.4 TODO list
  *          Add Sting system
+ *          Add communication system
+ *
+ * @version V4.3
  *          Fix rank system
  *          Add battle system
  *          Add new avatar system
- *          Add communication system
  *
- * @version v4.2
- *
- * @version v4.1
- *          Code refactor
- *          Removed bubble system
- *          Refactored Colors & Clock
- *          Remove avatar system
- *          Add team system
  */
     @SuppressWarnings("deprecation")
     @Override
