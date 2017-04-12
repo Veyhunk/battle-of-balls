@@ -1,6 +1,6 @@
 package com.veyhunk.battle_of_balls.model;
 
-import android.graphics.Point;
+import android.graphics.PointF;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageDuration;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
@@ -13,7 +13,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
 public class Message {
     public short type;
     public String content;
-    public Point position;
+    public PointF position;
     public int sender;
     public int duration;
 
@@ -24,7 +24,7 @@ public class Message {
      * @param type     Message type
      * @param position basePosition
      */
-    public Message(short type, Point position, int duration) {
+    public Message(short type, PointF position, int duration) {
         this.type = type;
         this.position = position;
         this.duration = duration;
@@ -36,7 +36,7 @@ public class Message {
      */
     public Message() {
         this.type = EMPTY;
-        this.position = new Point(0, 0);
+        this.position = new PointF(0, 0);
         this.duration = 0;
     }
 
@@ -48,7 +48,7 @@ public class Message {
      * @param content  content
      * @param sender   sender
      */
-    public Message(short type, Point position, String content, int sender) {
+    public Message(short type, PointF position, String content, int sender) {
         this.type = type;
         this.content = content;
         this.position = position;
@@ -61,7 +61,7 @@ public class Message {
      * @param type     Message type
      * @param position basePosition
      */
-    public void editMessage(short type, Point position) {
+    public void editMessage(short type, PointF position) {
         this.type = type;
         this.position = position;
         this.duration = MessageDuration[type];

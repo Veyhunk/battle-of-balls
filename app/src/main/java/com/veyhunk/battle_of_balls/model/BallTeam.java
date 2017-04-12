@@ -14,7 +14,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 public class BallTeam {
 
     public List<Ball> members;//团队成员
-    public int teamColor;
+    int teamColor;
     public String teamName;
     private List<Message> CharRoom;//聊天室
     private Message message;
@@ -62,9 +62,16 @@ public class BallTeam {
     Ball initMember() {
         Ball newMember = null;
         int size = 0;
-        for (Ball member : members)
-            if (member.state == BALL_STATE_DEAD) newMember = member;
-            else ++size;
+        for (Ball member : members) {
+            if (member.state == BALL_STATE_DEAD) {
+                newMember = member;
+                break;
+            } else {
+                ++size;
+            }
+        }
+
+        System.out.println("size" + size);
         if (size > TEAM_MEMBER_MAX) newMember = null;
         else if (newMember == null) newMember = new Ball(this, getName());
         return newMember;

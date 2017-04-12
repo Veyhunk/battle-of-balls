@@ -17,10 +17,13 @@ public class PlayerBall extends Ball {
         super(ball.getTeam(), ballName);
         this.gameSounds = gameSounds;
     }
+
+    /**
+     * 复活角色
+     * @param ballMate
+     */
     public void resetBall(Ball ballMate){
         super.resetBall(ballMate.position,ballMate.die());
-
-
     }
 
     @Override

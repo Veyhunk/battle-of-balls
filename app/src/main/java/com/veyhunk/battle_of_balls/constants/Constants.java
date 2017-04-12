@@ -1,6 +1,6 @@
 package com.veyhunk.battle_of_balls.constants;
 
-import android.graphics.Point;
+import android.graphics.PointF;
 
 import com.veyhunk.battle_of_balls.R;
 
@@ -19,9 +19,10 @@ public class Constants {
     public static final int GAME_TIME = 320;// 游戏时长（单位：s）
     public static final int BALL_DEFAULT_LIFE = 3;// BALL_DEFAULT_LIFE
     public static final int BALL_AI_COUNT = 1;// BALL_AI_COUNT
-    public static final int BALL_FOOD_COUNT = 600;// BALL_FOOD_COUNT
+    public static final int BALL_FOOD_COUNT = 400;// BALL_FOOD_COUNT
     public static final int BALL_WEIGHT_MAX = 200000;// ballDefaultSize
     public static final int BALL_WEIGHT_DEFAULT = 1600;// ballDefaultSize
+    public static final int BALL_AVATAR_DISTANCE = 400;// ballDefaultSize
     public static final int MAP_WIDTH = 3200, MAP_HEIGHT = 1800; // Map_size
     public static final int MAP_MARGIN_H = 160; // Map_MARGIN
     public static final int MAP_MARGIN_W = 90; // Map_MARGIN
@@ -55,20 +56,20 @@ public class Constants {
 
     public static final class TEAM_PARAMS {
         public static final int TEAM_AMOUNT = 2;
-        public static final int TEAM_MEMBER_AMOUNT = 5;
+        public static final int TEAM_MEMBER_AMOUNT = 1;
         public static final int TEAM_MEMBER_MAX = 16;
         public static final String[] TEAM_NAMES = new String[]{"SSS战队", "吞噬军团",
                 "START", "人帅手速快", "浪够了回家", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
                 "超萌的一天"};
     }
     public class MoveTarget {
-        public Point basePosition;
+        public PointF basePosition;
         public double direction;
 
         public MoveTarget() {
         }
 
-        public void setTarget(Point basePosition, double direction) {
+        public void setTarget(PointF basePosition, double direction) {
             this.basePosition = basePosition;
             this.direction = direction;
         }

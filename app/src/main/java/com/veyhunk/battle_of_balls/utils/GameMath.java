@@ -1,6 +1,6 @@
 package com.veyhunk.battle_of_balls.utils;
 
-import android.graphics.Point;
+import android.graphics.PointF;
 
 import com.veyhunk.battle_of_balls.model.Ball;
 import com.veyhunk.battle_of_balls.model.FoodBall;
@@ -12,7 +12,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MAX_ACCELERATED_SP
 /**
  * Game Math Utils
  */
-public class MathUtils {
+public class GameMath {
     // 获取两点间直线距离
     public static int getLength(float x1, float y1, float x2, float y2) {
         return (int) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
@@ -26,25 +26,25 @@ public class MathUtils {
      * @param cutRadius 截断距离
      * @return 截断点
      */
-    public static Point getBorderPoint(Point a, Point b, int cutRadius) {
+    public static PointF getBorderPoint(PointF a, PointF b, int cutRadius) {
         float radian = getRadian(a, b);
         // System.out.println(radian);
-        return new Point(a.x + (int) (cutRadius * Math.cos(radian)), a.y
+        return new PointF(a.x + (int) (cutRadius * Math.cos(radian)), a.y
                 + (int) (cutRadius * Math.sin(radian)));
     }
 
     /**
      * getPointRandom
      *
-     * @return Random Point
+     * @return Random PointF
      */
-    public static Point getPointRandom() {
-        return new Point((int) (MAP_WIDTH * Math.random()),
-                (int) (MAP_HEIGHT * Math.random()));
+    public static PointF getPointRandom() {
+        return new PointF((float) (MAP_WIDTH * Math.random()),
+                (float) (MAP_HEIGHT * Math.random()));
     }
 
     // 获取水平线夹角弧度
-    public static float getRadian(Point start, Point end) {
+    public static float getRadian(PointF start, PointF end) {
         float lenA = end.x - start.x;
         float lenB = end.y - start.y;
         if (lenA == 0 && lenB == 0) {
@@ -57,8 +57,27 @@ public class MathUtils {
         return ang;
     }
 
+    // 获取水平线夹角弧度
+    public static PointF getTarget(PointF start, float ang, float lenC) {
+        PointF end = new PointF();
+        end.x = (int) (lenC * Math.cos(ang));
+        end.y = (int) (lenC * Math.sin(ang));
+        end.offset(start.x, start.y);
+
+//        float lenA = end.x - start.x;
+//        float lenB = end.y - start.y;
+//        if (lenA == 0 && lenB == 0) {
+//            return 404;
+//            //
+//        }
+//        float lenC = (float) Math.sqrt(lenA * lenA + lenB * lenB);
+//        float ang = (float) Math.acos(lenA / lenC);
+//        ang = ang * (end.y < start.y ? -1 : 1);
+        return end;
+    }
+
     // 获取两点的距离
-    public static float getDistance(Point start, Point end) {
+    public static float getDistance(PointF start, PointF end) {
         float lenA = end.x - start.x;
         float lenB = end.y - start.y;
         if (lenA == 0 && lenB == 0) {
