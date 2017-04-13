@@ -6,10 +6,10 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
         android:paddingBottom="30dp"
         android:paddingTop="80dp">
 
@@ -68,6 +68,55 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
                 android:max="1000"
+                android:progress="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:shadowColor="#FFFFFFFF"
+                android:text="@string/teamAccount"
+                android:textColor="@color/font_shadow"
+                android:textSize="@dimen/fontSize" />
+
+            <SeekBar
+                android:id="@+id/teamAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="1" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:shadowColor="#FFFFFFFF"
+                android:text="@string/teamMemberAccount"
+                android:textColor="@color/font_shadow"
+                android:textSize="@dimen/fontSize" />
+
+            <SeekBar
+                android:id="@+id/teamMemberAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:shadowColor="#FFFFFFFF"
+                android:text="@string/teamMemberMax"
+                android:textColor="@color/font_shadow"
+                android:textSize="@dimen/fontSize" />
+
+            <SeekBar
+                android:id="@+id/teamMemberMax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="20"
                 android:progress="1" />
 
             <android.support.v7.widget.ButtonBarLayout

@@ -18,6 +18,9 @@ public class optionActivity extends Activity {
     private SeekBar sbrDifficult;
     private SeekBar sbrSpeed;
     private SeekBar sbrGrow;
+    private SeekBar sbrTeamAccount;
+    private SeekBar sbrTeamMemberAccount;
+    private SeekBar sbrTeamMemberMax;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +36,16 @@ public class optionActivity extends Activity {
         sbrDifficult = (SeekBar) findViewById(R.id.sbrDifficult);
         sbrSpeed = (SeekBar) findViewById(R.id.sbrSpeed);
         sbrGrow = (SeekBar) findViewById(R.id.sbrGrow);
+        sbrTeamAccount = (SeekBar) findViewById(R.id.teamAccount);
+        sbrTeamMemberAccount = (SeekBar) findViewById(R.id.teamMemberAccount);
+        sbrTeamMemberMax = (SeekBar) findViewById(R.id.teamMemberMax);
 
         sbrDifficult.setProgress((int) GameParams.aiDifficult);
         sbrSpeed.setProgress((int) GameParams.ballMoveSpeed);
         sbrGrow.setProgress((int) GameParams.ballGrowSpeed);
-
+        sbrTeamAccount.setProgress(GameParams.TEAM_PARAMS.TEAM_AMOUNT);
+        sbrTeamMemberAccount.setProgress(GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT);
+        sbrTeamMemberMax.setProgress(GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX);
     }
 
     public void btnYes(View view) {
@@ -47,6 +55,9 @@ public class optionActivity extends Activity {
         GameParams.ballMoveSpeed = sbrSpeed.getProgress();
         GameParams.aiDifficult = sbrDifficult.getProgress();
         GameParams.ballGrowSpeed = sbrGrow.getProgress();
+        GameParams.TEAM_PARAMS.TEAM_AMOUNT = sbrTeamAccount.getProgress();
+        GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT = sbrTeamMemberAccount.getProgress();
+        GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX = sbrTeamMemberMax.getProgress();
         setResult(1, intent);
         finish();
     }

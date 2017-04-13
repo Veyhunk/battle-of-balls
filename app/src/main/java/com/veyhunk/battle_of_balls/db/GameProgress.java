@@ -33,6 +33,9 @@ public class GameProgress {
             ball.put("ballGrowSpeed", GameParams.ballGrowSpeed);
             ball.put("ballMoveSpeed", GameParams.ballMoveSpeed);
             ball.put("aiDifficult", GameParams.aiDifficult);
+            ball.put("TEAM_AMOUNT", GameParams.TEAM_PARAMS.TEAM_AMOUNT);
+            ball.put("TEAM_MEMBER_AMOUNT", GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT);
+            ball.put("TEAM_MEMBER_MAX", GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX);
             stringSave = ball.toString();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -77,6 +80,10 @@ public class GameProgress {
                 GameParams.ballGrowSpeed = Float.parseFloat(ball.getString("ballGrowSpeed"));
                 GameParams.ballMoveSpeed = Float.parseFloat(ball.getString("ballMoveSpeed"));
                 GameParams.aiDifficult = Integer.parseInt(ball.getString("aiDifficult"));
+                GameParams.aiDifficult = Integer.parseInt(ball.getString("aiDifficult"));
+                GameParams.TEAM_PARAMS.TEAM_AMOUNT = Integer.parseInt(ball.getString("TEAM_AMOUNT"));
+                GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT = Integer.parseInt(ball.getString("TEAM_MEMBER_AMOUNT"));
+                GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX =Integer.parseInt(ball.getString("TEAM_MEMBER_MAX"));
 
 
                 if (GameParams.ballName.length() == 0) {
@@ -95,6 +102,9 @@ public class GameProgress {
             GameParams.ballGrowSpeed = 100;
             GameParams.ballMoveSpeed = 30;
             GameParams.aiDifficult = 10;
+            GameParams.TEAM_PARAMS.TEAM_AMOUNT = 4;
+            GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT =3;
+            GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX =16;
         }
     }
 

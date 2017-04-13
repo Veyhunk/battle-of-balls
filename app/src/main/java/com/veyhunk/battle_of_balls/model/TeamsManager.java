@@ -16,11 +16,14 @@ import static com.veyhunk.battle_of_balls.utils.Colors.getColorByIndex;
 public class TeamsManager {
     //team
     public TeamsManager() {
-        int index1, index2,randColor=(int)(Math.random() * BALL_COLORS.length);
+        int index1, index2, randColor = (int) (Math.random() * BALL_COLORS.length);
 
+        TEAM_PARAMS.TEAM_AMOUNT = TEAM_PARAMS.TEAM_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_AMOUNT;
+        TEAM_PARAMS.TEAM_MEMBER_MAX = TEAM_PARAMS.TEAM_MEMBER_MAX == 0 ? 1 : TEAM_PARAMS.TEAM_MEMBER_MAX;
+        TEAM_PARAMS.TEAM_MEMBER_AMOUNT = TEAM_PARAMS.TEAM_MEMBER_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_MEMBER_AMOUNT;
         //team
         for (index1 = 0; index1 < TEAM_PARAMS.TEAM_AMOUNT; index1++) {
-            BallTeam team = new BallTeam(getColorByIndex(index1+randColor), TEAM_PARAMS.TEAM_NAMES[index1]);
+            BallTeam team = new BallTeam(getColorByIndex(index1 + randColor), TEAM_PARAMS.TEAM_NAMES[index1]);
             for (index2 = 0; index2 < TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
                 team.initMember();
             }
@@ -65,7 +68,7 @@ public class TeamsManager {
         }
     }
 
-    private BallTeam[] teams = new BallTeam[TEAM_PARAMS.TEAM_AMOUNT];
+    private BallTeam[] teams = new BallTeam[TEAM_PARAMS.TEAM_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_AMOUNT];
 
 
     private List<Ball> allBalls;//全部成员

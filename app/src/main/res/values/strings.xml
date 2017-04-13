@@ -11,6 +11,9 @@
     <string name="gameDifficult">游戏难度</string>
     <string name="moveSpeed">移动速度</string>
     <string name="growSpeed">发育速度</string>
+    <string name="teamAccount">队伍数量</string>
+    <string name="teamMemberAccount">队伍人数</string>
+    <string name="teamMemberMax">最大人数</string>
     <string name="bestScore">最高分</string>
     <string name="version">版本号</string>
     <string name="default_name">小宝宝</string>
