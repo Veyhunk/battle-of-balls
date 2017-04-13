@@ -92,8 +92,8 @@ public class GameProgress {
             GameParams.bestScore = "0";
             GameParams.ballName = context.getString(R.string.default_name);
             GameParams.ballColorIndex = 0;
-            GameParams.ballGrowSpeed = 10;
-            GameParams.ballMoveSpeed = 10;
+            GameParams.ballGrowSpeed = 100;
+            GameParams.ballMoveSpeed = 30;
             GameParams.aiDifficult = 10;
         }
     }

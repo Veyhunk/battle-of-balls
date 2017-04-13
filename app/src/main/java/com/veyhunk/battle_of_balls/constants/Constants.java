@@ -1,7 +1,5 @@
 package com.veyhunk.battle_of_balls.constants;
 
-import android.graphics.PointF;
-
 import com.veyhunk.battle_of_balls.R;
 
 /**
@@ -10,37 +8,38 @@ import com.veyhunk.battle_of_balls.R;
  */
 
 public class Constants {
-    // constant
-    public static final float ACTION_DAMPING = 10;// 活动阻尼
-    public static final double SQRT1_2 = 0.7071067812;// SQRT * 1/2
-    public static final float MAX_ACCELERATED_SPEED = 0.5F;// MAX_ACCELERATED_SPEED
-    public static final float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // tab_size
-    public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
-    public static final int GAME_TIME = 320;// 游戏时长（单位：s）
-    public static final int BALL_DEFAULT_LIFE = 3;// BALL_DEFAULT_LIFE
-    public static final int BALL_AI_COUNT = 1;// BALL_AI_COUNT
-    public static final int BALL_FOOD_COUNT = 400;// BALL_FOOD_COUNT
-    public static final int BALL_WEIGHT_MAX = 200000;// ballDefaultSize
-    public static final int BALL_WEIGHT_DEFAULT = 1600;// ballDefaultSize
-    public static final int BALL_AVATAR_DISTANCE = 400;// ballDefaultSize
+
+    //size
+
+    public static float PADDING = 5;// 边距
+    public static float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // 排行榜尺寸
+    public static int ROCKER_RUDDER_RADIUS = 30;// 摇杆半径
+    public static int ROCKER_ACTION_RADIUS = 75;// 摇杆活动范围半径
+    public static int ROCKER_WHEEL_RADIUS = 60;// 摇杆底座范围半径
+    public static int ROCKER_ACTIVITY_RADIUS = 30;// 摇杆活动范围半径
     public static final int MAP_WIDTH = 6400, MAP_HEIGHT = 3600; // Map_size
     public static final int MAP_MARGIN_H = 160; // Map_MARGIN
     public static final int MAP_MARGIN_W = 90; // Map_MARGIN
-    public static final int ROCKER_RUDDER_RADIUS = 30;// 摇杆半径
-    public static final int ROCKER_ACTION_RADIUS = 75;// 摇杆活动范围半径
-    public static final int ROCKER_WHEEL_RADIUS = 60;// 摇杆底座范围半径
-    public static final int ROCKER_ACTIVITY_RADIUS = 30;// 摇杆活动范围半径
+
+    //constant
+    public static final int BALL_WEIGHT_MAX = 4000000;// ballDefaultSize
+    public static final boolean BALL_STATE_DEAD = false;
+    public static final boolean BALL_STATE_ALIVE = true;
+    public static final float ACTION_DAMPING = 10;// 活动阻尼
+    public static final double SQRT1_2 = 0.7071067812;// 根号1/2
+    public static final float MAX_ACCELERATED_SPEED = 0.5F;// 最大加速度
+    public static final int BALL_WEIGHT_DEFAULT = 1600;// ballDefaultSize
+    public static final int BALL_AVATAR_DISTANCE = 400;// ballDefaultSize
     public static final int[] BALL_COLORS = new int[]{R.color.color0,
             R.color.color1, R.color.color2, R.color.color3, R.color.color4,
             R.color.color5, R.color.color6};// 颜色表
-    public static final boolean BALL_STATE_DEAD = false;
-    public static final boolean BALL_STATE_ALIVE = true;
+    //    public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
     //Message Duration (util:second)
     private static int util = 1;
     public static final int[] MessageDuration = new int[]{0 * util, 1 * util, 1 * util, 5 * util, 5 * util};
 
-    private static final String[] BALL_NAMES = new String[]{"触手TV大白",
-            "董大鹏", "关注我带团", "孙红雷", "北丘", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
+    private static final String[] BALL_NAMES = new String[]{"猪头","触手TV大白","小云云","熊霸天下","咕噜咕噜",
+            "董大鹏", "关注我带团", "孙红雷", "北丘", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳炸弹",
             "超萌的一天"};
     public static String getName() {
         return BALL_NAMES[(int) (Math.random() * 100 % BALL_NAMES.length)];
@@ -54,24 +53,16 @@ public class Constants {
         public static final short DANGER = 4;
     }
 
-    public static final class TEAM_PARAMS {
-        public static final int TEAM_AMOUNT = 4;
-        public static final int TEAM_MEMBER_AMOUNT = 3;
-        public static final int TEAM_MEMBER_MAX = 10;
-        public static final String[] TEAM_NAMES = new String[]{"SSS战队", "吞噬军团",
-                "START", "人帅手速快", "浪够了回家", "触手TV阿木", "二狗子", "被白菜怼过的猪", "冷瞳 炸弹",
-                "超萌的一天"};
-    }
-    public class MoveTarget {
-        public PointF basePosition;
-        public double direction;
-
-        public MoveTarget() {
-        }
-
-        public void setTarget(PointF basePosition, double direction) {
-            this.basePosition = basePosition;
-            this.direction = direction;
-        }
-    }
+//    public class MoveTarget {
+//        public PointF basePosition;
+//        public double direction;
+//
+//        public MoveTarget() {
+//        }
+//
+//        public void setTarget(PointF basePosition, double direction) {
+//            this.basePosition = basePosition;
+//            this.direction = direction;
+//        }
+//    }
 }

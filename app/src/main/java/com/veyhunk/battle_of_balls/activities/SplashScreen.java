@@ -19,10 +19,25 @@ import com.veyhunk.battle_of_balls.sounds.GameSounds;
 public class SplashScreen extends Activity {
 /**
  *          V4.4 TODO list
+ *          difficult
+ *          edge
+ *          speed with weight
+ *          z-index
+ *          hide rank
+ *          Auto operation
+ *          message cooperation
+ *          game over
  *          Add Sting system
  *          Add communication system
+ *          name size
  *
- * @version V4.3
+ * version V4.4
+ *          High-DPI support
+ *          Rank index use text
+ *          Eat teammate
+ *          Improved eat system
+ *          Improved feeling system for avatar
+ * version V4.3
  *          Fix rank system
  *          Add battle system
  *          Add new avatar system

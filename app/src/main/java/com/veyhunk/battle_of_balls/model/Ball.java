@@ -81,6 +81,7 @@ public class Ball {
         this.positionTarget = position;
         this.weight = weight;
         this.radius = (int) sqrt(weight);
+        this.message = new Message();
     }
 
 
@@ -104,6 +105,7 @@ public class Ball {
      * basic action
      */
     public void action() {
+//        message.editMessage(EMPTY, position);
         grow();
         thinking();
         if (isAvatar) moveForAvatar();
@@ -113,7 +115,7 @@ public class Ball {
     /**
      * basic action : die
      */
-    public float die() {
+    public float die(Ball ball) {
         state = BALL_STATE_DEAD;
         return weight;
     }
@@ -124,9 +126,9 @@ public class Ball {
     public boolean eat(Ball ball) {
         if (team.equals(ball.getTeam())) {
             // 是否同一个队伍
-            if (message.type != BATTLE) return false;
+            if (message.type == BATTLE) return false;
         }
-        weight += ball.die();
+        weight += ball.die(this);
         return true;
     }
 
@@ -136,6 +138,11 @@ public class Ball {
      * @param enemy ball
      */
     public void feeling(Ball enemy, boolean isBigger) {
+        if (team.equals(enemy.getTeam())) {
+            if (enemy.message.type == BATTLE) {
+                message.editMessage(AVATAR, enemy.position);
+            } else return;
+        }
         if (isBigger) {
             //send message
             if (enemy.radius * 2 < radius) {

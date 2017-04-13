@@ -5,8 +5,8 @@ import java.util.List;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
-import static com.veyhunk.battle_of_balls.constants.Constants.TEAM_PARAMS.TEAM_MEMBER_MAX;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
+import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX;
 
 /**
  * BallTeam
@@ -18,7 +18,7 @@ public class BallTeam {
     public String teamName;
     private List<Message> CharRoom;//聊天室
     private Message message;
-    private int score = 0;
+    public int score = 0;
     int aliveSize;
 
 
@@ -63,7 +63,6 @@ public class BallTeam {
     Ball initMember() {
         Ball newMember = null;
         aliveSize = 0;
-        if (aliveSize > 0) return null;
         for (Ball member : members) {
             if (member.state == BALL_STATE_DEAD) {
                 newMember = member;
@@ -71,7 +70,6 @@ public class BallTeam {
             } else {
                 ++aliveSize;
             }
-            System.out.println();
         }
 
         System.out.println("aliveSize" + aliveSize);
@@ -102,10 +100,9 @@ public class BallTeam {
         score = 0;
         for (Ball member : members) {
             if (member.state == BALL_STATE_ALIVE) {
-                score += member.weight;
+                score += member.radius;
             }
         }
-        score /= 20;
     }
 
     public boolean addMember(Ball member) {

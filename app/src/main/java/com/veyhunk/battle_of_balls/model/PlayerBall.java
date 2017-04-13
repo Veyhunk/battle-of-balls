@@ -23,7 +23,7 @@ public class PlayerBall extends Ball {
      * @param teamMate
      */
     public void resetBall(Ball teamMate){
-        super.resetBall(teamMate.position,teamMate.die());
+        super.resetBall(teamMate.position,teamMate.die(this));
     }
 
     @Override
@@ -33,9 +33,15 @@ public class PlayerBall extends Ball {
     }
 
     @Override
-    public float die() {
+    public float die(Ball ball) {
         gameSounds.starMusic(EAT_DEFAULT);
-        return super.die();
+        if(ball.getTeam().equals(getTeam())){
+            position=ball.position;
+            radius=ball.radius;
+            weight+=ball.die(this);
+            return 0;
+        }
+        else return super.die(ball);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.veyhunk.battle_of_balls.utils;
 
-import static com.veyhunk.battle_of_balls.constants.Constants.GAME_TIME;
+
+import static com.veyhunk.battle_of_balls.db.GameParams.GAME_TIME;
 
 /**
  * Created by Veyhunk on 12/March/2017.

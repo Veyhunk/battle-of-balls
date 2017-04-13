@@ -30,17 +30,18 @@ import com.veyhunk.battle_of_balls.utils.Rocker;
 
 import java.util.List;
 
-import static com.veyhunk.battle_of_balls.constants.Constants.BALL_FOOD_COUNT;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN_H;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN_W;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
+import static com.veyhunk.battle_of_balls.constants.Constants.PADDING;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_ITEM_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_WIDTH;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTION_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_ACTIVITY_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_RUDDER_RADIUS;
 import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_WHEEL_RADIUS;
+import static com.veyhunk.battle_of_balls.db.GameParams.BALL_FOOD_COUNT;
 import static com.veyhunk.battle_of_balls.db.GameParams.aiDifficult;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballColorIndex;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballGrowSpeed;
@@ -59,7 +60,7 @@ import static com.veyhunk.battle_of_balls.utils.Colors.getColorRandom;
 public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     public static int score = 0;// score
     private static int int1, int2, int3;
-    public static float float1, float2;
+    public static float float1, float2, screenSCale;
     // user customer
     final Context context;
     // callback
@@ -86,25 +87,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
     private List<Ball> allBalls;//全部成员
     private TeamsManager teamsManager;
     // 位图文件 bitmap
-    private Bitmap bmpRank = BitmapFactory.decodeResource(this.getResources(),
-            R.mipmap.rank);// 排行榜素材
-    private Bitmap bmpDir = BitmapFactory.decodeResource(this.getResources(),
-            R.mipmap.dir);// 小球指针素材
-    //    private Bitmap bmpInfo = BitmapFactory.decodeResource(this.getResources(),
-//            R.mipmap.toast);// 球球通知框素材
-    private Bitmap bmpBadgesVictory = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.badges_victory);// 球球胜利徽章素材
-    private Bitmap bmpBadgesDefeat = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.badges_defeat);// 球球失败徽章素材
+    private Bitmap bmpDir = BitmapFactory.decodeResource(this.getResources(), R.mipmap.dir);// 小球指针素材
+    private Bitmap bmpBadgesVictory = BitmapFactory.decodeResource(this.getResources(), R.mipmap.badges_victory);// 球球胜利徽章素材
+    private Bitmap bmpBadgesDefeat = BitmapFactory.decodeResource(this.getResources(), R.mipmap.badges_defeat);// 球球失败徽章素材
     // button
-    private Bitmap bmpBtnAvatar = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.button_avetar);// 分身按钮
-    private Bitmap bmpBtnDanger = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.button_danger);// 危险按钮
-    private Bitmap bmpBtnBattle = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.button_battle);// 召唤按钮
-    private Bitmap bmpCamera = BitmapFactory.decodeResource(
-            this.getResources(), R.mipmap.camera);// 摄像机
+    private Bitmap bmpBtnAvatar = BitmapFactory.decodeResource(this.getResources(), R.mipmap.button_avetar);// 分身按钮
+    private Bitmap bmpBtnDanger = BitmapFactory.decodeResource(this.getResources(), R.mipmap.button_danger);// 危险按钮
+    private Bitmap bmpBtnBattle = BitmapFactory.decodeResource(this.getResources(), R.mipmap.button_battle);// 召唤按钮
+    private Bitmap bmpCamera = BitmapFactory.decodeResource(this.getResources(), R.mipmap.camera);// 摄像机
     // Music
     private GameSounds gameSounds;
 
@@ -127,7 +117,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         sfh.addCallback(this);
         // 实例一个画笔
         paint = new Paint();
-        Rocker.basePosition = new PointF(Rocker.rockerPosition.x,Rocker.rockerPosition.y);
+        Rocker.basePosition = new PointF(Rocker.rockerPosition.x, Rocker.rockerPosition.y);
         // 设置消除锯齿
         paint.setAntiAlias(true);
         // 实例一个画笔
@@ -159,6 +149,15 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         // screen size
         screenW = this.getWidth();
         screenH = this.getHeight();
+//scale
+        screenSCale = screenW / 800;
+        RANK_LIST_WIDTH = 210 * screenSCale;
+        PADDING = 5 * screenSCale;
+        RANK_LIST_ITEM_HEIGHT = 32.5F * screenSCale;// 排行榜尺寸
+        ROCKER_RUDDER_RADIUS = (int) (30 * screenSCale);// 摇杆半径
+        ROCKER_ACTION_RADIUS = (int) (75 * screenSCale);// 摇杆活动范围半径
+        ROCKER_WHEEL_RADIUS = (int) (60 * screenSCale);// 摇杆底座范围半径
+        ROCKER_ACTIVITY_RADIUS = (int) (30 * screenSCale);// 摇杆活动范围半径
 
         //camera global
         PointF map = new PointF(MAP_WIDTH + MAP_MARGIN_W, MAP_HEIGHT + MAP_MARGIN_H);
@@ -180,10 +179,19 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         teams = teamsManager.getTeams();
 
         // initialization player aiBall
+        System.out.println("=================");
+        for (Ball member : teams[0].members) {
+            System.out.println(member.name);
+        }
+        System.out.println("=================");
         playerBall = new PlayerBall(teams[0].members.get(0), gameSounds);
         teams[0].members.remove(0);
         teams[0].addMember(playerBall);
         allBalls = teamsManager.getAllBalls();
+        for (Ball member : teams[0].members) {
+            System.out.println(member.name);
+        }
+        System.out.println("=================");
 
         // 启动线程flag
         flagGameThread = true;
@@ -512,43 +520,45 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 // camera
                 if (Camera.isPlayerCamera)
                     paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
-                canvas.drawBitmap(bmpCamera, RANK_LIST_WIDTH + 5, 5, paint);
+                else
+                    paint.setColor(ContextCompat.getColor(context, R.color.rocker));
+                canvas.drawBitmap(bmpCamera, RANK_LIST_WIDTH + PADDING, PADDING, paint);
 
                 // score计分板
                 paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
                 paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
                 paintFont.setColor(ContextCompat.getColor(context,
                         R.color.white_transparent));
-                canvas.drawRect(5, 5, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + 5, paint);
-                canvas.drawText("score:" + score, 30, 28, paintFont);
-                canvas.drawRect(5, RANK_LIST_ITEM_HEIGHT + 5, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + RANK_LIST_ITEM_HEIGHT + 5, paint);
-                canvas.drawText("Weight:" + playerBall.weight, 30, 28 + RANK_LIST_ITEM_HEIGHT,
+                canvas.drawRect(PADDING, PADDING, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + PADDING, paint);
+                canvas.drawText("score:" + playerBall.getTeam().score, 30 * screenSCale, 28 * screenSCale, paintFont);
+                canvas.drawRect(PADDING, RANK_LIST_ITEM_HEIGHT + PADDING, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + RANK_LIST_ITEM_HEIGHT + PADDING, paint);
+                canvas.drawText("Weight:" + (int) playerBall.radius, 30 * screenSCale, 28 * screenSCale + RANK_LIST_ITEM_HEIGHT,
                         paintFont);
 
                 // 倒计时
                 canvas.drawText(Clock.getTimeStr(),
-                        screenW / 2 - 25, 28, paintFont);
+                        screenW / 2 - 25, 28 * screenSCale, paintFont);
                 // rank排行榜
-                canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, 5, screenW - 5, 26, paint);
+                canvas.drawRect(screenW - RANK_LIST_WIDTH - PADDING, PADDING, screenW - PADDING, 26 * screenSCale, paint);
                 int1 = 0;
                 for (BallTeam team : teams) {
 
                     // rank bg Rect
-                    canvas.drawRect(screenW - RANK_LIST_WIDTH - 5,
-                            int1 * RANK_LIST_ITEM_HEIGHT + 26, screenW - 5, (int1 + 1)
-                                    * RANK_LIST_ITEM_HEIGHT + 26, paint);
+                    canvas.drawRect(screenW - RANK_LIST_WIDTH - PADDING,
+                            int1 * RANK_LIST_ITEM_HEIGHT + 26 * screenSCale, screenW - PADDING, (int1 + 1)
+                                    * RANK_LIST_ITEM_HEIGHT + 26 * screenSCale, paint);
 
                     if (team != playerBall.getTeam()) {
                         // rank text
-                        canvas.drawText((String) (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + 50, 50 + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
-                        canvas.drawText("" + team.getScore(), screenW - 65, 50 + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
+                        canvas.drawText(int1 + 1 + "." + (String) (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + PADDING * 2, 50 * screenSCale + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
+                        canvas.drawText("" + team.getScore(), screenW - 65 * screenSCale, 50 * screenSCale + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
                     } else {
                         // rank text
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.color1));
                         // rank text
-                        canvas.drawText((String) (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + 50, 50 + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
-                        canvas.drawText("" + team.getScore(), screenW - 65, 50 + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
+                        canvas.drawText(int1 + 1 + "." + (String) (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + PADDING * 2, 50 * screenSCale + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
+                        canvas.drawText("" + team.getScore(), screenW - 65 * screenSCale, 50 * screenSCale + int1 * RANK_LIST_ITEM_HEIGHT, paintFont);
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.white_transparent));
 
@@ -557,12 +567,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
                 }
                 // rank Bottom Rect
-                canvas.drawRect(screenW - RANK_LIST_WIDTH - 5, int1 * RANK_LIST_ITEM_HEIGHT + 26,
-                        screenW - 5, (int1 + 1.2F) * RANK_LIST_ITEM_HEIGHT, paint);
+                canvas.drawRect(screenW - RANK_LIST_WIDTH - PADDING, int1 * RANK_LIST_ITEM_HEIGHT + 26 * screenSCale,
+                        screenW - PADDING, (int1 + 1.2F) * RANK_LIST_ITEM_HEIGHT, paint);
                 // bmp Rank ICO
-                canvas.clipRect(screenW - RANK_LIST_WIDTH - 5, 5, screenW - 5,
+                canvas.clipRect(screenW - RANK_LIST_WIDTH - PADDING, PADDING, screenW - PADDING,
                         (int1 + 1) * RANK_LIST_ITEM_HEIGHT - 7);
-                canvas.drawBitmap(bmpRank, screenW - RANK_LIST_WIDTH, 13, paint);
+//                canvas.drawBitmap(bmpRank, screenW - RANK_LIST_WIDTH, 13*screenSCale, paint);
                 canvas.restore();
 
                 canvas.save();
@@ -683,7 +693,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
     private void DrawBackground() {
         // -----------利用填充画布，刷屏
-        canvas.drawColor(ContextCompat.getColor(context, R.color.background) + 5);
+        canvas.drawColor(ContextCompat.getColor(context, R.color.background) + 15);
         // //绘制矩形
         paint.setColor(ContextCompat.getColor(context, R.color.background));
         canvas.drawRect(0, 0, MAP_WIDTH, MAP_HEIGHT, paint);
@@ -708,7 +718,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         allBalls = teamsManager.getAllBalls();
         if (!playerBall.state) {
             if (!playerBall.getTeam().resetPlayer(playerBall)) {
-                flagGameOver = true;
+//                flagGameOver = true;
             }
         }
 //        playerBall.move((float) Math
@@ -734,35 +744,30 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 float1 = ball_1.radius * 4;
                 //基本活动
                 ball_1.action();
-                if (ball_1.state) {
+                for (Ball ball_2 : allBalls) {
                     if (!ball_1.state) break;
-                    for (Ball ball_2 : allBalls) {
-                        if (!ball_1.state) break;
-                        if (!ball_2.state) break;
-
-                        //获取距离
-                        float2 = GameMath.getDistance(ball_1.position, ball_2.position);
-                        // 判断是否在范围内
-                        if (float2 < float1) {
-                            // 判断是否碰撞
-                            if (ball_1.radius > ball_2.radius) {
-                                // 感知
-                                if (float2 < Math.sqrt(ball_1.radius * ball_1.radius - ball_2.radius * ball_2.radius)) {
-                                    ball_1.eat(ball_2);
-                                } else {
-                                    // 感知
-                                    ball_1.feeling(ball_2, true);
-                                }
+                    if (!ball_2.state) break;
+                    //获取距离
+                    float2 = GameMath.getDistance(ball_1.position, ball_2.position);
+                    // 判断是否在范围内
+                    if (float2 < float1) {
+                        // 判断是否碰撞
+                        if (ball_1.radius > ball_2.radius) {
+                            // 感知
+                            if (float2 < Math.sqrt(ball_1.radius * ball_1.radius - ball_2.radius * ball_2.radius)) {
+                                ball_1.eat(ball_2);
                             } else {
-                                if (float2 < Math.sqrt(ball_2.radius * ball_2.radius - ball_1.radius * ball_1.radius)) {
-                                    ball_2.eat(ball_1);
-                                } else {
-                                    // 感知
-                                    ball_1.feeling(ball_2, false);
-                                }
+                                // 感知
+                                ball_1.feeling(ball_2, true);
+                            }
+                        } else {
+                            if (float2 < Math.sqrt(ball_2.radius * ball_2.radius - ball_1.radius * ball_1.radius)) {
+                                ball_2.eat(ball_1);
+                            } else {
+                                // 感知
+                                ball_1.feeling(ball_2, false);
                             }
                         }
-
                     }
                 }
 

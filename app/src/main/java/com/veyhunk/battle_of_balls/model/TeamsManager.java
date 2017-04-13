@@ -1,6 +1,6 @@
 package com.veyhunk.battle_of_balls.model;
 
-import com.veyhunk.battle_of_balls.constants.Constants;
+import com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,10 @@ public class TeamsManager {
         int index1, index2,randColor=(int)(Math.random() * BALL_COLORS.length);
 
         //team
-        for (index1 = 0; index1 < Constants.TEAM_PARAMS.TEAM_AMOUNT; index1++) {
-            BallTeam team = new BallTeam(getColorByIndex(index1+randColor), Constants.TEAM_PARAMS.TEAM_NAMES[index1]);
-            for (index2 = 0; index2 < Constants.TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
-                team.addMember(team.initMember());
+        for (index1 = 0; index1 < TEAM_PARAMS.TEAM_AMOUNT; index1++) {
+            BallTeam team = new BallTeam(getColorByIndex(index1+randColor), TEAM_PARAMS.TEAM_NAMES[index1]);
+            for (index2 = 0; index2 < TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
+                team.initMember();
             }
             teams[index1] = team;
         }
@@ -65,7 +65,7 @@ public class TeamsManager {
         }
     }
 
-    private BallTeam[] teams = new BallTeam[Constants.TEAM_PARAMS.TEAM_AMOUNT];
+    private BallTeam[] teams = new BallTeam[TEAM_PARAMS.TEAM_AMOUNT];
 
 
     private List<Ball> allBalls;//全部成员
