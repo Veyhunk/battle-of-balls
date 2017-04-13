@@ -18,7 +18,7 @@ import com.veyhunk.battle_of_balls.sounds.GameSounds;
  */
 public class SplashScreen extends Activity {
 /**
- *          V4.4 TODO list
+ *          V4.5 TODO list
  *          difficult
  *          edge
  *          speed with weight

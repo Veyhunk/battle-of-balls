@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    
     <color name="color0">#ffdad049</color>
     <color name="color1">#ff63c33c</color>
     <color name="color2">#ffe4af3c</color>
@@ -15,18 +11,13 @@
     
     <color name="white_transparent">#88ffffff</color>
     <color name="white">#ffffff</color>
-    <color name="black_win">#dd08070c</color>
 
-    <color name="safeLight">#aacccc88</color>
     <color name="rocker">#ccffffff</color>
     <color name="rockerRudder">#66000000</color>
     <color name="background">#ff383838</color>
     <color name="backgroundStripe">#ff3f3f3f</color>
 
-    <color name="green_lighter">#fff8ffe0</color>
-    <color name="green_light">#fff3fed4</color>
     <color name="green_dark">#ff97b180</color>
-    <color name="green">#fff3fed4</color>
     <color name="green_primary">#84ce7c</color>
 
     <color name="font_deep">#869b74</color>

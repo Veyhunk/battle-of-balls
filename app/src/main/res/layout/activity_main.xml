@@ -11,7 +11,6 @@
         android:background="@mipmap/main_bg">
 
         <RelativeLayout
-            android:id="@+id/relativeLayout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -35,8 +34,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/margin"
                 android:background="@drawable/input_style"
-                android:inputType="text"
                 android:ems="10"
+                android:inputType=""
                 android:maxLines="1"
                 android:padding="@dimen/margin"
                 android:textColor="@color/white"

@@ -1,5 +1,7 @@
 package com.veyhunk.battle_of_balls.model;
 
+import com.veyhunk.battle_of_balls.sounds.GameSounds;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,6 @@ public class BallTeam {
     private List<Message> CharRoom;//聊天室
     private Message message;
     public int score = 0;
-    int aliveSize;
 
 
     BallTeam(int teamColor, String teamName) {
@@ -27,6 +28,7 @@ public class BallTeam {
         message = new Message();
         this.teamColor = teamColor;
         this.teamName = teamName;
+        CharRoom=new ArrayList<>();
     }
 
     public void action() {
@@ -38,16 +40,14 @@ public class BallTeam {
      * send Message
      *
      * @param message Message
-     * @return boolean
      */
-    boolean sendMessage(Message message) {
+    void sendMessage(Message message) {
         try {
 //            CharRoom.add(message);
             this.message = message;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     /**
@@ -56,13 +56,22 @@ public class BallTeam {
      * @return message
      */
     Message readMessage() {
+        if (CharRoom.size() > 10) {
+            CharRoom.clear();
+        }
         return message;
     }
 
+    public PlayerBall initPlayer(GameSounds gameSounds){
+        PlayerBall playerBall = new PlayerBall(members.get(0), gameSounds);
+        members.remove(0);
+        addMember(playerBall);
+        return  playerBall;
+    }
 
     Ball initMember() {
         Ball newMember = null;
-        aliveSize = 0;
+        int aliveSize = 0;
         for (Ball member : members) {
             if (member.state == BALL_STATE_DEAD) {
                 newMember = member;
@@ -71,13 +80,11 @@ public class BallTeam {
                 ++aliveSize;
             }
         }
-
-        System.out.println("aliveSize" + aliveSize);
         if (aliveSize >= TEAM_MEMBER_MAX) newMember = null;
         else if (newMember == null) {
             newMember = new Ball(this, getName());
             addMember(newMember);
-        };
+        }
         return newMember;
     }
 
@@ -105,13 +112,12 @@ public class BallTeam {
         }
     }
 
-    public boolean addMember(Ball member) {
+    public void addMember(Ball member) {
         try {
             members.add(member);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 }
 

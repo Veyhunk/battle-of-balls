@@ -4,7 +4,6 @@
     android:background="@mipmap/setting">
 
     <ScrollView
-        android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginLeft="70dp"
@@ -20,7 +19,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvDifficult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
@@ -38,7 +36,6 @@
                 android:progress="1" />
 
             <TextView
-                android:id="@+id/tvSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
@@ -57,7 +54,6 @@
                 android:progress="1" />
 
             <TextView
-                android:id="@+id/tvGrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
@@ -75,14 +71,12 @@
                 android:progress="1" />
 
             <android.support.v7.widget.ButtonBarLayout
-                android:id="@+id/tableRow1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginStart="@dimen/margin">
 
                 <Button
-                    android:id="@+id/btnYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin"
@@ -94,7 +88,6 @@
                     android:textSize="@dimen/fontSize" />
 
                 <Button
-                    android:id="@+id/btnNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin"

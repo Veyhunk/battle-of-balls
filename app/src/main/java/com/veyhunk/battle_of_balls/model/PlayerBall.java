@@ -20,9 +20,9 @@ public class PlayerBall extends Ball {
 
     /**
      * 复活角色
-     * @param teamMate
+     * @param teamMate Ball
      */
-    public void resetBall(Ball teamMate){
+    void resetBall(Ball teamMate){
         super.resetBall(teamMate.position,teamMate.die(this));
     }
 

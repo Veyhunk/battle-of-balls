@@ -10,12 +10,21 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
  * Message
  */
 
-public class Message {
-    public short type;
+class Message {
+    short type;
     public String content;
-    public PointF position;
-    public int sender;
-    public int duration;
+    PointF position;
+    private int sender;
+
+    public int getSender() {
+        return sender;
+    }
+
+    public void setSender(int sender) {
+        this.sender = sender;
+    }
+
+    private int duration;
 
 
     /**
@@ -34,7 +43,7 @@ public class Message {
     /**
      * Create Message
      */
-    public Message() {
+    Message() {
         this.type = EMPTY;
         this.position = new PointF(0, 0);
         this.duration = 0;
@@ -61,7 +70,7 @@ public class Message {
      * @param type     Message type
      * @param position basePosition
      */
-    public void editMessage(short type, PointF position) {
+    void editMessage(short type, PointF position) {
         this.type = type;
         this.position = position;
         this.duration = MessageDuration[type];
@@ -71,7 +80,7 @@ public class Message {
         return duration <= 0;
     }
 
-    public void work() {
+    void work() {
         --duration;
     }
 }

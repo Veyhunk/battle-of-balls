@@ -80,20 +80,14 @@ public class GameMath {
     public static float getDistance(PointF start, PointF end) {
         float lenA = end.x - start.x;
         float lenB = end.y - start.y;
-        if (lenA == 0 && lenB == 0) {
-            return 0;
-        }
-        return (float) Math.sqrt(lenA * lenA + lenB * lenB);
+        return lenA == 0 && lenB == 0 ? 0 : (float) Math.sqrt(lenA * lenA + lenB * lenB);
     }
 
     // 获取两点的距离
     public static boolean isCollisionForFood(Ball ball, FoodBall foodBall) {
         float lenA = (float) (ball.position.x - foodBall.positionX);
         float lenB = (float) (ball.position.y - foodBall.positionY);
-        if (lenA == 0 && lenB == 0) {
-            return true;
-        }
-        return (float) Math.sqrt(lenA * lenA + lenB * lenB) < (ball.radius - foodBall.radius * 2) * (ball.radius - foodBall.radius * 2);
+        return lenA == 0 && lenB == 0 || (float) Math.sqrt(lenA * lenA + lenB * lenB) < (ball.radius - foodBall.radius * 2) * (ball.radius - foodBall.radius * 2);
     }
     // 获取两点的距离
 //    public static float getDistance(float lenA, float lenB ) {
