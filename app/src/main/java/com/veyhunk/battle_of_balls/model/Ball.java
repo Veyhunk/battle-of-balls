@@ -202,7 +202,7 @@ public class Ball {
     }
 
     public void setVector(float direction, float acceleratedSpeed) {
-//        System.out.println(name+":"+acceleratedSpeed+"-"+direction);
+//
         this.directionTarget = direction;
         this.acceleratedSpeed = acceleratedSpeed;
     }
@@ -238,44 +238,34 @@ public class Ball {
             position.x += (positionTarget.x - position.x) / ACTION_DAMPING;
             position.y += (positionTarget.y - position.y) / ACTION_DAMPING;
             if (position.x < 0 + inscribedSquareLen_1_2) {
-                // 边界判断 left
-                System.out.println("acceleratedSpeed1: " + acceleratedSpeed+"  sin:"+sin(directionTarget));
-//                System.out.println("direction1: " + direction + "   directionTarget : " + directionTarget);
+                // 边界判断 left   < -PI/2  > PI/2
+//                 directionTarget);
                 positionTarget.x = (int) inscribedSquareLen_1_2;
-                acceleratedSpeed *= (float) sin(directionTarget);
+                acceleratedSpeed *= Math.abs(sin(directionTarget));
                 directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
-//                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  sin:"+sin(directionTarget));
-                System.out.println("acceleratedSpeed : " + acceleratedSpeed+"  sin:"+sin(directionTarget));
+//                 directionTarget+"  sin:"+sin(directionTarget));
             }
             if (position.x > MAP_WIDTH - inscribedSquareLen_1_2) {
-                // 边界判断 right
-                System.out.println("direction2: " + direction + "   directionTarget : " + directionTarget);
+                // 边界判断 right   > -PI/2  < PI/2
                 positionTarget.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
-                acceleratedSpeed *= (float) sin(directionTarget);
+                acceleratedSpeed *= Math.abs(sin(directionTarget));
                 directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
-                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  sin:"+sin(directionTarget));
             }
             if (position.y < 0 + inscribedSquareLen_1_2) {
-                // 边界判断 top
-                System.out.println("direction3: " + direction + "   directionTarget : " + directionTarget);
+                // 边界判断 top     -PI < < 0
                 positionTarget.y = (int) inscribedSquareLen_1_2;
-                acceleratedSpeed *= (float) cos(directionTarget);
+                acceleratedSpeed *= Math.abs(cos(directionTarget));
                 directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : (float) Math.PI;
-                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  cos:"+cos(directionTarget));
             }
             if (position.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
-                // 边界判断 bottom
-                System.out.println("direction4: " + direction + "   directionTarget : " + directionTarget);
+                // 边界判断 bottom  0> >PI
                 positionTarget.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
-                acceleratedSpeed *= (float) cos(directionTarget);
+                acceleratedSpeed *= Math.abs(cos(directionTarget));
                 directionTarget = directionTarget > Math.PI / 2 ? (float) Math.PI : 0;
-                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  cos:"+cos(directionTarget));
+            }else {
+                System.out.println("404");
             }
-        } else {
-
-            setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
-
-//            System.out.println(name+"2:"+acceleratedSpeed+"-"+direction);
+            if (acceleratedSpeed == 0) directionTarget = 404;
         }
 
     }
