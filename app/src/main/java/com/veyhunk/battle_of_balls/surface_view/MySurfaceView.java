@@ -326,7 +326,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     }
                     flagButtonIndex = 1;
                     return true;
-                } else if (event.getX() > RANK_LIST_WIDTH && event.getX() < RANK_LIST_WIDTH + bmpCamera.getWidth() && event.getY() < bmpCamera.getHeight() + 5) {
+                } else if (event.getX() > RANK_LIST_WIDTH && event.getX() < RANK_LIST_WIDTH + bmpCamera.getWidth() && event.getY() < bmpCamera.getHeight() + PADDING) {
                     Camera.isPlayerCamera = !Camera.isPlayerCamera;
                     gameSounds.starMusic(CLICK);
                     flagButtonIndex = 1;
@@ -487,7 +487,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 }
                 // 绘制角色球
                 if (playerBall.state) {
-                    drawBall(playerBall);
+                    drawArror(playerBall);
                 }
                 canvas.restore();
 
@@ -633,10 +633,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         }
     }
 
-    private void drawBall(Ball drawRoleBall) {
-        paint.setColor(ContextCompat.getColor(context, drawRoleBall.colorDraw));
-        canvas.drawCircle(drawRoleBall.position.x,
-                drawRoleBall.position.y, drawRoleBall.radius, paint);// 绘制角色球
+    private void drawArror(Ball drawRoleBall) {
         // dir
         if (drawRoleBall.directionTarget != 404) {
             Matrix matrix = new Matrix();
@@ -651,20 +648,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             // 绘制旋转图片
             canvas.drawBitmap(bmpDir, matrix, paint);
         }
-        paintFont
-                .setTextSize(drawRoleBall.radius > 40 ? (20 + (drawRoleBall.radius > 90 ? 15
-                        : drawRoleBall.radius / 6))
-                        : 23);
-        // 绘制角色名称字体大小
-        canvas.drawText(
-                drawRoleBall.name,
-                drawRoleBall.position.x
-                        - paintFont.measureText(drawRoleBall.name) / 2,
-                drawRoleBall.position.y
-                        + (drawRoleBall.radius > 40 ? (20 + (drawRoleBall.radius > 90 ? 15
-                        : drawRoleBall.radius / 6))
-                        : 23) / 4, paintFont);
-        // 绘制角色名称
     }
 
     /**
@@ -673,11 +656,11 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
     private void DrawBackground() {
         // -----------利用填充画布，刷屏
-        canvas.drawColor(ContextCompat.getColor(context, R.color.background) + 15);
+        canvas.drawColor(ContextCompat.getColor(context, R.color.background2));
         // //绘制矩形
         paint.setColor(ContextCompat.getColor(context, R.color.background));
         canvas.drawRect(0, 0, MAP_WIDTH, MAP_HEIGHT, paint);
-        int rowWidth = 5, rowInterval = 40;
+        int rowWidth = (int)PADDING, rowInterval = (int) (8*PADDING);
         paint.setColor(ContextCompat.getColor(context, R.color.backgroundStripe));
         for (intIndex = 1; intIndex <= MAP_HEIGHT / (rowWidth + rowInterval); intIndex++) {
             canvas.drawRect(0, intIndex * (rowWidth + rowInterval), MAP_WIDTH, intIndex
