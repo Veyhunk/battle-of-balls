@@ -21,6 +21,8 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.utils.Clock.getClock;
 import static com.veyhunk.battle_of_balls.utils.Clock.isTimeOver;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 /**
@@ -42,9 +44,9 @@ public class Ball {
     private int timeRandomActionBegin;
     private int timeRandomActionRang;
     private float moveSpeed = GameParams.ballMoveSpeed / 4;
-    private PointF positionTarget;
+    public PointF positionTarget;
     private PointF positionAvatar;
-    //    private PointF positionTarget;
+    // private PointF positionTarget;
     private float acceleratedSpeed = 0;
     private Message message;
     private boolean isAvatar = false;
@@ -226,43 +228,49 @@ public class Ball {
 
     public void move() {
         if (directionTarget != 404) {
-            direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2)))
-                    : ((directionTarget - direction) > 0 ? -(Math
-                    .abs((directionTarget - direction - 2 * Math.PI)) / (ACTION_DAMPING / 2))
-                    : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / (ACTION_DAMPING / 2)));
-            direction += (direction >= Math.PI) ? (-2 * Math.PI)
-                    : ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
-            positionTarget.x += moveSpeed * Math.cos(directionTarget)
-                    * (30 / radius * 1 + 0.6) * acceleratedSpeed;
-            positionTarget.y += moveSpeed * Math.sin(directionTarget)
-                    * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+            direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2))) : ((directionTarget - direction) > 0 ? -(Math.abs((directionTarget - direction - 2 * Math.PI)) / (ACTION_DAMPING / 2)) : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / (ACTION_DAMPING / 2)));
+            direction += (direction >= Math.PI) ? (-2 * Math.PI) : ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
+            positionTarget.x += moveSpeed * cos(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+            positionTarget.y += moveSpeed * sin(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
 
 
             float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
-            if (position.x < 0 + inscribedSquareLen_1_2) {
-                // 边界判断
-                positionTarget.x = (int) inscribedSquareLen_1_2;
-                acceleratedSpeed *= (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2) / directionTarget;
-                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
-
-            }
-            if (position.x > MAP_WIDTH - inscribedSquareLen_1_2) {
-                // 边界判断
-                positionTarget.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
-                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
-            }
-            if (position.y < 0 + inscribedSquareLen_1_2) {
-                // 边界判断
-                positionTarget.y = (int) inscribedSquareLen_1_2;
-                directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : (float) Math.PI;
-            }
-            if (position.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
-                // 边界判断
-                positionTarget.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
-                directionTarget = directionTarget > Math.PI / 2 ? (float) Math.PI : 0;
-            }
             position.x += (positionTarget.x - position.x) / ACTION_DAMPING;
             position.y += (positionTarget.y - position.y) / ACTION_DAMPING;
+            if (position.x < 0 + inscribedSquareLen_1_2) {
+                // 边界判断 left
+                System.out.println("acceleratedSpeed1: " + acceleratedSpeed+"  sin:"+sin(directionTarget));
+//                System.out.println("direction1: " + direction + "   directionTarget : " + directionTarget);
+                positionTarget.x = (int) inscribedSquareLen_1_2;
+                acceleratedSpeed *= (float) sin(directionTarget);
+                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
+//                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  sin:"+sin(directionTarget));
+                System.out.println("acceleratedSpeed : " + acceleratedSpeed+"  sin:"+sin(directionTarget));
+            }
+            if (position.x > MAP_WIDTH - inscribedSquareLen_1_2) {
+                // 边界判断 right
+                System.out.println("direction2: " + direction + "   directionTarget : " + directionTarget);
+                positionTarget.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
+                acceleratedSpeed *= (float) sin(directionTarget);
+                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
+                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  sin:"+sin(directionTarget));
+            }
+            if (position.y < 0 + inscribedSquareLen_1_2) {
+                // 边界判断 top
+                System.out.println("direction3: " + direction + "   directionTarget : " + directionTarget);
+                positionTarget.y = (int) inscribedSquareLen_1_2;
+                acceleratedSpeed *= (float) cos(directionTarget);
+                directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : (float) Math.PI;
+                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  cos:"+cos(directionTarget));
+            }
+            if (position.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
+                // 边界判断 bottom
+                System.out.println("direction4: " + direction + "   directionTarget : " + directionTarget);
+                positionTarget.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
+                acceleratedSpeed *= (float) cos(directionTarget);
+                directionTarget = directionTarget > Math.PI / 2 ? (float) Math.PI : 0;
+                System.out.println("direction : " + direction + "   directionTarget : " + directionTarget+"  cos:"+cos(directionTarget));
+            }
         } else {
 
             setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
@@ -290,22 +298,18 @@ public class Ball {
      * @param direction 传入一个目标，作为分裂出新球的方向
      */
     public void avatar(float direction) {
-        System.out.println("avatar22222222");
         message.editMessage(AVATAR, position);
         if (weight < BALL_WEIGHT_DEFAULT / 2) return;
-        System.out.println("avatar222222221111111111");
         Ball newBall = team.initMember();
         if (newBall != null) {
             weight /= 2;
             newBall.resetBall(position, weight);
-//        avatar
+            // avatar
             isAvatar = true;
             radius = (int) sqrt(weight);
             position = GameMath.getTarget(position, direction, radius);
             positionAvatar = GameMath.getTarget(position, direction, radius * 2 + BALL_AVATAR_DISTANCE);
             positionTarget = positionAvatar;
-//            team.addMember(newBall);
-            System.out.println("avatar3333333");
         }
     }
 
