@@ -20,16 +20,20 @@ public class SplashScreen extends Activity {
 /**
  *          V4.5 TODO list
  *          difficult
- *          edge
  *          speed with weight
  *          z-index
  *          hide rank
  *          Auto operation
- *          message cooperation
- *          game over
  *          Add Sting system
  *          Add communication system
- *          name size
+ *          name size scale
+ *          Camera scale
+ *
+ * version V4.4
+ *          Added operation
+ *          Improved draw function
+ *          edge
+ *          game over
  *
  * version V4.4
  *          High-DPI support
@@ -37,6 +41,7 @@ public class SplashScreen extends Activity {
  *          Eat teammate
  *          Improved eat system
  *          Improved feeling system for avatar
+ *
  * version V4.3
  *          Fix rank system
  *          Add battle system
