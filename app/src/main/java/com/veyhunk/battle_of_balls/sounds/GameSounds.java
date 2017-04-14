@@ -135,9 +135,13 @@ public class GameSounds {
      * 音频回收
      */
     public void recycle() {
-        player.reset();
-        player.release();
-        soundPool.release();
+        try {
+            player.reset();
+            player.release();
+            soundPool.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

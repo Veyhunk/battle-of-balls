@@ -28,7 +28,7 @@ public class Constants {
     public static final float ACTION_DAMPING = 10;// 活动阻尼
     public static final double SQRT1_2 = 0.7071067812;// 根号1/2
     public static final float MAX_ACCELERATED_SPEED = 0.5F;// 最大加速度
-    public static final int BALL_WEIGHT_DEFAULT = 1600;// ballDefaultSize
+    public static final int BALL_WEIGHT_DEFAULT = 2500;// ballDefaultSize
     public static final int BALL_AVATAR_DISTANCE = 400;// ballDefaultSize
     public static final int[] BALL_COLORS = new int[]{R.color.color0,
             R.color.color1, R.color.color2, R.color.color3, R.color.color4,

@@ -18,22 +18,26 @@ import com.veyhunk.battle_of_balls.sounds.GameSounds;
  */
 public class SplashScreen extends Activity {
 /**
- *          V4.5 TODO list
+ *          V4.6 TODO list
  *          difficult
- *          speed with weight
  *          z-index
- *          hide rank
- *          Auto operation
+ *          game over
  *          Add Sting system
  *          Add communication system
  *          name size scale
+ *
+ * version V4.6
+ *          Auto control for player ball
+ *
+ * version V4.5
+ *          Speed with weight
  *          Camera scale
+ *          Hide & show rank
  *
  * version V4.4
  *          Added operation
  *          Improved draw function
- *          edge
- *          game over
+ *          Edge collision
  *
  * version V4.4
  *          High-DPI support

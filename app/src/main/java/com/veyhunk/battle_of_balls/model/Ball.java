@@ -17,6 +17,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MAX_ACCELERATED_SP
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.AVATAR;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.BATTLE;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGER;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.utils.Clock.getClock;
@@ -51,6 +52,7 @@ public class Ball {
     private float acceleratedSpeed = 0;
     private Message message;
     private boolean isAvatar = false;
+    private boolean isEdgeCollision = false;
 
     /**
      * Initial new ball (born)
@@ -192,16 +194,19 @@ public class Ball {
                     setVector(GameMath.getRadian(position, team.readMessage().position), GameMath.getAcceleratedSpeed());
                 } else {
                     setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
-//                        directionTarget = (float) ((Math.random() * Math.PI * 2) - Math.PI);
-//                        acceleratedSpeed = (float) Math.random();
-//        }
+                    if(Math.random()>.7){
+                        avatar(directionTarget);
+                    }
                 }
             }
             timeRandomActionBegin = getClock();
             timeRandomActionRang = (int) (Math.random() * 1000);
         } else {
-            if (directionTarget == 404 || acceleratedSpeed < .05) {
-                setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
+            if (directionTarget == 404 || acceleratedSpeed < .05 || isEdgeCollision) {
+                setVector(GameMath.getRadian(position,GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
+                message.editMessage(EMPTY, GameMath.getPointRandom());
+                timeRandomActionBegin = getClock();
+                timeRandomActionRang = (int) (Math.random() * 1000);
             }
         }
     }
@@ -236,10 +241,10 @@ public class Ball {
             direction += Math.abs((directionTarget - direction)) < PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2))) : ((directionTarget - direction) > 0 ? -(Math.abs((directionTarget - direction - 2 * PI)) / (ACTION_DAMPING / 2)) : +(Math.abs((directionTarget - direction + 2 * PI)) / (ACTION_DAMPING / 2)));
             direction += (direction >= PI) ? (-2 * PI) : ((direction <= -PI) ? (+2 * PI) : 0);
             if (acceleratedSpeed != 0) {
-                positionTarget.x += moveSpeed * cos(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
-                positionTarget.y += moveSpeed * sin(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+                positionTarget.x += moveSpeed * cos(directionTarget) * (10 / radius + 0.2) * acceleratedSpeed;
+                positionTarget.y += moveSpeed * sin(directionTarget) * (10 / radius + 0.2) * acceleratedSpeed;
             }
-
+            isEdgeCollision = false;
             float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
             float inscribedSquareLen = inscribedSquareLen_1_2;
             if (position.x < 0 + inscribedSquareLen) {
@@ -251,6 +256,7 @@ public class Ball {
                     if (directionTarget > PI / 2 || directionTarget < -PI / 2) {
                         directionTarget = (float) (directionTarget > 0 ? PI / 2 : -PI / 2);
                     }
+                    isEdgeCollision = true;
                 }
 //                 directionTarget+"  sin:"+sin(directionTarget));
             }
@@ -262,6 +268,7 @@ public class Ball {
                     if (directionTarget < PI / 2 && directionTarget > -PI / 2) {
                         directionTarget = (float) (directionTarget > 0 ? PI / 2 : -PI / 2);
                     }
+                    isEdgeCollision = true;
                 }
             }
             if (position.y < 0 + inscribedSquareLen) {
@@ -272,6 +279,7 @@ public class Ball {
                     if (directionTarget < 0) {
                         directionTarget = directionTarget < -PI / 2 ? (float) PI : 0;
                     }
+                    isEdgeCollision = true;
                 }
             }
             if (position.y > MAP_HEIGHT - inscribedSquareLen) {
@@ -282,11 +290,12 @@ public class Ball {
                     if (directionTarget > 0) {
                         directionTarget = directionTarget > PI / 2 ? (float) PI : 0;
                     }
+                    isEdgeCollision = true;
                 }
             }
             position.x += (positionTarget.x - position.x) / ACTION_DAMPING;
             position.y += (positionTarget.y - position.y) / ACTION_DAMPING;
-            if (acceleratedSpeed == 0&&positionTarget.equals(position)) directionTarget = 404;
+            if (acceleratedSpeed == 0 && positionTarget.equals(position)) directionTarget = 404;
         } else {
 //            System.out.println(team.teamName+":"+name+"404");
         }

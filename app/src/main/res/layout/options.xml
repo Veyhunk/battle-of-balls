@@ -49,7 +49,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
-                android:max="300"
+                android:max="1000"
                 android:paddingBottom="1dp"
                 android:progress="1" />
 

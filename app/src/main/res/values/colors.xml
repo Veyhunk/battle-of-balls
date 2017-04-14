@@ -17,6 +17,7 @@
     <color name="background2">#f666</color>
     <color name="background">#ff383838</color>
     <color name="backgroundStripe">#ff3f3f3f</color>
+    <color name="player">#33ffffff</color>
 
     <color name="green_dark">#ff97b180</color>
     <color name="green_primary">#84ce7c</color>

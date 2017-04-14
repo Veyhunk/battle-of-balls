@@ -21,14 +21,15 @@ public class BallTeam {
     private List<Message> CharRoom;//聊天室
     private Message message;
     public int score = 0;
-
+    public boolean isHaveMember;
 
     BallTeam(int teamColor, String teamName) {
         members = new ArrayList<>();
         message = new Message();
         this.teamColor = teamColor;
         this.teamName = teamName;
-        CharRoom=new ArrayList<>();
+        CharRoom = new ArrayList<>();
+        isHaveMember = true;
     }
 
     public void action() {
@@ -62,11 +63,11 @@ public class BallTeam {
         return message;
     }
 
-    public PlayerBall initPlayer(GameSounds gameSounds){
+    public PlayerBall initPlayer(GameSounds gameSounds) {
         PlayerBall playerBall = new PlayerBall(members.get(0), gameSounds);
         members.remove(0);
         addMember(playerBall);
-        return  playerBall;
+        return playerBall;
     }
 
     Ball initMember() {
@@ -110,6 +111,7 @@ public class BallTeam {
                 score += member.radius;
             }
         }
+        if (score == 0) isHaveMember = false;
     }
 
     public void addMember(Ball member) {

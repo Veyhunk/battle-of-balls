@@ -14,9 +14,11 @@ import static com.veyhunk.battle_of_balls.utils.Colors.getColorByIndex;
  */
 
 public class TeamsManager {
+
     //team
     public TeamsManager() {
         int index1, index2, randColor = (int) (Math.random() * BALL_COLORS.length);
+        isGameOver=false;
 
         TEAM_PARAMS.TEAM_AMOUNT = TEAM_PARAMS.TEAM_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_AMOUNT;
         TEAM_PARAMS.TEAM_MEMBER_MAX = TEAM_PARAMS.TEAM_MEMBER_MAX == 0 ? 1 : TEAM_PARAMS.TEAM_MEMBER_MAX;
@@ -30,6 +32,7 @@ public class TeamsManager {
             teams[index1] = team;
         }
         allBalls = new ArrayList<>();
+        isPlayerTeamWin=false;
     }
 
     public BallTeam[] getTeams() {
@@ -89,14 +92,34 @@ public class TeamsManager {
     }
 
     private void refresh() {
+        int defeatTeamCount = 0;
         for (BallTeam team : teams) {
-            team.countScore();
+            if (team.isHaveMember)
+                team.countScore();
+            else defeatTeamCount++;
         }
+        if (teamOfPlayer.isHaveMember) {
+            if (defeatTeamCount == TEAM_PARAMS.TEAM_AMOUNT - 1){
+                isGameOver=true;
+                isPlayerTeamWin = true;}
+            else{
+                isGameOver=false;
+                isPlayerTeamWin=false;}
+        } else {
+            isGameOver=true;
+            isPlayerTeamWin = false;
+        }
+    }
+
+    public BallTeam getTeamOfPlayer() {
+        teamOfPlayer = teams.length > 0 ? teams[0] : null;
+        return teamOfPlayer;
     }
 
     private BallTeam[] teams = new BallTeam[TEAM_PARAMS.TEAM_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_AMOUNT];
 
-
     private List<Ball> allBalls;//全部成员
-
+    private BallTeam teamOfPlayer;
+    public boolean isGameOver=false;
+    public boolean isPlayerTeamWin;
 }
