@@ -1,12 +1,14 @@
 package com.veyhunk.battle_of_balls.model;
 
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
+import com.veyhunk.battle_of_balls.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX;
 
@@ -57,10 +59,13 @@ public class BallTeam {
      * @return message
      */
     Message readMessage() {
-        if (CharRoom.size() > 10) {
-            CharRoom.clear();
-        }
+//        if (CharRoom.size() > 10) {
+//            CharRoom.clear();
+//        }
+        action();
+       if(message.isCompleted()){message.editMessage(SAFE, GameMath.getPointRandom());}
         return message;
+
     }
 
     public PlayerBall initPlayer(GameSounds gameSounds) {

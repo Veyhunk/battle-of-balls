@@ -122,6 +122,10 @@ public class Ball {
      */
     public float die(Ball ball) {
         state = BALL_STATE_DEAD;
+        if (!team.equals(ball.getTeam())) {
+            message.editMessage(DANGER, ball.position);
+            team.sendMessage(message);
+        }
         return weight;
     }
 
@@ -182,21 +186,21 @@ public class Ball {
                 avatar(GameMath.getRadian(message.position, position));
             } else if (message.type == BATTLE) {
                 setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
-            } else if (message.type == SAFE) {
-                setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
-            } else if (message.type == AVATAR) {
+            } else  if (message.type == AVATAR) {
                 setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
                 avatar(GameMath.getRadian(position, message.position));
             } else {
                 if (team.readMessage().type == DANGER) {
                     setVector(GameMath.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
                 } else if (team.readMessage().type == BATTLE) {
-                    setVector(GameMath.getRadian(position, team.readMessage().position), GameMath.getAcceleratedSpeed());
-                } else {
+                    setVector(GameMath.getRadian(position, team.readMessage().position),MAX_ACCELERATED_SPEED);
+                } else if (message.type == SAFE) {
                     setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
-                    if(Math.random()>.8){
+                    if(Math.random()>.9){
                         avatar(directionTarget);
                     }
+                }else {
+                    setVector(GameMath.getRadian(position,GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
                 }
             }
             timeRandomActionBegin = getClock();

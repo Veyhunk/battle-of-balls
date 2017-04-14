@@ -737,7 +737,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             + (foodBall.positionY - member.position.y)
                             * (foodBall.positionY - member.position.y) < (member.radius - foodBall.radius)
                             * (member.radius - foodBall.radius)) {
-                        member.weight += foodBall.die()  * (member.getTeam().equals(teamOfPlayer)?1:aiDifficult);
+                        member.weight += foodBall.die()  * (member.getTeam().equals(teamOfPlayer)?1:aiDifficult/10);
                     }
                 }
             }
