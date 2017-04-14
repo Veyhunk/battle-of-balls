@@ -45,7 +45,6 @@ import static com.veyhunk.battle_of_balls.constants.Constants.ROCKER_WHEEL_RADIU
 import static com.veyhunk.battle_of_balls.db.GameParams.BALL_FOOD_COUNT;
 import static com.veyhunk.battle_of_balls.db.GameParams.aiDifficult;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballColorIndex;
-import static com.veyhunk.battle_of_balls.db.GameParams.ballGrowSpeed;
 import static com.veyhunk.battle_of_balls.db.GameParams.ballName;
 import static com.veyhunk.battle_of_balls.db.GameParams.bestScore;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.AVATAR;
@@ -210,7 +209,10 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         flagGameThread = false;
         gameSounds.stopMusic();
         gameSounds.recycle();
+        score= (int) playerBall.radius;
 
+        // check bestScore
+        if (Integer.parseInt(bestScore) < score) bestScore = score + "";
     }
 
     /**
@@ -335,7 +337,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                     gameSounds.starMusic(CLICK);
                     flagButtonIndex = 1;
                     return true;
-                } else if (event.getX() > screenW - RANK_LIST_WIDTH && event.getY() < bmpCamera.getHeight() + PADDING) {
+                } else if (event.getX() < RANK_LIST_WIDTH && event.getY() < bmpCamera.getHeight() + PADDING) {
                     playerBall.isAuto = !playerBall.isAuto;
                     gameSounds.starMusic(CLICK);
                     flagButtonIndex = 1;
@@ -528,9 +530,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
                 paintFont.setColor(ContextCompat.getColor(context, R.color.white_transparent));
                 canvas.drawRect(PADDING, PADDING, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + PADDING, paint);
-                canvas.drawText("score:" + playerBall.getTeam().score, 30 * screenSCale, 28 * screenSCale, paintFont);
+                if (playerBall.isAuto) {
+                    // auto
+                    canvas.drawText("自动操作", 30 * screenSCale, 28 * screenSCale, paintFont);
+                } else {
+                    canvas.drawText("手动操作", 30 * screenSCale, 28 * screenSCale, paintFont);
+                }
                 canvas.drawRect(PADDING, RANK_LIST_ITEM_HEIGHT + PADDING, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + RANK_LIST_ITEM_HEIGHT + PADDING, paint);
-                canvas.drawText("Weight:" + (int) playerBall.radius, 30 * screenSCale, 28 * screenSCale + RANK_LIST_ITEM_HEIGHT,
+                canvas.drawText("我的分数:" + (int) playerBall.radius, 30 * screenSCale, 28 * screenSCale + RANK_LIST_ITEM_HEIGHT,
                         paintFont);
 
                 // 倒计时
@@ -539,13 +546,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 // rank排行榜
                 canvas.drawRect(screenW - RANK_LIST_WIDTH - PADDING, PADDING, screenW - PADDING, 26 * screenSCale, paint);
                 intIndex = 0;
-
-                if (playerBall.isAuto) {
-                    // auto
-                    canvas.drawText("自动操作", screenW - RANK_LIST_WIDTH + PADDING * 4, 4 * PADDING, paintFont);
-                } else {
-                    canvas.drawText("手动操作", screenW - RANK_LIST_WIDTH + PADDING * 4, 4 * PADDING, paintFont);
-                }
+                canvas.drawText("排行榜", screenW - RANK_LIST_WIDTH + PADDING * 8, 4 * PADDING, paintFont);
                 for (BallTeam team : teams) {
 
                     // rank bg Rect
@@ -569,7 +570,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
 
                     }
                     intIndex++;
-
                 }
                 // rank Bottom Rect
                 canvas.drawRect(screenW - RANK_LIST_WIDTH - PADDING, intIndex * RANK_LIST_ITEM_HEIGHT + 26 * screenSCale,
@@ -590,14 +590,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.white_transparent));
                         canvas.drawRect(PADDING, screenH - PADDING - RANK_LIST_ITEM_HEIGHT, RANK_LIST_WIDTH, screenH - PADDING, paint);
-                        canvas.drawText("你的队伍获得胜利", 30 * screenSCale, screenH - 16 * screenSCale, paintFont);
+                        canvas.drawText("你的队伍获得胜利", PADDING*2, screenH - 16 * screenSCale, paintFont);
                     } else {
                         paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
                         paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.white_transparent));
                         canvas.drawRect(PADDING, screenH - PADDING - RANK_LIST_ITEM_HEIGHT, RANK_LIST_WIDTH, screenH - PADDING, paint);
-                        canvas.drawText("你的队伍全军覆灭", 30 * screenSCale, screenH - 16 * screenSCale, paintFont);
+                        canvas.drawText("你的队伍全军覆灭", PADDING*2, screenH - 16 * screenSCale, paintFont);
                     }
                 }
                 canvas.restore();
@@ -737,7 +737,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             + (foodBall.positionY - member.position.y)
                             * (foodBall.positionY - member.position.y) < (member.radius - foodBall.radius)
                             * (member.radius - foodBall.radius)) {
-                        member.weight += foodBall.die() * ballGrowSpeed * aiDifficult;
+                        member.weight += foodBall.die()  * (member.getTeam().equals(teamOfPlayer)?1:aiDifficult);
                     }
                 }
             }

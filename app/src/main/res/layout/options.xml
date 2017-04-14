@@ -32,7 +32,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
-                android:max="30"
+                android:max="50"
                 android:progress="1" />
 
             <TextView

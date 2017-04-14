@@ -194,7 +194,7 @@ public class Ball {
                     setVector(GameMath.getRadian(position, team.readMessage().position), GameMath.getAcceleratedSpeed());
                 } else {
                     setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
-                    if(Math.random()>.7){
+                    if(Math.random()>.8){
                         avatar(directionTarget);
                     }
                 }

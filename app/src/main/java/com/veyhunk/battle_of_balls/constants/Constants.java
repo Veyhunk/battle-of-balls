@@ -30,9 +30,6 @@ public class Constants {
     public static final float MAX_ACCELERATED_SPEED = 0.5F;// 最大加速度
     public static final int BALL_WEIGHT_DEFAULT = 2500;// ballDefaultSize
     public static final int BALL_AVATAR_DISTANCE = 400;// ballDefaultSize
-    public static final int[] BALL_COLORS = new int[]{R.color.color0,
-            R.color.color1, R.color.color2, R.color.color3, R.color.color4,
-            R.color.color5, R.color.color6};// 颜色表
     //    public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
     //Message Duration (util:second)
     private static int util = 1;

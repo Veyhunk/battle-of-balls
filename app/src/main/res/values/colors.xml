@@ -8,7 +8,16 @@
     <color name="color4">#ffa061ee</color>
     <color name="color5">#ff59a0d8</color>
     <color name="color6">#ffe03c5e</color>
-    
+    <color name="color7">#ff9800</color>
+    <color name="color8">#607d8b</color>
+    <color name="color9">#4caf50</color>
+    <color name="color10">#f44336</color>
+    <color name="color11">#9c27b0</color>
+    <color name="color12">#2196f3</color>
+    <color name="color13">#00bcd4</color>
+    <color name="color14">#009688</color>
+    <color name="color15">#ffeb3b</color>
+
     <color name="white_transparent">#88ffffff</color>
     <color name="white">#ffffff</color>
 

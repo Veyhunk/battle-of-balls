@@ -33,6 +33,6 @@ public class FoodBall {
      */
     public float die() {
         state = BALL_STATE_DEAD;
-        return ballGrowSpeed/10000;
+        return ballGrowSpeed;
     }
 }

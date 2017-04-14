@@ -5,7 +5,7 @@ import com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.veyhunk.battle_of_balls.constants.Constants.BALL_COLORS;
+import static com.veyhunk.battle_of_balls.utils.Colors.BALL_COLORS;
 import static com.veyhunk.battle_of_balls.utils.Colors.getColorByIndex;
 
 /**
