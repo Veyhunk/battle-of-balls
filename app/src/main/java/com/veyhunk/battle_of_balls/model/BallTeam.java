@@ -16,7 +16,7 @@ import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_
 public class BallTeam {
 
     public List<Ball> members;//团队成员
-    int teamColor;
+    public int teamColor;
     public String teamName;
     private List<Message> CharRoom;//聊天室
     private Message message;

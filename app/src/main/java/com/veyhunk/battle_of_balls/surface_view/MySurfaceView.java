@@ -553,19 +553,19 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                             intIndex * RANK_LIST_ITEM_HEIGHT + 26 * screenSCale, screenW - PADDING, (intIndex + 1)
                                     * RANK_LIST_ITEM_HEIGHT + 26 * screenSCale, paint);
 
+                    paintFont.setColor(ContextCompat.getColor(context, team.teamColor));
+                    canvas.drawText(intIndex + 1 + "." + (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + PADDING * 2, 50 * screenSCale + intIndex * RANK_LIST_ITEM_HEIGHT, paintFont);
                     if (team != playerBall.getTeam()) {
+                        paintFont.setColor(ContextCompat.getColor(context,
+                                R.color.white_transparent));
                         // rank text
-                        canvas.drawText(intIndex + 1 + "." + (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + PADDING * 2, 50 * screenSCale + intIndex * RANK_LIST_ITEM_HEIGHT, paintFont);
                         canvas.drawText("" + team.getScore(), screenW - 65 * screenSCale, 50 * screenSCale + intIndex * RANK_LIST_ITEM_HEIGHT, paintFont);
                     } else {
                         // rank text
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.color1));
                         // rank text
-                        canvas.drawText(intIndex + 1 + "." + (team.teamName.length() > 5 ? team.teamName.subSequence(0, 5) : team.teamName), screenW - RANK_LIST_WIDTH + PADDING * 2, 50 * screenSCale + intIndex * RANK_LIST_ITEM_HEIGHT, paintFont);
                         canvas.drawText("" + team.getScore(), screenW - 65 * screenSCale, 50 * screenSCale + intIndex * RANK_LIST_ITEM_HEIGHT, paintFont);
-                        paintFont.setColor(ContextCompat.getColor(context,
-                                R.color.white_transparent));
 
                     }
                     intIndex++;
