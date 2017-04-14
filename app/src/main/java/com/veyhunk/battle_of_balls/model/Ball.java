@@ -21,6 +21,7 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.SQRT1_2;
 import static com.veyhunk.battle_of_balls.utils.Clock.getClock;
 import static com.veyhunk.battle_of_balls.utils.Clock.isTimeOver;
+import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
@@ -196,9 +197,13 @@ public class Ball {
 //        }
                 }
             }
+            timeRandomActionBegin = getClock();
+            timeRandomActionRang = (int) (Math.random() * 1000);
+        } else {
+            if (directionTarget == 404 || acceleratedSpeed < .05) {
+                setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
+            }
         }
-        timeRandomActionBegin = getClock();
-        timeRandomActionRang = (int) (Math.random() * 1000);
     }
 
     public void setVector(float direction, float acceleratedSpeed) {
@@ -228,44 +233,62 @@ public class Ball {
 
     public void move() {
         if (directionTarget != 404) {
-            direction += Math.abs((directionTarget - direction)) < Math.PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2))) : ((directionTarget - direction) > 0 ? -(Math.abs((directionTarget - direction - 2 * Math.PI)) / (ACTION_DAMPING / 2)) : +(Math.abs((directionTarget - direction + 2 * Math.PI)) / (ACTION_DAMPING / 2)));
-            direction += (direction >= Math.PI) ? (-2 * Math.PI) : ((direction <= -Math.PI) ? (+2 * Math.PI) : 0);
-            positionTarget.x += moveSpeed * cos(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
-            positionTarget.y += moveSpeed * sin(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
-
+            direction += Math.abs((directionTarget - direction)) < PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2))) : ((directionTarget - direction) > 0 ? -(Math.abs((directionTarget - direction - 2 * PI)) / (ACTION_DAMPING / 2)) : +(Math.abs((directionTarget - direction + 2 * PI)) / (ACTION_DAMPING / 2)));
+            direction += (direction >= PI) ? (-2 * PI) : ((direction <= -PI) ? (+2 * PI) : 0);
+            if (acceleratedSpeed != 0) {
+                positionTarget.x += moveSpeed * cos(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+                positionTarget.y += moveSpeed * sin(directionTarget) * (30 / radius * 1 + 0.6) * acceleratedSpeed;
+            }
 
             float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
-            position.x += (positionTarget.x - position.x) / ACTION_DAMPING;
-            position.y += (positionTarget.y - position.y) / ACTION_DAMPING;
-            if (position.x < 0 + inscribedSquareLen_1_2) {
+            float inscribedSquareLen = inscribedSquareLen_1_2;
+            if (position.x < 0 + inscribedSquareLen) {
                 // 边界判断 left   < -PI/2  > PI/2
 //                 directionTarget);
-                positionTarget.x = (int) inscribedSquareLen_1_2;
-                acceleratedSpeed *= Math.abs(sin(directionTarget));
-                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
+                if (positionTarget.x < inscribedSquareLen_1_2) {
+                    positionTarget.x = (int) inscribedSquareLen_1_2;
+                    acceleratedSpeed *= Math.abs(sin(directionTarget));
+                    if (directionTarget > PI / 2 || directionTarget < -PI / 2) {
+                        directionTarget = (float) (directionTarget > 0 ? PI / 2 : -PI / 2);
+                    }
+                }
 //                 directionTarget+"  sin:"+sin(directionTarget));
             }
-            if (position.x > MAP_WIDTH - inscribedSquareLen_1_2) {
+            if (position.x > MAP_WIDTH - inscribedSquareLen) {
                 // 边界判断 right   > -PI/2  < PI/2
-                positionTarget.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
-                acceleratedSpeed *= Math.abs(sin(directionTarget));
-                directionTarget = (float) (directionTarget > 0 ? Math.PI / 2 : -Math.PI / 2);
+                if (positionTarget.x > (MAP_WIDTH - inscribedSquareLen_1_2)) {
+                    positionTarget.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
+                    acceleratedSpeed *= Math.abs(sin(directionTarget));
+                    if (directionTarget < PI / 2 && directionTarget > -PI / 2) {
+                        directionTarget = (float) (directionTarget > 0 ? PI / 2 : -PI / 2);
+                    }
+                }
             }
-            if (position.y < 0 + inscribedSquareLen_1_2) {
+            if (position.y < 0 + inscribedSquareLen) {
                 // 边界判断 top     -PI < < 0
-                positionTarget.y = (int) inscribedSquareLen_1_2;
-                acceleratedSpeed *= Math.abs(cos(directionTarget));
-                directionTarget = (directionTarget > (-Math.PI / 2) && directionTarget < Math.PI / 2) ? 0 : (float) Math.PI;
+                if (positionTarget.y < inscribedSquareLen_1_2) {
+                    positionTarget.y = (int) inscribedSquareLen_1_2;
+                    acceleratedSpeed *= Math.abs(cos(directionTarget));
+                    if (directionTarget < 0) {
+                        directionTarget = directionTarget < -PI / 2 ? (float) PI : 0;
+                    }
+                }
             }
-            if (position.y > MAP_HEIGHT - inscribedSquareLen_1_2) {
+            if (position.y > MAP_HEIGHT - inscribedSquareLen) {
                 // 边界判断 bottom  0> >PI
-                positionTarget.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
-                acceleratedSpeed *= Math.abs(cos(directionTarget));
-                directionTarget = directionTarget > Math.PI / 2 ? (float) Math.PI : 0;
-            }else {
-                System.out.println("404");
+                if (positionTarget.y > (MAP_HEIGHT - inscribedSquareLen_1_2)) {
+                    positionTarget.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
+                    acceleratedSpeed *= Math.abs(cos(directionTarget));
+                    if (directionTarget > 0) {
+                        directionTarget = directionTarget > PI / 2 ? (float) PI : 0;
+                    }
+                }
             }
-            if (acceleratedSpeed == 0) directionTarget = 404;
+            position.x += (positionTarget.x - position.x) / ACTION_DAMPING;
+            position.y += (positionTarget.y - position.y) / ACTION_DAMPING;
+            if (acceleratedSpeed == 0&&positionTarget.equals(position)) directionTarget = 404;
+        } else {
+//            System.out.println(team.teamName+":"+name+"404");
         }
 
     }
@@ -278,8 +301,55 @@ public class Ball {
         if (Math.abs(positionAvatar.x - position.x) < 0.1 && Math.abs(positionAvatar.y - position.y) < 0.1) {
             isAvatar = false;
         }
+
+        float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
+        float inscribedSquareLen = inscribedSquareLen_1_2;
+
+        if (position.x < 0 + inscribedSquareLen) {
+            // 边界判断 left   < -PI/2  > PI/2
+//                 directionTarget);
+            if (positionAvatar.x < inscribedSquareLen_1_2) {
+                positionAvatar.x = (int) inscribedSquareLen_1_2;
+                acceleratedSpeed *= Math.abs(sin(directionTarget));
+                if (directionTarget > PI / 2 || directionTarget < -PI / 2) {
+                    directionTarget = (float) (directionTarget > 0 ? PI / 2 : -PI / 2);
+                }
+            }
+//                 directionTarget+"  sin:"+sin(directionTarget));
+        }
+        if (position.x > MAP_WIDTH - inscribedSquareLen) {
+            // 边界判断 right   > -PI/2  < PI/2
+            if (positionAvatar.x > (MAP_WIDTH - inscribedSquareLen_1_2)) {
+                positionAvatar.x = (int) (MAP_WIDTH - inscribedSquareLen_1_2);
+                acceleratedSpeed *= Math.abs(sin(directionTarget));
+                if (directionTarget < PI / 2 && directionTarget > -PI / 2) {
+                    directionTarget = (float) (directionTarget > 0 ? PI / 2 : -PI / 2);
+                }
+            }
+        }
+        if (position.y < 0 + inscribedSquareLen) {
+            // 边界判断 top     -PI < < 0
+            if (positionAvatar.y < inscribedSquareLen_1_2) {
+                positionAvatar.y = (int) inscribedSquareLen_1_2;
+                acceleratedSpeed *= Math.abs(cos(directionTarget));
+                if (directionTarget < 0) {
+                    directionTarget = directionTarget < -PI / 2 ? (float) PI : 0;
+                }
+            }
+        }
+        if (position.y > MAP_HEIGHT - inscribedSquareLen) {
+            // 边界判断 bottom  0> >PI
+            if (positionAvatar.y > (MAP_HEIGHT - inscribedSquareLen_1_2)) {
+                positionAvatar.y = (int) (MAP_HEIGHT - inscribedSquareLen_1_2);
+                acceleratedSpeed *= Math.abs(cos(directionTarget));
+                if (directionTarget > 0) {
+                    directionTarget = directionTarget > PI / 2 ? (float) PI : 0;
+                }
+            }
+        }
         position.x += (positionAvatar.x - position.x) / ACTION_DAMPING;
         position.y += (positionAvatar.y - position.y) / ACTION_DAMPING;
+        if (acceleratedSpeed == 0) directionTarget = 404;
     }
 
     /**

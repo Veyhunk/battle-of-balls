@@ -51,12 +51,38 @@ public class TeamsManager {
         refresh();
         int length = teams.length;
         int index1, index2;
+        BallTeam temp;
         for (index1 = 0; index1 < length - 1; index1++) {
             for (index2 = 0; index2 < length - 1; index2++) {
                 if (teams[index2].getScore() < teams[index2 + 1].getScore()) {
-                    BallTeam temp = teams[index2];
+                    temp = teams[index2];
                     teams[index2] = teams[index2 + 1];
                     teams[index2 + 1] = temp;
+                }
+            }
+        }
+//        sortMember();
+    }
+
+    public void sortMember() {
+        Ball temp;
+//        int index1, index2;
+//        for (index1 = 0; index1 < length - 1; index1++) {
+//            for (index2 = 0; index2 < length - 1; index2++) {
+//                if (teams[index2].getScore() < teams[index2 + 1].getScore()) {
+//                    temp=ball2;
+//                    ball2=ball1;
+//                    ball1=temp;
+//                }
+//            }
+//        }
+
+        for (Ball ball1 : allBalls) {
+            for (Ball ball2 : allBalls) {
+                if (ball1.radius < ball2.radius) {
+                    temp = ball2;
+                    ball2 = ball1;
+                    ball1 = temp;
                 }
             }
         }

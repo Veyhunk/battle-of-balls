@@ -12,43 +12,48 @@ import static com.veyhunk.battle_of_balls.sounds.GameSounds.EAT_DEFAULT;
 public class PlayerBall extends Ball {
 
     private GameSounds gameSounds;
+    public boolean isAuto = false;
 
-    public PlayerBall(Ball ball,GameSounds gameSounds) {
+    public PlayerBall(Ball ball, GameSounds gameSounds) {
         super(ball.getTeam(), ballName);
         this.gameSounds = gameSounds;
     }
 
     /**
      * 复活角色
+     *
      * @param teamMate Ball
      */
-    void resetBall(Ball teamMate){
-        super.resetBall(teamMate.position,teamMate.die(this));
+    void resetBall(Ball teamMate) {
+        super.resetBall(teamMate.position, teamMate.die(this));
     }
 
     @Override
     public void action() {
-        grow();
-        move();
+        if (isAuto) {
+            super.action();
+        } else {
+            grow();
+            move();
+        }
     }
 
     @Override
     public float die(Ball ball) {
         gameSounds.starMusic(EAT_DEFAULT);
-        if(ball.getTeam().equals(getTeam())){
-            position=ball.position;
-            radius=ball.radius;
-            weight+=ball.die(this);
+        if (ball.getTeam().equals(getTeam())) {
+            position = ball.position;
+            radius = ball.radius;
+            weight += ball.die(this);
             return 0;
-        }
-        else return super.die(ball);
+        } else return super.die(ball);
     }
 
     @Override
     public boolean eat(Ball enemy) {
-       if (super.eat(enemy)){
+        if (super.eat(enemy)) {
             gameSounds.starMusic(EAT_3);
-           return true;
+            return true;
         }
         return false;
     }
