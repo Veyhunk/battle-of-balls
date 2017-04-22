@@ -315,15 +315,15 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 // System.out.println("---按下----");
                 if (event.getX() > (screenW - bmpBtnAvatar.getWidth() * 3) && event.getY() > (screenH - bmpBtnAvatar.getHeight())) {
                     if (event.getX() < (screenW - bmpBtnAvatar.getWidth() * 2)) {
-                        //danger
-                        System.out.print("danger");
+                        //sendDanger
+                        System.out.print("sendDanger");
                         gameSounds.starMusic(BUBBLE);
-                        playerBall.danger();
+                        playerBall.sendDanger(playerBall.position);
                     } else if (event.getX() < (screenW - bmpBtnAvatar.getWidth())) {
-//                        battle
-                        System.out.print("battle");
+//                        sendBattle
+                        System.out.print("sendBattle");
                         gameSounds.starMusic(BATTLE);
-                        playerBall.battle();
+                        playerBall.sendBattle(playerBall.position);
                     } else {
 //                        avatar
                         System.out.print("avatar");

@@ -156,27 +156,26 @@ public class Ball {
             //send message
             if (enemy.radius * 2 < radius) {
                 //avatar
-                message.editMessage(AVATAR, enemy.position);
+                sendAvatar(enemy.position);
             } else {
-                //battle
-                message.editMessage(BATTLE, enemy.position);
+                //sendBattle
+                sendBattle(enemy.position);
             }
         } else {
             if (enemy.radius / 2 > radius) {
-                //danger
-                message.editMessage(DANGER, enemy.position);
+                //sendDanger
+                sendDanger(enemy.position);
             } else {
-                //battle
-                message.editMessage(SAFE, enemy.position);
+                //sendBattle
+                sendSafe(enemy.position);
             }
         }
-        team.sendMessage(message);
     }
 
     private void thinking() {
 
 //        if (!message.isCompleted()) {
-//            message.work();
+            message.work();
 //            return;
 //        }
         if (isTimeOver(timeRandomActionBegin,
@@ -186,28 +185,28 @@ public class Ball {
                 avatar(GameMath.getRadian(message.position, position));
             } else if (message.type == BATTLE) {
                 setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
-            } else  if (message.type == AVATAR) {
+            } else if (message.type == AVATAR) {
                 setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
                 avatar(GameMath.getRadian(position, message.position));
             } else {
                 if (team.readMessage().type == DANGER) {
                     setVector(GameMath.getRadian(team.readMessage().position, position), MAX_ACCELERATED_SPEED);
                 } else if (team.readMessage().type == BATTLE) {
-                    setVector(GameMath.getRadian(position, team.readMessage().position),MAX_ACCELERATED_SPEED);
+                    setVector(GameMath.getRadian(position, team.readMessage().position), MAX_ACCELERATED_SPEED);
                 } else if (message.type == SAFE) {
                     setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
-                    if(Math.random()>.85){
+                    if (Math.random() > .85) {
                         avatar(directionTarget);
                     }
-                }else {
-                    setVector(GameMath.getRadian(position,GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
+                } else {
+                    setVector(GameMath.getRadian(position, GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
                 }
             }
             timeRandomActionBegin = getClock();
             timeRandomActionRang = (int) (Math.random() * 1000);
         } else {
             if (directionTarget == 404 || acceleratedSpeed < .05 || isEdgeCollision) {
-                setVector(GameMath.getRadian(position,GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
+                setVector(GameMath.getRadian(position, GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
                 message.editMessage(EMPTY, GameMath.getPointRandom());
                 timeRandomActionBegin = getClock();
                 timeRandomActionRang = (int) (Math.random() * 1000);
@@ -386,16 +385,35 @@ public class Ball {
         }
     }
 
-    public void battle() {
-        //battle
-        message.editMessage(BATTLE, position);
+    public void sendBattle(PointF position) {
+        //sendBattle
+        if (message.type != DANGER||(message.type != DANGER&&message.isCompleted())) {
+            message.editMessage(BATTLE, position);
+            team.sendMessage(message);
+        }
+    }
+
+    public void sendDanger(PointF position) {
+        //sendDanger
+        message.editMessage(DANGER, position);
         team.sendMessage(message);
     }
 
-    public void danger() {
-        //danger
-        message.editMessage(DANGER, position);
-        team.sendMessage(message);
+    public void sendSafe(PointF position) {
+        //sendDanger
+        if (message.type != DANGER||(message.type != DANGER&&message.isCompleted())) {
+            message.editMessage(SAFE, position);
+        }
+//        team.sendMessage(message);
+    }
+
+
+    public void sendAvatar(PointF position) {
+        //sendDanger
+        if (message.type != DANGER||(message.type != DANGER&&message.isCompleted())) {
+            message.editMessage(AVATAR, position);
+//        team.sendMessage(message);
+        }
     }
 
     public BallTeam getTeam() {

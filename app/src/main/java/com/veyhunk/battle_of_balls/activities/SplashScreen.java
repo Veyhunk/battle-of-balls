@@ -48,7 +48,7 @@ public class SplashScreen extends Activity {
  *
  * version V4.3
  *          Fix rank system
- *          Add battle system
+ *          Add sendBattle system
  *          Add new avatar system
  *
  */

@@ -8,6 +8,8 @@ import java.util.List;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGER;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
 import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX;
@@ -59,9 +61,14 @@ public class BallTeam {
      * @return message
      */
     Message readMessage() {
-//        if (CharRoom.size() > 10) {
-//            CharRoom.clear();
-//        }
+        Message message=new Message(EMPTY,GameMath.getPointRandom(),0);
+        for (Message message1 : CharRoom) {
+            if(message1.type==DANGER){
+                message=message1;
+            }else if(message.type!=DANGER){
+                message=message1;
+            }
+        }
         action();
        if(message.isCompleted()){message.editMessage(SAFE, GameMath.getPointRandom());}
         return message;

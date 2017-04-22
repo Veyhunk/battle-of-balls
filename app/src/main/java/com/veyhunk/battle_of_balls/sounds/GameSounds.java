@@ -17,7 +17,7 @@ public class GameSounds {
     public static final int LOGO1 = 1;
     public static final int LOGO2 = 2;
     public static final int CLICK = 3;
-    public static final int BATTLE = 4;//battle
+    public static final int BATTLE = 4;//sendBattle
     public static final int AVATAR = 5;//avatar
     public static final int BE_EATEN = 6;
     public static final int BUBBLE = 7;
