@@ -80,7 +80,6 @@ public class GameProgress {
                 GameParams.ballGrowSpeed = Float.parseFloat(ball.getString("ballGrowSpeed"));
                 GameParams.ballMoveSpeed = Float.parseFloat(ball.getString("ballMoveSpeed"));
                 GameParams.aiDifficult = Integer.parseInt(ball.getString("aiDifficult"));
-                GameParams.aiDifficult = Integer.parseInt(ball.getString("aiDifficult"));
                 GameParams.TEAM_PARAMS.TEAM_AMOUNT = Integer.parseInt(ball.getString("TEAM_AMOUNT"));
                 GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT = Integer.parseInt(ball.getString("TEAM_MEMBER_AMOUNT"));
                 GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX =Integer.parseInt(ball.getString("TEAM_MEMBER_MAX"));

@@ -109,19 +109,31 @@ public class GameSounds {
      * 停止音乐播放
      */
     public void stopMusic() {
-        player.stop();
-        isOpen = false;
+        try {
+            player.stop();
+            isOpen = false;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopBGM() {
-        player.stop();
+        try {
+            player.stop();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
 
     }
 
     public void restartBGM() {
-        player = MediaPlayer.create(context, R.raw.bgm);
-        player.setLooping(true);
-        player.start();
+        try {
+            player = MediaPlayer.create(context, R.raw.bgm);
+            player.setLooping(true);
+            player.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

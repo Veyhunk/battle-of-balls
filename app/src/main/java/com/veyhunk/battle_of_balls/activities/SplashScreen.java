@@ -21,13 +21,13 @@ public class SplashScreen extends Activity {
  *          V4.6 TODO list
  *          difficult
  *          z-index
- *          game over
  *          Add Sting system
- *          Add communication system
  *          name size scale
  *
  * version V4.6
  *          Auto control for player ball
+ *          Improved communication system
+ *          Show game result
  *
  * version V4.5
  *          Speed with weight
