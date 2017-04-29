@@ -52,9 +52,9 @@ public class MainActivity extends Activity implements OnTouchListener {
         tvBestScore = (TextView) findViewById(R.id.tvBestScore);
         TextView versionNumber = (TextView) findViewById(R.id.tvVersionNumber);
         edtName = (EditText) findViewById(R.id.edtNickName);
-        String strBestScore = getString(R.string.bestScore) + ":" + GameParams.bestScore;
+        String strBestScore = getString(R.string.bestScore) + ":" + GameParams.BEST_SCORE;
         tvBestScore.setText(strBestScore);
-        edtName.setText(GameParams.ballName);
+        edtName.setText(GameParams.PLAYER_NAME);
         for (Button button : buttons) button.setOnTouchListener(this);
 
         try {
@@ -93,7 +93,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 
                         case R.id.start:
                             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                                GameParams.ballName = edtName.getText().toString();
+                                GameParams.PLAYER_NAME = edtName.getText().toString();
                                 Intent intent = new Intent();
                                 intent.setClass(this, BallActivity.class);
                                 startActivityForResult(intent, 1);
@@ -124,7 +124,7 @@ public class MainActivity extends Activity implements OnTouchListener {
         if (resultCode == 1) {
             gameProgress.Save();
         } else if (resultCode == 2) {
-            String strBestScore = getString(R.string.bestScore) + ":" + GameParams.bestScore;
+            String strBestScore = getString(R.string.bestScore) + ":" + GameParams.BEST_SCORE;
             tvBestScore.setText(strBestScore);
         }
     }

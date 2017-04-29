@@ -75,6 +75,23 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding"
                 android:shadowColor="#FFFFFFFF"
+                android:text="@string/ballWeightDefault"
+                android:textColor="@color/font_shadow"
+                android:textSize="@dimen/fontSize" />
+
+            <SeekBar
+                android:id="@+id/ballWeightDefault"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="40"
+                android:progress="1" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding"
+                android:shadowColor="#FFFFFFFF"
                 android:text="@string/teamAccount"
                 android:textColor="@color/font_shadow"
                 android:textSize="@dimen/fontSize" />

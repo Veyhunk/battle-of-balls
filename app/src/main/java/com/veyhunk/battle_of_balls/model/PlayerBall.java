@@ -2,7 +2,7 @@ package com.veyhunk.battle_of_balls.model;
 
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
 
-import static com.veyhunk.battle_of_balls.db.GameParams.ballName;
+import static com.veyhunk.battle_of_balls.db.GameParams.PLAYER_NAME;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.EAT_3;
 import static com.veyhunk.battle_of_balls.sounds.GameSounds.EAT_DEFAULT;
 
@@ -15,7 +15,7 @@ public class PlayerBall extends Ball {
     public boolean isAuto = false;
 
     public PlayerBall(Ball ball, GameSounds gameSounds) {
-        super(ball.getTeam(), ballName);
+        super(ball.getTeam(), PLAYER_NAME);
         this.gameSounds = gameSounds;
     }
 

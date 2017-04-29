@@ -7,12 +7,13 @@ package com.veyhunk.battle_of_balls.db;
 
 public class GameParams {
 
-    public static String ballName; //玩家名称
-    public static String bestScore; //最佳分数
-    public static float ballMoveSpeed;//移动速度
-    public static float ballGrowSpeed;//成长速度
-    public static float aiDifficult;//敌人难度
-    public static int ballColorIndex;//颜色编号
+    public static String PLAYER_NAME; //玩家名称
+    public static String BEST_SCORE; //最佳分数
+    public static float BALL_MOVE_SPEED;//移动速度
+    public static float BALL_GROW_SPEED;//成长速度
+    public static float AI_DIFFICULT;//敌人难度
+    public static int PLAYER_TEAM_COLOR;//颜色编号
+    public static int BALL_WEIGHT_DEFAULT = 2500;// BALL_WEIGHT_DEFAULT
 
     // variable
     public static int GAME_TIME = 320;// 游戏时长（单位：s）

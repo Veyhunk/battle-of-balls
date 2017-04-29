@@ -27,12 +27,13 @@ public class GameProgress {
             // 为root创建一个JSONObject对象
             JSONObject ball = new JSONObject();
             // 为root JSONObject对象添加一个“名称,值”对
-            ball.put("bestScore", GameParams.bestScore);
-            ball.put("ballName", GameParams.ballName);
-            ball.put("ballColorIndex", GameParams.ballColorIndex);
-            ball.put("ballGrowSpeed", GameParams.ballGrowSpeed);
-            ball.put("ballMoveSpeed", GameParams.ballMoveSpeed);
-            ball.put("aiDifficult", GameParams.aiDifficult);
+            ball.put("BEST_SCORE", GameParams.BEST_SCORE);
+            ball.put("PLAYER_NAME", GameParams.PLAYER_NAME);
+            ball.put("PLAYER_TEAM_COLOR", GameParams.PLAYER_TEAM_COLOR);
+            ball.put("BALL_GROW_SPEED", GameParams.BALL_GROW_SPEED);
+            ball.put("BALL_MOVE_SPEED", GameParams.BALL_MOVE_SPEED);
+            ball.put("BALL_WEIGHT_DEFAULT", GameParams.BALL_WEIGHT_DEFAULT);
+            ball.put("AI_DIFFICULT", GameParams.AI_DIFFICULT);
             ball.put("TEAM_AMOUNT", GameParams.TEAM_PARAMS.TEAM_AMOUNT);
             ball.put("TEAM_MEMBER_AMOUNT", GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT);
             ball.put("TEAM_MEMBER_MAX", GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX);
@@ -74,33 +75,45 @@ public class GameProgress {
                 JSONObject ball = new JSONObject(content.trim());
                 // handle result
 
-                GameParams.bestScore = ball.getString("bestScore");
-                GameParams.ballName = ball.getString("ballName");
-                GameParams.ballColorIndex = Integer.parseInt(ball.getString("ballColorIndex"));
-                GameParams.ballGrowSpeed = Float.parseFloat(ball.getString("ballGrowSpeed"));
-                GameParams.ballMoveSpeed = Float.parseFloat(ball.getString("ballMoveSpeed"));
-                GameParams.aiDifficult = Integer.parseInt(ball.getString("aiDifficult"));
+                GameParams.BEST_SCORE = ball.getString("BEST_SCORE");
+                GameParams.PLAYER_NAME = ball.getString("PLAYER_NAME");
+                GameParams.PLAYER_TEAM_COLOR = Integer.parseInt(ball.getString("PLAYER_TEAM_COLOR"));
+                GameParams.BALL_GROW_SPEED = Float.parseFloat(ball.getString("BALL_GROW_SPEED"));
+                GameParams.BALL_MOVE_SPEED = Float.parseFloat(ball.getString("BALL_MOVE_SPEED"));
+                GameParams.BALL_WEIGHT_DEFAULT = Integer.parseInt(ball.getString("BALL_WEIGHT_DEFAULT"));
+                GameParams.AI_DIFFICULT = Integer.parseInt(ball.getString("AI_DIFFICULT"));
                 GameParams.TEAM_PARAMS.TEAM_AMOUNT = Integer.parseInt(ball.getString("TEAM_AMOUNT"));
                 GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT = Integer.parseInt(ball.getString("TEAM_MEMBER_AMOUNT"));
                 GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX =Integer.parseInt(ball.getString("TEAM_MEMBER_MAX"));
 
 
-                if (GameParams.ballName.length() == 0) {
-                    GameParams.ballName = context.getString(R.string.default_name);
+                if (GameParams.PLAYER_NAME.length() == 0) {
+                    GameParams.PLAYER_NAME = context.getString(R.string.default_name);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                GameParams.BEST_SCORE = "0";
+                GameParams.PLAYER_NAME = context.getString(R.string.default_name);
+                GameParams.PLAYER_TEAM_COLOR = 0;
+                GameParams.BALL_GROW_SPEED = 100;
+                GameParams.BALL_MOVE_SPEED = 30;
+                GameParams.BALL_WEIGHT_DEFAULT = 2500;
+                GameParams.AI_DIFFICULT = 10;
+                GameParams.TEAM_PARAMS.TEAM_AMOUNT = 4;
+                GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT =3;
+                GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX =16;
             }
 
         } catch (IOException e) {
             e.printStackTrace();
 
-            GameParams.bestScore = "0";
-            GameParams.ballName = context.getString(R.string.default_name);
-            GameParams.ballColorIndex = 0;
-            GameParams.ballGrowSpeed = 100;
-            GameParams.ballMoveSpeed = 30;
-            GameParams.aiDifficult = 10;
+            GameParams.BEST_SCORE = "0";
+            GameParams.PLAYER_NAME = context.getString(R.string.default_name);
+            GameParams.PLAYER_TEAM_COLOR = 0;
+            GameParams.BALL_GROW_SPEED = 100;
+            GameParams.BALL_MOVE_SPEED = 30;
+            GameParams.BALL_WEIGHT_DEFAULT = 2500;
+            GameParams.AI_DIFFICULT = 10;
             GameParams.TEAM_PARAMS.TEAM_AMOUNT = 4;
             GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT =3;
             GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX =16;

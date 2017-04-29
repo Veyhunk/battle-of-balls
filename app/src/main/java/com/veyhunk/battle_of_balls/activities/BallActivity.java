@@ -33,8 +33,8 @@ public class BallActivity extends Activity implements OnEndOfGameInterface {
         gameSounds.starMusic(GameSounds.CLICK);
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             Intent intent = getIntent();
-//			if (bestScore < MySurfaceView.score) {
-//				bestScore = MySurfaceView.score;
+//			if (BEST_SCORE < MySurfaceView.score) {
+//				BEST_SCORE = MySurfaceView.score;
 //			}
             setResult(2, intent);
             gameSounds.recycle();

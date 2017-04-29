@@ -21,6 +21,7 @@ public class optionActivity extends Activity {
     private SeekBar sbrTeamAccount;
     private SeekBar sbrTeamMemberAccount;
     private SeekBar sbrTeamMemberMax;
+    private SeekBar sbrBallWeightDefault;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +40,12 @@ public class optionActivity extends Activity {
         sbrTeamAccount = (SeekBar) findViewById(R.id.teamAccount);
         sbrTeamMemberAccount = (SeekBar) findViewById(R.id.teamMemberAccount);
         sbrTeamMemberMax = (SeekBar) findViewById(R.id.teamMemberMax);
+        sbrBallWeightDefault = (SeekBar) findViewById(R.id.ballWeightDefault);
 
-        sbrDifficult.setProgress((int) GameParams.aiDifficult);
-        sbrSpeed.setProgress((int) GameParams.ballMoveSpeed);
-        sbrGrow.setProgress((int) GameParams.ballGrowSpeed);
+        sbrDifficult.setProgress((int) GameParams.AI_DIFFICULT);
+        sbrSpeed.setProgress((int) GameParams.BALL_MOVE_SPEED);
+        sbrGrow.setProgress((int) GameParams.BALL_GROW_SPEED);
+        sbrBallWeightDefault.setProgress((int) (Math.sqrt(GameParams.BALL_WEIGHT_DEFAULT)/50));
         sbrTeamAccount.setProgress(GameParams.TEAM_PARAMS.TEAM_AMOUNT);
         sbrTeamMemberAccount.setProgress(GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT);
         sbrTeamMemberMax.setProgress(GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX);
@@ -52,12 +55,18 @@ public class optionActivity extends Activity {
         gameSounds.starMusic(GameSounds.CLICK);
         gameSounds.recycle();
         Intent intent = getIntent();
-        GameParams.ballMoveSpeed = sbrSpeed.getProgress();
-        GameParams.aiDifficult = sbrDifficult.getProgress();
-        GameParams.ballGrowSpeed = sbrGrow.getProgress();
+        GameParams.BALL_MOVE_SPEED = sbrSpeed.getProgress();
+        GameParams.AI_DIFFICULT = sbrDifficult.getProgress();
+        GameParams.BALL_GROW_SPEED = sbrGrow.getProgress();
+        GameParams.BALL_WEIGHT_DEFAULT = (int) Math.pow(sbrBallWeightDefault.getProgress()*50,2);
         GameParams.TEAM_PARAMS.TEAM_AMOUNT = sbrTeamAccount.getProgress();
         GameParams.TEAM_PARAMS.TEAM_MEMBER_AMOUNT = sbrTeamMemberAccount.getProgress();
         GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX = sbrTeamMemberMax.getProgress();
+        if(GameParams.BALL_WEIGHT_DEFAULT<2500)GameParams.BALL_WEIGHT_DEFAULT=2500;
+        if(GameParams.AI_DIFFICULT<10)GameParams.AI_DIFFICULT=10;
+        if(GameParams.BALL_GROW_SPEED<1)GameParams.BALL_GROW_SPEED=1;
+        if(GameParams.BALL_MOVE_SPEED<4)GameParams.BALL_MOVE_SPEED=4;
+
         setResult(1, intent);
         finish();
     }

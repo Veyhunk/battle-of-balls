@@ -17,5 +17,6 @@
     <string name="bestScore">最高分</string>
     <string name="version">版本号</string>
     <string name="default_name">小宝宝</string>
+    <string name="ballWeightDefault">初始体重</string>
 
 </resources>
