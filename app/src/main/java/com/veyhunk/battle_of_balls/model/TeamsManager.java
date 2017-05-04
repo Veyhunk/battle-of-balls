@@ -5,6 +5,8 @@ import com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_ID;
+import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 import static com.veyhunk.battle_of_balls.utils.Colors.BALL_COLORS;
 import static com.veyhunk.battle_of_balls.utils.Colors.getColorByIndex;
 
@@ -19,6 +21,7 @@ public class TeamsManager {
     public TeamsManager() {
         int index1, index2, randColor = (int) (Math.random() * BALL_COLORS.length);
         isGameOver=false;
+        BALL_ID=0;
 
         TEAM_PARAMS.TEAM_AMOUNT = TEAM_PARAMS.TEAM_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_AMOUNT;
         TEAM_PARAMS.TEAM_MEMBER_MAX = TEAM_PARAMS.TEAM_MEMBER_MAX == 0 ? 1 : TEAM_PARAMS.TEAM_MEMBER_MAX;
@@ -27,7 +30,7 @@ public class TeamsManager {
         for (index1 = 0; index1 < TEAM_PARAMS.TEAM_AMOUNT; index1++) {
             BallTeam team = new BallTeam(getColorByIndex(index1 + randColor), TEAM_PARAMS.TEAM_NAMES[index1]);
             for (index2 = 0; index2 < TEAM_PARAMS.TEAM_MEMBER_AMOUNT; index2++) {
-                team.initMember();
+                team.addMember(new Ball(team, getName(),BALL_ID++));
             }
             teams[index1] = team;
         }

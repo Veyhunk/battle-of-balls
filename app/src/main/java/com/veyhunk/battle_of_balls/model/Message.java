@@ -13,55 +13,21 @@ import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
 class Message {
     short type;
     public String content;
-    PointF position;
-    private int sender;
-
-    public int getSender() {
-        return sender;
-    }
-
-    public void setSender(int sender) {
-        this.sender = sender;
-    }
-
+    public PointF position;
+    public Ball ballSender;
+    public Ball ballObject;
     private int duration;
 
 
-    /**
-     * Create Message
-     *
-     * @param type     Message type
-     * @param position basePosition
-     */
-    public Message(short type, PointF position, int duration) {
-        this.type = type;
-        this.position = position;
-        this.duration = duration;
-
-    }
 
     /**
      * Create Message
      */
-    Message() {
+    Message(Ball ballSender) {
         this.type = EMPTY;
         this.position = new PointF(0, 0);
         this.duration = 0;
-    }
-
-    /**
-     * Create Message
-     *
-     * @param type     Message type
-     * @param position basePosition
-     * @param content  content
-     * @param sender   sender
-     */
-    public Message(short type, PointF position, String content, int sender) {
-        this.type = type;
-        this.content = content;
-        this.position = position;
-        this.sender = sender;
+        this.ballSender = ballSender;
     }
 
     /**
@@ -70,17 +36,15 @@ class Message {
      * @param type     Message type
      * @param position basePosition
      */
-    void editMessage(short type, PointF position) {
+    void editMessage(short type, PointF position, Ball ballObject) {
         this.type = type;
         this.position = position;
         this.duration = MessageDuration[type];
+        this.ballObject = ballObject;
     }
 
-    public boolean isCompleted() {
-        return duration <= 0;
-    }
-
-    void work() {
-        --duration;
+    boolean isCompleted() {
+        if (duration <= 0) this.type = EMPTY;
+        return duration-- <= 0;
     }
 }

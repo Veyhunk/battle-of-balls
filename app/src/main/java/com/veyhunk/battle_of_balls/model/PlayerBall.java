@@ -15,7 +15,7 @@ public class PlayerBall extends Ball {
     public boolean isAuto = false;
 
     public PlayerBall(Ball ball, GameSounds gameSounds) {
-        super(ball.getTeam(), PLAYER_NAME);
+        super(ball.getTeam(), PLAYER_NAME,ball.id);
         this.gameSounds = gameSounds;
     }
 

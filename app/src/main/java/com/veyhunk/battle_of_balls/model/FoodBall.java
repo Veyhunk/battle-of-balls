@@ -8,7 +8,7 @@ import static com.veyhunk.battle_of_balls.db.GameParams.BALL_GROW_SPEED;
  * 定义食物球球
  */
 public class FoodBall {
-    public final float radius = 6;
+    public final float radius = 15;
     public boolean state;
     public double positionX;
     public double positionY;
@@ -33,6 +33,6 @@ public class FoodBall {
      */
     public float die() {
         state = BALL_STATE_DEAD;
-        return BALL_GROW_SPEED *10;
+        return BALL_GROW_SPEED * 3;
     }
 }

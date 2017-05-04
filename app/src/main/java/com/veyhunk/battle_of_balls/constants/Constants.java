@@ -9,24 +9,24 @@ public class Constants {
 
     //size
 
-    public static float PADDING = 5;// 边距
-    public static float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // 排行榜尺寸
+    public static int BALL_ID;//ball id
     public static int ROCKER_RUDDER_RADIUS = 30;// 摇杆半径
     public static int ROCKER_ACTION_RADIUS = 75;// 摇杆活动范围半径
     public static int ROCKER_WHEEL_RADIUS = 60;// 摇杆底座范围半径
     public static int ROCKER_ACTIVITY_RADIUS = 30;// 摇杆活动范围半径
-    public static final int MAP_WIDTH = 6400, MAP_HEIGHT = 3600; // Map_size
-    public static final int MAP_MARGIN_H = 160; // Map_MARGIN
-    public static final int MAP_MARGIN_W = 90; // Map_MARGIN
+    public static float PADDING = 5;// 边距
+    public static float RANK_LIST_WIDTH = 210, RANK_LIST_ITEM_HEIGHT = 32.5F; // 排行榜尺寸
 
     //constant
+    public static final int MAP_WIDTH = 8000, MAP_HEIGHT = 6000; // Map_size
+    public static final int MAP_MARGIN = 301; // Map_MARGIN
+    public static final int BALL_AVATAR_DISTANCE = 400;// BALL_AVATAR_DISTANCE
+    public static final int BALL_WEIGHT_MAX = 4000000;// BALL_WEIGHT_MAX
     public static final boolean BALL_STATE_DEAD = false;
     public static final boolean BALL_STATE_ALIVE = true;
     public static final float ACTION_DAMPING = 10;// 活动阻尼
-    public static final double SQRT1_2 = 0.7071067812;// 根号1/2
     public static final float MAX_ACCELERATED_SPEED = 0.5F;// 最大加速度
-    public static final int BALL_AVATAR_DISTANCE = 200;// BALL_AVATAR_DISTANCE
-    public static final int BALL_WEIGHT_MAX = 4000000;// BALL_WEIGHT_MAX
+    public static final double SQRT1_2 = 0.7071067812;// 根号1/2
     //    public static final int FRAME_RATE = 50;// 帧率（单位：Hz/s）
     //Message Duration (util:second)
     private static int util = 10;

@@ -40,7 +40,6 @@
                 android:padding="@dimen/margin"
                 android:textColor="@color/white"
                 android:textSize="@dimen/fontSize">
-                <!--<requestFocus />-->
             </EditText>
 
             <Button

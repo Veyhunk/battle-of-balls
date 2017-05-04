@@ -1,16 +1,13 @@
 package com.veyhunk.battle_of_balls.model;
 
 import com.veyhunk.battle_of_balls.sounds.GameSounds;
-import com.veyhunk.battle_of_balls.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.veyhunk.battle_of_balls.constants.Constants.BALL_ID;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
-import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGER;
-import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.EMPTY;
-import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.SAFE;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX;
 
@@ -23,13 +20,14 @@ public class BallTeam {
     public int teamColor;
     public String teamName;
     private List<Message> CharRoom;//聊天室
-    private Message message;
     public int score = 0;
     public boolean isHaveMember;
 
+    int charRoomIndex;
+    int charRoomLength;
+
     BallTeam(int teamColor, String teamName) {
         members = new ArrayList<>();
-        message = new Message();
         this.teamColor = teamColor;
         this.teamName = teamName;
         CharRoom = new ArrayList<>();
@@ -37,7 +35,6 @@ public class BallTeam {
     }
 
     public void action() {
-        message.work();
     }
 
 
@@ -48,8 +45,7 @@ public class BallTeam {
      */
     void sendMessage(Message message) {
         try {
-//            CharRoom.add(message);
-            this.message = message;
+            CharRoom.add(message);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,19 +56,19 @@ public class BallTeam {
      *
      * @return message
      */
-    Message readMessage() {
-        Message message=new Message(EMPTY,GameMath.getPointRandom(),0);
-        for (Message message1 : CharRoom) {
-            if(message1.type==DANGER){
-                message=message1;
-            }else if(message.type!=DANGER){
-                message=message1;
+    Message readMessage(Ball ballReader) {
+        charRoomIndex = 0;
+        charRoomLength= CharRoom.size();
+        for (; charRoomIndex < charRoomLength; charRoomIndex++) {
+            if (CharRoom.get(charRoomIndex).isCompleted()) {
+                CharRoom.remove(CharRoom.get(charRoomIndex));
+                charRoomIndex--;
+                charRoomLength--;
+            }else if(ballReader.id!=CharRoom.get(charRoomIndex).ballSender.id){
+                return CharRoom.get(charRoomIndex);
             }
         }
-        action();
-       if(message.isCompleted()){message.editMessage(SAFE, GameMath.getPointRandom());}
-        return message;
-
+        return null;
     }
 
     public PlayerBall initPlayer(GameSounds gameSounds) {
@@ -95,7 +91,7 @@ public class BallTeam {
         }
         if (aliveSize >= TEAM_MEMBER_MAX) newMember = null;
         else if (newMember == null) {
-            newMember = new Ball(this, getName());
+            newMember = new Ball(this, getName(),BALL_ID++);
             addMember(newMember);
         }
         return newMember;

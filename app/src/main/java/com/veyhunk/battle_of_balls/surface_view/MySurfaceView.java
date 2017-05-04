@@ -17,6 +17,7 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
 import com.veyhunk.battle_of_balls.R;
+import com.veyhunk.battle_of_balls.constants.Constants;
 import com.veyhunk.battle_of_balls.model.Ball;
 import com.veyhunk.battle_of_balls.model.BallTeam;
 import com.veyhunk.battle_of_balls.model.FoodBall;
@@ -31,9 +32,9 @@ import com.veyhunk.battle_of_balls.utils.Rocker;
 import java.util.List;
 
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_HEIGHT;
-import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN_H;
-import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN_W;
+import static com.veyhunk.battle_of_balls.constants.Constants.MAP_MARGIN;
 import static com.veyhunk.battle_of_balls.constants.Constants.MAP_WIDTH;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.DANGER;
 import static com.veyhunk.battle_of_balls.constants.Constants.PADDING;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_ITEM_HEIGHT;
 import static com.veyhunk.battle_of_balls.constants.Constants.RANK_LIST_WIDTH;
@@ -161,15 +162,15 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         ROCKER_ACTIVITY_RADIUS = (int) (30 * screenSCale);// 摇杆活动范围半径
 
         //camera global
-        PointF map = new PointF(MAP_WIDTH + MAP_MARGIN_W, MAP_HEIGHT + MAP_MARGIN_H);
+        PointF map = new PointF(MAP_WIDTH + MAP_MARGIN, MAP_HEIGHT + MAP_MARGIN);
         float sx = (float) screenW / map.x;
         float sy = (float) screenH / map.y;
-        cameraGlobal.Focus.x = -map.x / 2 + screenW / 2;
-        cameraGlobal.Focus.y = -map.y / 2 + screenH / 2;
+        cameraGlobal.Focus.x = screenW / 2 - MAP_WIDTH / 2;
+        cameraGlobal.Focus.y = screenH / 2 - MAP_HEIGHT / 2;
         cameraGlobal.Scale.y = cameraGlobal.Scale.x = sx > sy ? sy : sx;
-        cameraGlobal.ScalePosition.x = map.x / 2;
-        cameraGlobal.ScalePosition.y = map.y / 2;
-        System.out.println(sx + "y" + sy + "\n" + cameraGlobal.Scale.x + "\n" + cameraGlobal.Scale.y);
+        cameraGlobal.ScalePosition.x = MAP_WIDTH / 2;
+        cameraGlobal.ScalePosition.y = MAP_HEIGHT / 2;
+
 
         // initialization food Ball
         for (intIndex = 0; intIndex < FoodBallList.length; intIndex++) {
@@ -182,6 +183,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         // initialization player aiBall
         teamOfPlayer = teamsManager.getTeamOfPlayer();
         playerBall = teams[0].initPlayer(gameSounds);
+
+        playerBall.isAuto = !camera.isPlayerCamera;
+
         allBalls = teamsManager.getAllBalls();
         flagIsGameOver = false;
 
@@ -318,12 +322,12 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         //sendDanger
                         System.out.print("sendDanger");
                         gameSounds.starMusic(BUBBLE);
-                        playerBall.sendDanger(playerBall.position);
+                        playerBall.setState(DANGER,playerBall);
                     } else if (event.getX() < (screenW - bmpBtnAvatar.getWidth())) {
 //                        sendBattle
                         System.out.print("sendBattle");
                         gameSounds.starMusic(BATTLE);
-                        playerBall.sendBattle(playerBall.position);
+                        playerBall.setState(Constants.MessageType.BATTLE,playerBall);
                     } else {
 //                        avatar
                         System.out.print("avatar");
@@ -484,15 +488,17 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 for (Ball member : allBalls) {
 
                     paint.setColor(ContextCompat.getColor(context, member.colorDraw));
+                    paintFont.setColor(ContextCompat.getColor(context, R.color.rocker));
                     if (member.state) {
                         // AI 活着
                         // 绘制AI大球
+                        canvas.drawCircle(member.position.x, member.position.y, member.radius + 10, paintFont);
                         canvas.drawCircle(member.position.x, member.position.y, member.radius, paint);
 
                         // 名称字体大小
-                        paintFont.setTextSize((member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale * 4);
+//                        paintFont.setTextSize((member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale * 2);
                         // 绘制名称
-                        canvas.drawText(member.name, member.position.x - paintFont.measureText(member.name) / 2, member.position.y + (member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale, paintFont);
+//                        canvas.drawText(member.name, member.position.x - paintFont.measureText(member.name) / 2, member.position.y + (member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale / 2, paintFont);
                     }
                 }
                 // 绘制角色球
@@ -646,16 +652,16 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         // //绘制矩形
         paint.setColor(ContextCompat.getColor(context, R.color.background));
         canvas.drawRect(0, 0, MAP_WIDTH, MAP_HEIGHT, paint);
-        int rowWidth = (int) PADDING, rowInterval = (int) (8 * PADDING);
+        int rowWidth = (int) (4 * PADDING), rowInterval = (int) (20 * PADDING);
         paint.setColor(ContextCompat.getColor(context, R.color.backgroundStripe));
-        for (intIndex = 1; intIndex <= MAP_HEIGHT / (rowWidth + rowInterval); intIndex++) {
-            canvas.drawRect(0, intIndex * (rowWidth + rowInterval), MAP_WIDTH, intIndex
-                    * (rowWidth + rowInterval) + rowWidth, paint);
-        }
-        for (intIndex = 1; intIndex <= MAP_WIDTH / (rowWidth + rowInterval); intIndex++) {
-            canvas.drawRect(intIndex * (rowWidth + rowInterval), 0, intIndex
-                    * (rowWidth + rowInterval) + rowWidth, MAP_HEIGHT, paint);
-        }
+//        for (intIndex = 1; intIndex <= MAP_HEIGHT / (rowWidth + rowInterval); intIndex++) {
+//            canvas.drawRect(0, intIndex * (rowWidth + rowInterval), MAP_WIDTH, intIndex
+//                    * (rowWidth + rowInterval) + rowWidth, paint);
+//        }
+//        for (intIndex = 1; intIndex <= MAP_WIDTH / (rowWidth + rowInterval); intIndex++) {
+//            canvas.drawRect(intIndex * (rowWidth + rowInterval), 0, intIndex
+//                    * (rowWidth + rowInterval) + rowWidth, MAP_HEIGHT, paint);
+//        }
 
     }
 
@@ -691,7 +697,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         try {
             for (Ball ball_1 : allBalls) {
                 if (!ball_1.state) continue;
-                float1 = ball_1.radius * 4;
+                float1 = ball_1.radius * 3;
                 //基本活动
                 ball_1.action();
                 for (Ball ball_2 : allBalls) {
@@ -757,7 +763,7 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
             camera = cameraPlayer;
             cameraPlayer.Focus.x = -playerBall.position.x + screenW / 2;
             cameraPlayer.Focus.y = -playerBall.position.y + screenH / 2;
-            float1 = (float) (screenH / (400 + 400 * ((playerBall.radius / (Math.sqrt(BALL_WEIGHT_DEFAULT)) / 20)) + playerBall.radius * 2));
+            float1 = (float) (screenH / (2500 + 400 * ((playerBall.radius / (Math.sqrt(BALL_WEIGHT_DEFAULT)) / 20)) + playerBall.radius * 2));
             cameraPlayer.Scale.x = float1;
             cameraPlayer.Scale.y = float1;
             cameraPlayer.ScalePosition.x = playerBall.position.x;
