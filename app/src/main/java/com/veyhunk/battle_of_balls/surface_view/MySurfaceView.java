@@ -184,7 +184,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         teamOfPlayer = teamsManager.getTeamOfPlayer();
         playerBall = teams[0].initPlayer(gameSounds);
 
-        playerBall.isAuto = !camera.isPlayerCamera;
+        playerBall.isAuto =true;
+        camera.isPlayerCamera=false;
 
         allBalls = teamsManager.getAllBalls();
         flagIsGameOver = false;
