@@ -192,7 +192,7 @@ public class Ball {
 //            timeRandomActionBegin = getClock();
 //            timeRandomActionRang = (int) (Math.random() * 1000);
         }
-        if ((directionTarget == 404 || acceleratedSpeed < .0005) && isEdgeCollision && Math.random() > .7) {
+        if (isEdgeCollision && (directionTarget == 404 || acceleratedSpeed < .0005 || Math.random() > .9)) {
             setVector(GameMath.getRadian(position, GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
             setState(EMPTY, this);
 //            timeRandomActionBegin = getClock();
@@ -202,7 +202,10 @@ public class Ball {
 
     public void setVector(float direction, float acceleratedSpeed) {
 //
-        this.directionTarget = direction;
+        if (direction != 404) {
+            this.directionTarget = direction;
+        }
+
         this.acceleratedSpeed = acceleratedSpeed;
 //        this.acceleratedSpeed = MAX_ACCELERATED_SPEED;
     }
@@ -219,7 +222,7 @@ public class Ball {
         }
         // 损耗减重
         if (weight > BALL_WEIGHT_DEFAULT) {
-            weight -= (int) radius / 2;
+            weight -= (int) radius / 4;
         }
         if (weight > BALL_WEIGHT_MAX) {
             // 角色球尺寸限制，重置尺寸
@@ -232,8 +235,8 @@ public class Ball {
             direction += Math.abs((directionTarget - direction)) < PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2))) : ((directionTarget - direction) > 0 ? -(Math.abs((directionTarget - direction - 2 * PI)) / (ACTION_DAMPING / 2)) : +(Math.abs((directionTarget - direction + 2 * PI)) / (ACTION_DAMPING / 2)));
             direction += (direction >= PI) ? (-2 * PI) : ((direction <= -PI) ? (+2 * PI) : 0);
             if (acceleratedSpeed != 0) {
-                positionTarget.x += cos(directionTarget) * moveSpeed * acceleratedSpeed / radius * 50;
-                positionTarget.y += sin(directionTarget) * moveSpeed * acceleratedSpeed / radius * 50;
+                positionTarget.x += cos(directionTarget) * moveSpeed * acceleratedSpeed / radius * 100;
+                positionTarget.y += sin(directionTarget) * moveSpeed * acceleratedSpeed / radius * 100;
             }
             isEdgeCollision = false;
             float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
