@@ -154,7 +154,7 @@ public class Ball {
     }
 
     private void thinking() {
-        msgRead=team.readMessage(this);
+        msgRead = team.readMessage(this);
 
         if (message.isCompleted()) {
             setState(SAFE, this);
@@ -171,10 +171,10 @@ public class Ball {
             } else if (message.type == AVATAR) {
                 setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
                 avatar(GameMath.getRadian(position, message.position));
-            } else if (Math.random() > .7&&msgRead!=null) {
-                if(msgRead.type == DANGER) {
+            } else if (Math.random() > .7 && msgRead != null) {
+                if (msgRead.type == DANGER) {
                     setVector(GameMath.getRadian(msgRead.position, position), MAX_ACCELERATED_SPEED);
-                } else if (team.readMessage(this).type == BATTLE) {
+                } else if (msgRead.type == BATTLE) {
                     setVector(GameMath.getRadian(position, msgRead.position), MAX_ACCELERATED_SPEED);
                 }
             } else {
@@ -212,8 +212,9 @@ public class Ball {
             radius -= (radius - sqrt(weight)) / ACTION_DAMPING;
         }
         // 损耗减重
-        weight -= (int) radius / 100 * 5;
-
+        if(weight>BALL_WEIGHT_DEFAULT) {
+            weight -= (int) radius ;
+        }
         if (weight > BALL_WEIGHT_MAX) {
             // 角色球尺寸限制，重置尺寸
             weight = BALL_WEIGHT_DEFAULT;
@@ -225,8 +226,8 @@ public class Ball {
             direction += Math.abs((directionTarget - direction)) < PI ? (((directionTarget - direction) / (ACTION_DAMPING / 2))) : ((directionTarget - direction) > 0 ? -(Math.abs((directionTarget - direction - 2 * PI)) / (ACTION_DAMPING / 2)) : +(Math.abs((directionTarget - direction + 2 * PI)) / (ACTION_DAMPING / 2)));
             direction += (direction >= PI) ? (-2 * PI) : ((direction <= -PI) ? (+2 * PI) : 0);
             if (acceleratedSpeed != 0) {
-                positionTarget.x += moveSpeed * cos(directionTarget) * (1 / radius + 0.2) * acceleratedSpeed;
-                positionTarget.y += moveSpeed * sin(directionTarget) * (1 / radius + 0.2) * acceleratedSpeed;
+                positionTarget.x += cos(directionTarget) * moveSpeed * acceleratedSpeed / radius*50;
+                positionTarget.y += sin(directionTarget) * moveSpeed * acceleratedSpeed / radius*50;
             }
             isEdgeCollision = false;
             float inscribedSquareLen_1_2 = (float) (radius * SQRT1_2);
@@ -367,6 +368,9 @@ public class Ball {
 
 
     public void setState(short msgType, Ball ballObject) {
+        if (ballObject != null && message.ballObject != null) {
+            if (ballObject.id == message.ballObject.id && msgType == message.type) return;
+        }
         switch (msgType) {
             case DANGER:
                 //setDanger

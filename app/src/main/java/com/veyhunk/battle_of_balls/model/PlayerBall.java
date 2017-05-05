@@ -50,8 +50,8 @@ public class PlayerBall extends Ball {
     }
 
     @Override
-    public boolean eat(Ball enemy) {
-        if (super.eat(enemy)) {
+    public boolean eat(Ball ballObject) {
+        if (super.eat(ballObject)) {
             gameSounds.starMusic(EAT_3);
             return true;
         }
