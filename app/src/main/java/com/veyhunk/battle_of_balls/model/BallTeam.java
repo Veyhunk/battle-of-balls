@@ -8,6 +8,7 @@ import java.util.List;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_ID;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
+import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.MSGTYPES;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX;
 
@@ -49,6 +50,7 @@ public class BallTeam {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("mm" + message.ballSender.name + ":" + MSGTYPES[message.type] + " " + message.ballSender.radius + " " + message.ballObject.radius);
     }
 
     /**
@@ -57,15 +59,15 @@ public class BallTeam {
      * @return message
      */
     Message readMessage(Ball ballReader) {
-        charRoomIndex = 0;
-        charRoomLength= CharRoom.size();
-        for (; charRoomIndex < charRoomLength; charRoomIndex++) {
-            if (CharRoom.get(charRoomIndex).isCompleted()) {
-                CharRoom.remove(CharRoom.get(charRoomIndex));
-                charRoomIndex--;
-                charRoomLength--;
-            }else if(ballReader.id!=CharRoom.get(charRoomIndex).ballSender.id){
-                return CharRoom.get(charRoomIndex);
+        charRoomIndex = CharRoom.size();
+        while (charRoomIndex > 0) {
+            --charRoomIndex;
+            if (ballReader.id != CharRoom.get(charRoomIndex).ballSender.id) {
+                if (CharRoom.get(charRoomIndex).isCompleted()) {
+                    CharRoom.remove(CharRoom.get(charRoomIndex));
+                } else {
+                    return CharRoom.get(charRoomIndex);
+                }
             }
         }
         return null;
@@ -91,7 +93,7 @@ public class BallTeam {
         }
         if (aliveSize >= TEAM_MEMBER_MAX) newMember = null;
         else if (newMember == null) {
-            newMember = new Ball(this, getName(),BALL_ID++);
+            newMember = new Ball(this, getName(), BALL_ID++);
             addMember(newMember);
         }
         return newMember;

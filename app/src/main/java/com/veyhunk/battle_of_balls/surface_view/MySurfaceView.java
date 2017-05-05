@@ -184,8 +184,8 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         teamOfPlayer = teamsManager.getTeamOfPlayer();
         playerBall = teams[0].initPlayer(gameSounds);
 
-        playerBall.isAuto =true;
-        camera.isPlayerCamera=false;
+        playerBall.isAuto = true;
+        camera.isPlayerCamera = false;
 
         allBalls = teamsManager.getAllBalls();
         flagIsGameOver = false;
@@ -321,17 +321,14 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 if (event.getX() > (screenW - bmpBtnAvatar.getWidth() * 3) && event.getY() > (screenH - bmpBtnAvatar.getHeight())) {
                     if (event.getX() < (screenW - bmpBtnAvatar.getWidth() * 2)) {
                         //sendDanger
-                        System.out.print("sendDanger");
                         gameSounds.starMusic(BUBBLE);
-                        playerBall.setState(DANGER,playerBall);
+                        playerBall.setState(DANGER, playerBall);
                     } else if (event.getX() < (screenW - bmpBtnAvatar.getWidth())) {
 //                        sendBattle
-                        System.out.print("sendBattle");
                         gameSounds.starMusic(BATTLE);
-                        playerBall.setState(Constants.MessageType.BATTLE,playerBall);
+                        playerBall.setState(Constants.MessageType.BATTLE, playerBall);
                     } else {
 //                        avatar
-                        System.out.print("avatar");
                         gameSounds.starMusic(AVATAR);
                         playerBall.avatar(playerBall.direction);
                     }
@@ -497,9 +494,9 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                         canvas.drawCircle(member.position.x, member.position.y, member.radius, paint);
 
                         // 名称字体大小
-//                        paintFont.setTextSize((member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale * 2);
+                        paintFont.setTextSize((member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale * 2);
                         // 绘制名称
-//                        canvas.drawText(member.name, member.position.x - paintFont.measureText(member.name) / 2, member.position.y + (member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale / 2, paintFont);
+                        canvas.drawText(member.name, member.position.x - paintFont.measureText(member.name) / 2, member.position.y + (member.radius > 40 ? (20 + ((int) member.radius > 90 ? 15 : member.radius / 6)) : 23) * screenSCale / 2, paintFont);
                     }
                 }
                 // 绘制角色球
@@ -698,18 +695,18 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
         try {
             for (Ball ball_1 : allBalls) {
                 if (!ball_1.state) continue;
-                float1 = ball_1.radius * 3;
+                float1 = ball_1.radius * 2;
                 //基本活动
                 ball_1.action();
                 for (Ball ball_2 : allBalls) {
-                    if (!ball_1.state) break;
-                    if (!ball_2.state) break;
+                    if (!ball_2.state) continue;
+                    if (ball_1.id == ball_2.id) continue;
                     //获取距离
                     float2 = GameMath.getDistance(ball_1.position, ball_2.position);
                     // 判断是否在范围内
-                    if (float2 < float1) {
+                    if (float2 < float1 + ball_2.radius) {
                         // 判断是否碰撞
-                        if (ball_1.radius > ball_2.radius) {
+                        if (ball_1.radius * .9 > ball_2.radius) {
                             // 感知
                             if (float2 < Math.sqrt(ball_1.radius * ball_1.radius - ball_2.radius * ball_2.radius)) {
                                 ball_1.eat(ball_2);
@@ -717,15 +714,19 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                                 // 感知
                                 ball_1.feeling(ball_2, true);
                             }
-                        } else {
+                        } else if (ball_2.radius * .9 > ball_1.radius) {
                             if (float2 < Math.sqrt(ball_2.radius * ball_2.radius - ball_1.radius * ball_1.radius)) {
                                 ball_2.eat(ball_1);
                             } else {
                                 // 感知
                                 ball_1.feeling(ball_2, false);
                             }
+                        } else {
+                            // 感知
+                            ball_1.feeling(ball_2, false);
                         }
                     }
+                    if (!ball_1.state) break;
                 }
 
             }

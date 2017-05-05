@@ -97,9 +97,11 @@ public class Ball {
     public void action() {
 //        message.editMessage(EMPTY, position);
         grow();
-        thinking();
         if (isAvatar) moveForAvatar();
-        else move();
+        else {
+            thinking();
+            move();
+        }
     }
 
     /**
@@ -120,7 +122,8 @@ public class Ball {
     public boolean eat(Ball ball) {
         if (team.equals(ball.getTeam())) {
             // 是否同一个队伍
-            if (message.type == SAFE || message.type == EMPTY) return false;
+            if ((message.type == SAFE || message.type == EMPTY) && (ball.message.type == SAFE || ball.message.type == EMPTY))
+                return false;
         }
         weight += ball.die(this);
         return true;
@@ -132,12 +135,12 @@ public class Ball {
      * @param ballObject ball
      */
     public void feeling(Ball ballObject, boolean isBigger) {
+
         if (team.equals(ballObject.getTeam())) {
             if (ballObject.message.type == BATTLE) {
                 setState(AVATAR, ballObject);
-            } else return;
-        }
-        if (isBigger) {
+            }
+        } else if (isBigger) {
             //send message
             if (ballObject.weight * 2 < weight) {
                 setState(AVATAR, ballObject);
@@ -173,7 +176,7 @@ public class Ball {
                 avatar(GameMath.getRadian(position, message.position));
             } else if (Math.random() > .7 && msgRead != null) {
                 if (msgRead.type == DANGER) {
-                    setVector(GameMath.getRadian(msgRead.position, position), MAX_ACCELERATED_SPEED);
+                    setVector(GameMath.getRadian(position, msgRead.position), MAX_ACCELERATED_SPEED);
                 } else if (msgRead.type == BATTLE) {
                     setVector(GameMath.getRadian(position, msgRead.position), MAX_ACCELERATED_SPEED);
                 }
@@ -377,21 +380,29 @@ public class Ball {
 
 
     public void setState(short msgType, Ball ballObject) {
-        if (ballObject != null && message.ballObject != null) {
-            if (ballObject.id == message.ballObject.id && msgType == message.type) return;
-        }
         switch (msgType) {
             case DANGER:
                 //setDanger
+                if (ballObject != null && message.ballObject != null) {
+                    if (!(ballObject.id == message.ballObject.id && msgType == message.type)) {
+                        message.editMessage(DANGER, ballObject.position, ballObject);
+                        team.sendMessage(message);
+                    }
+                }
                 message.editMessage(DANGER, ballObject.position, ballObject);
-                team.sendMessage(message);
                 break;
             case ESCAPE:
                 //setDanger
-                message.editMessage(DANGER, ballObject.position, ballObject);
-                team.sendMessage(message);
                 if (Math.random() > .8) {
                     message.editMessage(ESCAPE, ballObject.position, ballObject);
+                } else {
+                    if (ballObject != null && message.ballObject != null) {
+                        if (!(ballObject.id == message.ballObject.id && msgType == message.type)) {
+                            message.editMessage(DANGER, ballObject.position, ballObject);
+                            team.sendMessage(message);
+                        }
+                    }
+                    message.editMessage(DANGER, ballObject.position, ballObject);
                 }
                 break;
             case AVATAR:
@@ -403,8 +414,13 @@ public class Ball {
             case BATTLE:
                 //setBattle
                 if (message.type != DANGER) {
+                    if (ballObject != null && message.ballObject != null) {
+                        if (!(ballObject.id == message.ballObject.id && msgType == message.type)) {
+                            message.editMessage(BATTLE, ballObject.position, ballObject);
+                            team.sendMessage(message);
+                        }
+                    }
                     message.editMessage(BATTLE, ballObject.position, ballObject);
-                    team.sendMessage(message);
                 }
                 break;
             case SAFE:

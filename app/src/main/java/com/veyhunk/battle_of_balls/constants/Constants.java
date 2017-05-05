@@ -46,6 +46,7 @@ public class Constants {
         public static final short BATTLE = 3;
         public static final short DANGER = 4;
         public static final short ESCAPE = 5;
+        public static final String[] MSGTYPES=new String[]{"EMPTY","SAFE","AVATAR","BATTLE","DANGER","ESCAPE"};
     }
 
 //    public class MoveTarget {
