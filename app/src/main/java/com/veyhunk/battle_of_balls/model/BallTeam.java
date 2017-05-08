@@ -8,7 +8,6 @@ import java.util.List;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_ID;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_ALIVE;
 import static com.veyhunk.battle_of_balls.constants.Constants.BALL_STATE_DEAD;
-import static com.veyhunk.battle_of_balls.constants.Constants.MessageType.MSGTYPES;
 import static com.veyhunk.battle_of_balls.constants.Constants.getName;
 import static com.veyhunk.battle_of_balls.db.GameParams.TEAM_PARAMS.TEAM_MEMBER_MAX;
 
@@ -50,7 +49,16 @@ public class BallTeam {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("mm" + message.ballSender.name + ":" + MSGTYPES[message.type] + " " + message.ballSender.radius + " " + message.ballObject.radius);
+//        System.out.println("mm" + message.ballSender.name + ":" + MSG_TYPES[message.type] + " " + message.ballSender.radius + " " + message.ballObject.radius);
+    }
+
+    public String strMessage="";
+
+    public void showMessage(String strMessage) {
+        if (Math.random() > .9) {
+            this.strMessage = strMessage;
+        }
+//        System.out.println(strMessage);
     }
 
     /**

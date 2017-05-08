@@ -124,6 +124,8 @@ public class Ball {
             // 是否同一个队伍
             if ((message.type == SAFE || message.type == EMPTY) && (ball.message.type == SAFE || ball.message.type == EMPTY))
                 return false;
+        } else {
+            team.showMessage(name + "：" + "我吃了" + ball.name);
         }
         weight += ball.die(this);
         return true;
@@ -163,44 +165,36 @@ public class Ball {
             setState(SAFE, this);
         }
 //        isTimeOver(timeRandomActionBegin,timeRandomActionRang)
-        if (true) {
-            if (message.type == ESCAPE) {
-                setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
-                avatar(GameMath.getRadian(message.position, position));
-            } else if (message.type == DANGER) {
-                setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
-            } else if (message.type == BATTLE) {
-                setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
-            } else if (message.type == AVATAR) {
-                setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
-                avatar(GameMath.getRadian(position, message.position));
-            } else if (Math.random() > .7 && msgRead != null) {
-                if (msgRead.type == DANGER) {
-                    setVector(GameMath.getRadian(position, msgRead.position), MAX_ACCELERATED_SPEED);
-                } else if (msgRead.type == BATTLE) {
-                    setVector(GameMath.getRadian(position, msgRead.position), MAX_ACCELERATED_SPEED);
-                }
-            } else {
-                if (Math.random() > .99) {
-                    avatar(directionTarget);
-                }
-
-                if ((directionTarget == 404 || acceleratedSpeed < .0005)) {
-                    setVector(GameMath.getRadian(position, GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
-//            timeRandomActionBegin = getClock();
-//            timeRandomActionRang = (int) (Math.random() * 1000);
-                }
-//              setVector(GameMath.getRadian(position, GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
+        if (message.type == ESCAPE) {
+            setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+            avatar(GameMath.getRadian(message.position, position));
+        } else if (message.type == DANGER) {
+            setVector(GameMath.getRadian(message.position, position), MAX_ACCELERATED_SPEED);
+        } else if (message.type == BATTLE) {
+            setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
+        } else if (message.type == AVATAR) {
+            setVector(GameMath.getRadian(position, message.position), GameMath.getAcceleratedSpeed());
+            avatar(GameMath.getRadian(position, message.position));
+            team.showMessage(name + "：" + "分身吃掉你！");
+        } else if (Math.random() > .7 && msgRead != null) {
+            if (msgRead.type == DANGER) {
+                setVector(GameMath.getRadian(position, msgRead.position), GameMath.getAcceleratedSpeed());
+            } else if (msgRead.type == BATTLE) {
+                setVector(GameMath.getRadian(position, msgRead.position), MAX_ACCELERATED_SPEED);
             }
-//            timeRandomActionBegin = getClock();
-//            timeRandomActionRang = (int) (Math.random() * 1000);
+        } else {
+            if (Math.random() > .99) {
+                avatar(directionTarget);
+                team.showMessage(name + "：" + "我们分开发育快！");
+            }
+            if (acceleratedSpeed < .0005 && Math.random() > .9) {
+                setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
+            }
         }
-        if (isEdgeCollision && (directionTarget == 404 || acceleratedSpeed < .0005 || Math.random() > .9)) {
-            setVector(GameMath.getRadian(position, GameMath.getPointRandom()), MAX_ACCELERATED_SPEED);
-            setState(EMPTY, this);
-//            timeRandomActionBegin = getClock();
-//            timeRandomActionRang = (int) (Math.random() * 1000);
+        if (isEdgeCollision && (acceleratedSpeed < .0005 || Math.random() > .9)) {
+            setVector(GameMath.getRadian(position, GameMath.getPointRandom()), GameMath.getAcceleratedSpeed());
         }
+
     }
 
     public void setVector(float direction, float acceleratedSpeed) {
@@ -292,9 +286,7 @@ public class Ball {
             }
             position.x += (positionTarget.x - position.x) / ACTION_DAMPING;
             position.y += (positionTarget.y - position.y) / ACTION_DAMPING;
-            if (acceleratedSpeed < .005 && positionTarget.equals(position)) directionTarget = 404;
-        } else {
-//            System.out.println(team.teamName+":"+name+"404");
+//            if (acceleratedSpeed < .005 && positionTarget.equals(position)) directionTarget = 404;
         }
 
     }
@@ -355,7 +347,7 @@ public class Ball {
         }
         position.x += (positionAvatar.x - position.x) / ACTION_DAMPING;
         position.y += (positionAvatar.y - position.y) / ACTION_DAMPING;
-        if (acceleratedSpeed == 0) directionTarget = 404;
+//        if (acceleratedSpeed == 0) directionTarget = 404;
     }
 
     /**
@@ -387,6 +379,7 @@ public class Ball {
                     if (!(ballObject.id == message.ballObject.id && msgType == message.type)) {
                         message.editMessage(DANGER, ballObject.position, ballObject);
                         team.sendMessage(message);
+                        team.showMessage(name + "：" + "这里有危险，请求支援!");
                     }
                 }
                 message.editMessage(DANGER, ballObject.position, ballObject);
@@ -400,6 +393,7 @@ public class Ball {
                         if (!(ballObject.id == message.ballObject.id && msgType == message.type)) {
                             message.editMessage(DANGER, ballObject.position, ballObject);
                             team.sendMessage(message);
+                            team.showMessage(name + "：" + "这里有危险，快跑!");
                         }
                     }
                     message.editMessage(DANGER, ballObject.position, ballObject);
@@ -418,6 +412,9 @@ public class Ball {
                         if (!(ballObject.id == message.ballObject.id && msgType == message.type)) {
                             message.editMessage(BATTLE, ballObject.position, ballObject);
                             team.sendMessage(message);
+                            if (Math.random() > .5)
+                                team.showMessage(name + "：" + "我在和" + ballObject.name + "战斗，快来集合！");
+                            else team.showMessage(name + "：" + "大家快追，他们跑不掉的！");
                         }
                     }
                     message.editMessage(BATTLE, ballObject.position, ballObject);

@@ -120,7 +120,6 @@ public class TeamsManager {
     }
 
     private BallTeam[] teams = new BallTeam[TEAM_PARAMS.TEAM_AMOUNT == 0 ? 1 : TEAM_PARAMS.TEAM_AMOUNT];
-
     private List<Ball> allBalls;//全部成员
     private BallTeam teamOfPlayer;
     public boolean isGameOver=false;

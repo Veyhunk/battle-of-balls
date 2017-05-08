@@ -543,7 +543,6 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.drawRect(PADDING, RANK_LIST_ITEM_HEIGHT + PADDING, RANK_LIST_WIDTH, RANK_LIST_ITEM_HEIGHT + RANK_LIST_ITEM_HEIGHT + PADDING, paint);
                 canvas.drawText("我的分数:" + (int) playerBall.radius, 30 * screenSCale, 28 * screenSCale + RANK_LIST_ITEM_HEIGHT,
                         paintFont);
-
                 // 倒计时
                 canvas.drawText(Clock.getTimeStr(),
                         screenW / 2 - 25, 28 * screenSCale, paintFont);
@@ -587,22 +586,26 @@ public class MySurfaceView extends SurfaceView implements Callback, Runnable {
                 canvas.restore();
                 canvas.save();
                 // bmpBadges & bmpInfo
+                // 名称字体大小
+                paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
                 if (teamsManager.isGameOver) {
                     if (teamsManager.isPlayerTeamWin) {
                         paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
-                        paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.white_transparent));
-                        canvas.drawRect(PADDING, screenH - PADDING - RANK_LIST_ITEM_HEIGHT, RANK_LIST_WIDTH, screenH - PADDING, paint);
+                        canvas.drawRect(PADDING, screenH - PADDING - RANK_LIST_ITEM_HEIGHT, paintFont.measureText("你的队伍获得胜利") + PADDING * 2, screenH - PADDING, paint);
                         canvas.drawText("你的队伍获得胜利", PADDING * 2, screenH - 16 * screenSCale, paintFont);
                     } else {
                         paint.setColor(ContextCompat.getColor(context, R.color.rockerRudder));
-                        paintFont.setTextSize((float) (0.7 * RANK_LIST_ITEM_HEIGHT));
                         paintFont.setColor(ContextCompat.getColor(context,
                                 R.color.white_transparent));
-                        canvas.drawRect(PADDING, screenH - PADDING - RANK_LIST_ITEM_HEIGHT, RANK_LIST_WIDTH, screenH - PADDING, paint);
+                        canvas.drawRect(PADDING, screenH - PADDING - RANK_LIST_ITEM_HEIGHT, paintFont.measureText("你的队伍全军覆灭") + PADDING * 2, screenH - PADDING, paint);
                         canvas.drawText("你的队伍全军覆灭", PADDING * 2, screenH - 16 * screenSCale, paintFont);
                     }
+                } else {
+                    // 绘制消息
+                    canvas.drawRect(PADDING, screenH - (RANK_LIST_ITEM_HEIGHT + PADDING), paintFont.measureText(teamOfPlayer.strMessage) + PADDING * 2, screenH - PADDING, paint);
+                    canvas.drawText(teamOfPlayer.strMessage, PADDING * 2, screenH - PADDING * 2, paintFont);
                 }
                 canvas.restore();
             }
